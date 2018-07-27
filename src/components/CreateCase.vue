@@ -73,7 +73,7 @@ export default {
 };
 </script>
 
-<style lang="less" >
+<style lang="less" scoped>
 .demo4-item {
   background-color: #ddd;
   color: #222;
