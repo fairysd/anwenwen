@@ -1,25 +1,29 @@
 <template>
   <div>    
-    <tabbar>
+    <tabbar class="page-footer">
       <tabbar-item selected link="/home">        
-        <img slot="icon" src="../assets/images/icons/images_9.png">
+        <img slot="icon" src="../assets/images/icons/icon_11.png">
+        <img slot="icon-active" src="../assets/images/icons/icon_03.png" >
         <span slot="label">首页</span>
       </tabbar-item>
       <tabbar-item>        
-          <img slot="icon" src="../assets/images/icons/images_10.png">
-          <img slot="icon-active" src="../assets/images/icons/images_11.png" >
+          <img slot="icon" src="../assets/images/icons/icon_05.png">
+          <img slot="icon-active" src="../assets/images/icons/icon_12.png" >
         <span slot="label">法律咨询</span>
       </tabbar-item>
       <tabbar-item>        
-          <img slot="icon" src="../assets/images/icons/images_11.png">
+          <img slot="icon" src="../assets/images/icons/icon_06.png">
+          <img slot="icon-active" src="../assets/images/icons/icon_13.png" >
         <span slot="label">找律师</span>
       </tabbar-item>
       <tabbar-item link="/createCase">        
-          <img slot="icon" src="../assets/images/icons/images_12.png" >
+          <img slot="icon" src="../assets/images/icons/icon_07.png" >
+          <img slot="icon-active" src="../assets/images/icons/icon_14.png" >
         <span slot="label">案件委托</span>
       </tabbar-item>
-      <tabbar-item>        
-          <img slot="icon" src="../assets/images/icons/images_13.png">
+      <tabbar-item link="/user">        
+          <img slot="icon" src="../assets/images/icons/icon_08.png">
+          <img slot="icon-active" src="../assets/images/icons/icon_15.png" >
         <span slot="label">我的</span>
       </tabbar-item>
     </tabbar>
@@ -42,5 +46,8 @@ export default {
 };
 </script>
 
-<style lang="less" >
+<style lang="less" scoped>
+.page-footer{
+  position: fixed;
+}
 </style>

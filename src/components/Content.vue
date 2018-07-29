@@ -24,5 +24,6 @@ export default {
 <style>
 .vux-demo {
   text-align: center;
+  padding-bottom: 50px;
 }
 </style>

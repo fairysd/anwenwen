@@ -1,29 +1,35 @@
 <template>
-  <div>    
+  <div class="create-case">    
+      <contentHeader></contentHeader>
      <group label-width="4.5em" label-margin-right="2em" label-align="right">      
-      <x-input title="姓名"></x-input>
-      <x-input title="联系方式"></x-input>      
-      <cell :title='"案件类型"' :value="demo4"   is-link @click.native="showPopup=true"></cell>    
-        <div v-transfer-dom>
-        <popup  class="checker-popup" v-model="showPopup">
-            <div style="padding:10px 10px 40px 10px;">
-            <p style="padding: 5px 5px 5px 2px;color:#888;">Colors</p>
-            <checker
-            default-item-class="demo4-item"
-            selected-item-class="demo4-item-selected"
-            disabled-item-class="demo4-item-disabled">
-                <checker-item :value="('民事')" @on-item-click="onItemClick"> {{ ('民事') }} </checker-item>
-            </checker>
-            </div>
-        </popup>
-        </div>
-      <x-textarea title="asd" placeholder="请填写详细信息" :show-counter="false" :rows="3">       
+      <x-input title="姓名" placeholder="请输入姓名"></x-input>
+      <x-input title="联系方式" placeholder="请输入联系方式"></x-input>    
+      </group>  
+      <group label-width="4.5em" label-margin-right="2em" label-align="right">
+      <popup-picker title="案件类型" :data="list" v-model="caseType" value-text-align="left"></popup-picker>          
+      <x-textarea title="案件描述" placeholder="请输入案件描述 例如：xxx在xxx市xxx时间的案件" :show-counter="false" :rows="3">       
       </x-textarea>
+      <x-input title="标的" placeholder="请输入具体金额"></x-input>   
     </group>
+    <group>
+    <flexbox>
+      <flexbox-item class="btn submit-btn">
+        </flexbox-item>
+        <flexbox-item class="btn submit-btn">
+          <x-button  type="primary">提交</x-button>
+        </flexbox-item>
+        <flexbox-item class="btn cancel-btn">
+          <x-button  type="warn">取消</x-button>
+        </flexbox-item>
+        <flexbox-item class="btn submit-btn">
+        </flexbox-item>
+      </flexbox>
+      </group>
   </div>
 </template>
 <script>
-import {  GroupTitle, Group, Cell, XInput, Selector, PopupPicker, Datetime, XNumber, ChinaAddressData, XAddress, XTextarea, XSwitch,CheckIcon,Checker, CheckerItem,Popup,TransferDom   } from "vux";
+import contentHeader from './Content/contentHeader'
+import {  GroupTitle, Group, Cell, XInput, Selector, PopupPicker, Datetime, XNumber, ChinaAddressData, XAddress, XTextarea, XSwitch,CheckIcon,Checker, CheckerItem,Popup,TransferDom,XButton   } from "vux";
 
 export default {
   name: "createCase",
@@ -31,49 +37,27 @@ export default {
     TransferDom
   },
   components: {
-    GroupTitle, Group, Cell, XInput, Selector, PopupPicker, Datetime, XNumber, ChinaAddressData, XAddress, XTextarea, XSwitch,CheckIcon ,Checker, CheckerItem,Popup
+    GroupTitle, Group, Cell, XInput, Selector, PopupPicker, Datetime, XNumber, ChinaAddressData, XAddress, XTextarea, XSwitch,CheckIcon ,Checker, CheckerItem,Popup,XButton ,contentHeader
   },
   data() {
-    return {
-        items1: [{
-        key: '1',
-        value: 'A'
-      }, {
-        key: '2',
-        value: 'B'
-      }, {
-        key: '3',
-        value: 'C'
-      }],
-      demo1: '',
-      demo1Required: '',
-      demo11: null,
-      demo12: {key: '2', value: 'B'},
-      demo21: null,
-      demo22: [{key: '2', value: 'B'}],
-      demo23: null,
-      demo1Checkbox: [2, 1],
-      demo1CheckboxMax: ['2', '3'],
-      demo2: '2',
-      demo3: '',
-      demo4: ('民事'),
+    return {        
       showPopup: false,
-      demo5: 1,
-      demo6: [2, 3]
+      caseType: ['民事'],
+      list:[['民事']],
     };
   },
-  methods:{
-      onItemClick (value, disabled) {
-      this.demo4 = value;
-      if (!this.disabled) {
-        this.showPopup = false
-      }
-    }
+  methods:{     
   }
 };
 </script>
 
 <style lang="less" scoped>
+.create-case .case-calss{
+  width: 4.5em;
+}
+.create-case .btn{
+  text-align: center;
+}
 .demo4-item {
   background-color: #ddd;
   color: #222;
