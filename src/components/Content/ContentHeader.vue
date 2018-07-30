@@ -19,7 +19,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
 .content-header img{
     width: 100%;
