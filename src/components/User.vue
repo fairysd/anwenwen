@@ -1,9 +1,9 @@
 <template>
   <div class="user-tab">
      <tab>
-      <tab-item selected @on-item-click="onItemClick">我的案例</tab-item>
-      <tab-item @on-item-click="onItemClick">我的关联</tab-item>
-      <tab-item @on-item-click="onItemClick">我的收藏</tab-item>
+      <tab-item selected >我的案例</tab-item>
+      <tab-item >我的关联</tab-item>
+      <tab-item >我的收藏</tab-item>
     </tab>
   </div>
 </template>

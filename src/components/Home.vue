@@ -7,8 +7,31 @@
                 </div>                
             </flexbox-item>
       </flexbox>
+       <flexbox class="search-box">
+           <!-- <flexbox-item :span='1'>
+            </flexbox-item>
+            <flexbox-item :span='2'>
+                <span class="city">南京市</span>
+            </flexbox-item>
+            <flexbox-item :span='6'>
+                <input class="search" type="text" placeholder="请输入关键字搜索咨询">
+            </flexbox-item>
+            <flexbox-item :span='2'>               
+                <span class="searchFont">搜索</span>
+            </flexbox-item>
+            <flexbox-item :span='1'>
+            </flexbox-item> -->
+               <flexbox-item class="search">
+                <search 
+                        v-model="searchValue"
+                        :auto-fixed="false"
+                        top="46px"
+                        ref="search">
+                    </search>          
+            </flexbox-item> 
+      </flexbox>
         <flexbox class="menu">
-            <flexbox-item>
+            <flexbox-item @click.native="checkList('婚姻家庭')">
                 <div class="case-class">
                     <img src="../assets/images/icons/icon_1.png" alt="">
                     <p>婚姻家庭</p>
@@ -64,11 +87,12 @@
 </template>
 
 <script>
-import { Panel } from 'vux'
+import { Panel,Search } from 'vux'
 export default {
-  components: {Panel},
+  components: {Panel,Search},
   data() {
     return {
+        searchValue:"",
         pannelTitle:"编辑推荐",
         type: '1',
         list: [{
@@ -97,17 +121,36 @@ export default {
       }
 
     };
+  },
+  methods:{
+      checkList(msg){
+          console.log(msg);
+          this.$router.push({ name: 'caseList', params: { msg: msg }})
+      }
   }
 };
 </script>
 
 <style lang="less">
 @import "~vux/src/styles/1px.less";
+.home{
+    .address{
+        background-position: 0 0.1rem;
+        .city{
+            font-size: 0.8rem;
+        }
+    }
+    .search{      
+    }
+    .searchGlass {
+    }
+}
 .home img {
     width: 80%
 }
 .home .bgimg img{
     width:100%;
+    display:block;
 }
 .case-class {
   text-align: center;

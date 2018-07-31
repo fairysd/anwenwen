@@ -23,5 +23,6 @@ export default {
 @import "~vux/src/styles/1px.less";
 .content-header img{
     width: 100%;
+    display:block;
 }
 </style>

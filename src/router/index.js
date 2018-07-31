@@ -33,6 +33,7 @@ export default new Router({
         },
         {
           path:'caseList',
+          name:'caseList',
           component:CaseList
         }
       ]
