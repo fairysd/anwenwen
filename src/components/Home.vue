@@ -7,30 +7,21 @@
                 </div>                
             </flexbox-item>
       </flexbox>
-       <flexbox class="search-box">
-           <!-- <flexbox-item :span='1'>
-            </flexbox-item>
-            <flexbox-item :span='2'>
-                <span class="city">南京市</span>
-            </flexbox-item>
-            <flexbox-item :span='6'>
-                <input class="search" type="text" placeholder="请输入关键字搜索咨询">
-            </flexbox-item>
-            <flexbox-item :span='2'>               
-                <span class="searchFont">搜索</span>
-            </flexbox-item>
-            <flexbox-item :span='1'>
-            </flexbox-item> -->
-               <flexbox-item class="search">
+      <ul class="search-box"> 
+          <li class="local"><img src="/static/icons/map_03.png" alt=""><p class="city">南京市</p></li>
+          <li class="input-box"><input class="search" type="text" placeholder="请输入关键字搜索咨询"></li>
+          <li class="search-btn"><img src="/static/icons/icon_11.png" alt=""><p class="searchFont">搜索</p></li>
+      </ul>
+                
+               <!-- <flexbox-item class="search">
                 <search 
                         v-model="searchValue"
                         :auto-fixed="false"
                         top="46px"
                         ref="search">
                     </search>          
-            </flexbox-item> 
-      </flexbox>
-        <flexbox class="menu">
+            </flexbox-item>  -->
+        <flexbox class="menu one">
             <flexbox-item @click.native="checkList('婚姻家庭')">
                 <div class="case-class">
                     <img src="../assets/images/icons/icon_1.png" alt="">
@@ -87,83 +78,138 @@
 </template>
 
 <script>
-import { Panel,Search } from 'vux'
+import { Panel, Search } from "vux";
 export default {
-  components: {Panel,Search},
+  components: { Panel, Search },
   data() {
     return {
-        searchValue:"",
-        pannelTitle:"编辑推荐",
-        type: '1',
-        list: [{
-                src: 'http://somedomain.somdomain/x.jpg',
-                fallbackSrc: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-                title: '标题一',
-                desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。',
-                url: '/component/cell',
-                }, {
-                    src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-                    title: '标题二',
-                    desc: '由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。',
-                    url: {
-                    path: '/component/radio',
-                    replace: false
-                },
-                meta: {
-                    source: '来源信息',
-                    date: '时间',
-                    other: '其他信息'
-                }
-        }],
+      searchValue: "",
+      pannelTitle: "编辑推荐",
+      type: "1",
+      list: [
+        {
+          src: "http://somedomain.somdomain/x.jpg",
+          fallbackSrc: "http://placeholder.qiniudn.com/60x60/3cc51f/ffffff",
+          title: "标题一",
+          desc: "由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。",
+          url: "/component/cell"
+        },
+        {
+          src: "http://placeholder.qiniudn.com/60x60/3cc51f/ffffff",
+          title: "标题二",
+          desc: "由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。",
+          url: {
+            path: "/component/radio",
+            replace: false
+          },
+          meta: {
+            source: "来源信息",
+            date: "时间",
+            other: "其他信息"
+          }
+        }
+      ],
       footer: {
-        title: '更多',
-        url: ''
+        title: "更多",
+        url: ""
       }
-
     };
   },
-  methods:{
-      checkList(msg){
-          console.log(msg);
-          this.$router.push({ name: 'caseList', params: { msg: msg }})
-      }
+  methods: {
+    checkList(msg) {
+      console.log(msg);
+      this.$router.push({ name: "caseList", params: { msg: msg } });
+    }
   }
 };
 </script>
 
 <style lang="less">
 @import "~vux/src/styles/1px.less";
-.home{
-    .address{
-        background-position: 0 0.1rem;
-        .city{
-            font-size: 0.8rem;
+.home {
+    .search-box{
+        line-height: 3rem;
+            position: relative;
+    top: -4rem;
+    background: #fff;
+    width: 88%;
+    margin: auto;
+    border-radius: 0.2rem;
+        li{
+            line-height: 3rem;
+            vertical-align: middle;
+            display: inline-block;
+            *{
+                display: inline-block;
+                line-height: 3rem;
+            }
+        }
+        .local{
+            img{
+                width: 1rem;
+                vertical-align: middle;
+            }
+            p{
+                font-size: 0.8rem;
+                vertical-align: middle;
+                padding-left: 0.2rem;
+            }
+        }
+        .input-box{
+            input{
+                border:none;
+                text-align: center;                
+            }
+            input:focus{
+                outline:none;
+            }
+        }
+        .search-btn{
+            img{
+                width: 1.5rem;
+                vertical-align: middle;
+            }
+            p{
+                font-size:0.9rem;
+                vertical-align: middle;
+                padding-left: 0.3rem;
+            }
         }
     }
-    .search{      
+  .address {
+    background-position: 0 0.1rem;
+    .city {
+      font-size: 0.8rem;
     }
-    .searchGlass {
-    }
+  }
+  .search {
+  }
+  .searchGlass {
+  }
 }
 .home img {
-    width: 80%
+  width: 80%;
 }
-.home .bgimg img{
-    width:100%;
-    display:block;
+.home .bgimg img {
+  width: 100%;
+  display: block;
 }
 .case-class {
   text-align: center;
   color: #2d374b;
 }
-.menu{
-    margin-top: 2.5em;
+.menu {
+  margin-top: 2.5em;
+  
 }
-.news-list{
-    text-align: left ;
+.menu.one{
+      margin-top: 0;
+  }
+.news-list {
+  text-align: left;
 }
-.weui-panel__hd{
-    color: #000 !important;
-    font-size: 1.2em !important;
+.weui-panel__hd {
+  color: #000 !important;
+  font-size: 1.2em !important;
 }
 </style>
