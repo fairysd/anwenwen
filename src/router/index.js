@@ -4,7 +4,8 @@ import Content from '@/components/Content'
 import Home from '@/components/Home'
 import CreateCase from '@/components/CreateCase'
 import User from '@/components/User'
-import CaseList from '@/components/Case/CaseList'
+import LawyerList from '@/components/Lawyer/LawyerList'
+import LawyerDetail from '@/components/Lawyer/LawyerDetail'
 
 Vue.use(Router)
 
@@ -32,9 +33,14 @@ export default new Router({
           component:User
         },
         {
-          path:'caseList',
-          name:'caseList',
-          component:CaseList
+          path:'lawyerList',
+          name:'lawyerList',
+          component:LawyerList
+        },
+        {
+          path:'lawyerDetail',
+          name:'lawyerDetail',
+          component:LawyerDetail
         }
       ]
     },

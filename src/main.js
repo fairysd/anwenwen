@@ -5,7 +5,7 @@ import FastClick from 'fastclick'
 import VueRouter from 'vue-router'
 import router from './router'
 import App from './App'
-
+import echarts from 'echarts'
 import { Flexbox, FlexboxItem } from 'vux'
 
 
@@ -13,6 +13,7 @@ import { Flexbox, FlexboxItem } from 'vux'
 Vue.use(VueRouter)
 Vue.component('flexbox', Flexbox)
 Vue.component('flexbox-item', FlexboxItem)
+Vue.prototype.$echarts = echarts
 
 FastClick.attach(document.body)
 

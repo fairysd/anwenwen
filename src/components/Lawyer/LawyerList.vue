@@ -1,5 +1,5 @@
 <template>
-  <div class="case-list">
+  <div class="lawyer-list">
      <contentHeader></contentHeader>
     <search
       v-model="searchValue"
@@ -7,7 +7,7 @@
       top="46px"
       ref="search"></search>
       <div class="list-body">
-        <flexbox class="body" v-for="item in cases">
+        <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)">
           <flexbox-item :span="4">
             <div class="list-item photo">
                <img class="lawyer-photo" :src="item.imagepath">
@@ -18,7 +18,7 @@
               <span class="name" v-text="item.name"></span><span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
             <div class="list-item">
-              <p class="local" v-text="item.city+'|'+item.lawoffice"></p>
+              <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
             </div>
             <div class="list-item">
               <p  v-for="(labels,index) in item.title" v-if="index<3" >
@@ -130,13 +130,18 @@ export default {
         }
       ]
     };
+  },
+  methods:{
+     getDetails(oid){
+      this.$router.push({ name: "lawyerDetail", params: { id: oid } });
+    }
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
-.case-list{
+.lawyer-list{
   font-size:0.8rem;
   .body{
         border-bottom: 1px dotted #d5d5d6;

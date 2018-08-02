@@ -117,14 +117,13 @@ export default {
   },
   methods: {
     checkList(msg) {
-      console.log(msg);
-      this.$router.push({ name: "caseList", params: { msg: msg } });
+      this.$router.push({ name: "lawyerList", params: { msg: msg } });
     }
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
 .home {
     .search-box{
