@@ -8,9 +8,9 @@
             </flexbox-item>
       </flexbox>
       <ul class="search-box"> 
-          <li class="local"><img src="/static/icons/map_03.png" alt=""><p class="city">南京市</p></li>
+          <li class="local"><img src="../../static/icons/map_03.png" alt=""><p class="city">南京市</p></li>
           <li class="input-box"><input class="search" type="text" placeholder="请输入关键字搜索咨询"></li>
-          <li class="search-btn"><img src="/static/icons/icon_11.png" alt=""><p class="searchFont">搜索</p></li>
+          <li class="search-btn"><img src="../../static/icons/icon_11.png" alt=""><p class="searchFont">搜索</p></li>
       </ul>
                 
                <!-- <flexbox-item class="search">
@@ -24,25 +24,25 @@
         <flexbox class="menu one">
             <flexbox-item @click.native="checkList('婚姻家庭')">
                 <div class="case-class">
-                    <img src="../assets/images/icons/icon_1.png" alt="">
+                    <img src="../../static/icons/icon_1.png" alt="">
                     <p>婚姻家庭</p>
                 </div>                
             </flexbox-item>
              <flexbox-item>
                 <div class="case-class">
-                    <img src="../assets/images/icons/icon_2.png" alt="">
+                    <img src="../../static/icons/icon_2.png" alt="">
                     <p>交通事故</p>
                 </div> 
             </flexbox-item>
              <flexbox-item>
                 <div class="case-class">
-                    <img src="../assets/images/icons/icon_3.png" alt="">
+                    <img src="../../static/icons/icon_3.png" alt="">
                     <p>继承纠纷</p>
                 </div> 
             </flexbox-item>
              <flexbox-item>
                 <div class="case-class">
-                    <img src="../assets/images/icons/icon_4.png" alt="">
+                    <img src="../../static/icons/icon_4.png" alt="">
                     <p>拆迁安置</p>
                 </div> 
             </flexbox-item>
@@ -50,25 +50,25 @@
         <flexbox class="menu">
       <flexbox-item>
           <div class="case-class">
-                    <img src="../assets/images/icons/icon_5.png" alt="">
+                    <img src="../../static/icons/icon_5.png" alt="">
                     <p>劳动仲裁</p>
                 </div> 
       </flexbox-item>
       <flexbox-item>
           <div class="case-class">
-                    <img src="../assets/images/icons/icon_6.png" alt="">
+                    <img src="../../static/icons/icon_6.png" alt="">
                     <p>消费权益</p>
                 </div> 
       </flexbox-item>
       <flexbox-item>
           <div class="case-class">
-                    <img src="../assets/images/icons/icon_7.png" alt="">
+                    <img src="../../static/icons/icon_7.png" alt="">
                     <p>刑事辩护</p>
                 </div> 
       </flexbox-item>
       <flexbox-item>
           <div class="case-class">
-                    <img src="../assets/images/icons/icon_8.png" alt="">
+                    <img src="../../static/icons/icon_8.png" alt="">
                     <p>人身损害</p>
                 </div> 
       </flexbox-item>

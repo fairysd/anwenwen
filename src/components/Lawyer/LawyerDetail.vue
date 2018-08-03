@@ -30,7 +30,12 @@
               <div id="lawyerPie" class="pie-echart" :style="'height:300px;width:100%;'"></div>
           </flexbox-item>
       </flexbox>
-      <panel class="case-list" :list="list" :type="type"></panel>
+      <flexbox class="case-list" v-for="item in list" :key="item.key" @click.native="getCaseDetail(item.key)">
+          <flexbox-item class="case-item">
+              <h3 class="title" v-text="item.title"></h3>
+              <p class="content" v-html="item.desc"></p>
+          </flexbox-item>
+      </flexbox>
       </div>
   </div>
 </template>
@@ -39,7 +44,7 @@
 import contentHeader from "../Content/contentHeader";
 import { Search, Group, Cell, XButton, Panel } from "vux";
 export default {
-  name: "caseList",
+  name: "lawyerDetail",
   components: { contentHeader, Search, Group, Cell, XButton, Panel },
   data() {
     return {
@@ -48,7 +53,7 @@ export default {
         {
           bility: "其他婚姻家庭、继承纠纷:6,机动车交通事故责任纠纷:26,民间借贷纠纷:22,劳动合同纠纷:15,离婚纠纷:13,",
           city: "南京市",
-          imagepath: "/static/lawyerPhoto/1517555714.jpg",
+          imagepath: require("../../../static/lawyerPhoto/1517555714.jpg"),
           index: "0",
           introduce: "最近受理案件在 2017.09.26 法院是 江苏省南京市浦口区人民法院",
           lawOfficeOid: "",
@@ -65,17 +70,17 @@ export default {
         {
           title: "江苏省南京市浦口区人民法院",
           desc: "江苏省南京市浦口区人民法院|2017.09.26|</br>(2017)苏0111民初3673号",
-          url: "/component/cell"
+          key:0
         },
         {
           title: "江苏省南京市浦口区人民法院",
           desc: "江苏省南京市浦口区人民法院|2017.09.26|</br>(2017)苏0111民初3673号",
-          url: "/component/cell"
+          key:1
         },
         {
           title: "江苏省南京市浦口区人民法院",
           desc: "江苏省南京市浦口区人民法院|2017.09.26|</br>(2017)苏0111民初3673号",
-          url: "/component/cell"
+          key:2
         }
       ]
     };
@@ -146,7 +151,9 @@ export default {
     myChart.setOption(option_pie);
   },
   methods:{
-   
+   getCaseDetail(key){
+     this.$router.push({ name: "caseDetail", params: { key: key } });
+   }
   }
 };
 </script>
@@ -199,8 +206,9 @@ export default {
     border-radius: 5.5rem;
     margin-top: -0.2rem;
   }
-  .case-list {
-    text-align: left;
+  .case-item {
+    border-bottom: 1px solid #d5d5d6;
+    padding-bottom: 0.5rem;
   }
   .weui-media-box__title {
     font-size: 1rem;
@@ -214,6 +222,21 @@ export default {
   }
   .weui-panel{
     margin-top: 0;
+  }
+  .title{
+    font-size: 1rem;
+    padding-left: 0.6rem;
+    padding-top: 0.5rem;
+    color: #404143;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .content{
+    font-size: 0.8rem;
+    color: #b7b8b8;
+    padding-left: 0.6rem;
   }
 }
 </style>
