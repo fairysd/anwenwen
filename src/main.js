@@ -7,6 +7,11 @@ import router from './router'
 import App from './App'
 import echarts from 'echarts'
 import { Flexbox, FlexboxItem } from 'vux'
+import { AjaxPlugin } from 'vux'
+Vue.use(AjaxPlugin)
+import global_ from './components/Global'
+Vue.prototype.GLOBAL = global_
+
 
 
 

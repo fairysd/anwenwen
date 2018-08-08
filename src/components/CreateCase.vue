@@ -44,6 +44,15 @@ export default {
       showPopup: false,
       caseType: ['民事'],
       list:[['民事']],
+      caseModel:{
+        lawyerId:"2eac92d0-ba91-3526-94f0-e5d41d674d21",
+        userTel:"",
+        userName:"",
+        caseType:0,
+        remark:"",
+        orderPrice:"",
+        userId:"U1532356321695SdgZO"
+      }
     };
   },
   methods:{     

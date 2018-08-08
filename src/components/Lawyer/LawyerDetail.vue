@@ -2,7 +2,7 @@
   <div class="lawyer-detail">
      <contentHeader></contentHeader>
       <div class="list-body">
-        <flexbox class="body" v-for="item in cases">
+        <flexbox class="body" v-for="item in cases" :key="item.oid">
           <flexbox-item :span="4">
             <div class="list-item photo">
                <img class="lawyer-photo" :src="item.imagepath">
@@ -16,7 +16,7 @@
               <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
             </div>
             <div class="list-item">
-              <p  v-for="(labels,index) in item.title">
+              <p  v-for="(labels,index) in item.title" :key="index">
                 <span class="label" v-text="labels"></span>
               </p>
             </div>            
@@ -30,10 +30,10 @@
               <div id="lawyerPie" class="pie-echart" :style="'height:300px;width:100%;'"></div>
           </flexbox-item>
       </flexbox>
-      <flexbox class="case-list" v-for="item in list" :key="item.key" @click.native="getCaseDetail(item.key)">
+      <flexbox class="case-list" v-for="item in list" :key="item.oid" @click.native="getCaseDetail(item.mapid)">
           <flexbox-item class="case-item">
               <h3 class="title" v-text="item.title"></h3>
-              <p class="content" v-html="item.desc"></p>
+              <p class="content" v-html="item.courtname+' | '+item.issueDate+' | '+'</br>'+item.number"></p>
           </flexbox-item>
       </flexbox>
       </div>
@@ -49,111 +49,92 @@ export default {
   data() {
     return {
       searchValue: this.$route.params.msg,
-      cases: [
-        {
-          bility: "其他婚姻家庭、继承纠纷:6,机动车交通事故责任纠纷:26,民间借贷纠纷:22,劳动合同纠纷:15,离婚纠纷:13,",
-          city: "南京市",
-          imagepath: require("../../../static/lawyerPhoto/1517555714.jpg"),
-          index: "0",
-          introduce: "最近受理案件在 2017.09.26 法院是 江苏省南京市浦口区人民法院",
-          lawOfficeOid: "",
-          lawoffice: "江苏张院生律师事务所",
-          name: "张院生",
-          oid: "8a4b8c7b-4380-306b-bbcc-2ad1c590ba79",
-          reasonCode: "0020203",
-          title: ["其他婚姻家庭、继承纠纷", "机动车交通事故责任纠纷", "民间借贷纠纷", "劳动合同纠纷", "离婚纠纷"],
-          workage: "18"
-        }
-      ],
+      cases: [],
       type: "1",
-      list: [
-        {
-          title: "江苏省南京市浦口区人民法院",
-          desc: "江苏省南京市浦口区人民法院|2017.09.26|</br>(2017)苏0111民初3673号",
-          key:0
-        },
-        {
-          title: "江苏省南京市浦口区人民法院",
-          desc: "江苏省南京市浦口区人民法院|2017.09.26|</br>(2017)苏0111民初3673号",
-          key:1
-        },
-        {
-          title: "江苏省南京市浦口区人民法院",
-          desc: "江苏省南京市浦口区人民法院|2017.09.26|</br>(2017)苏0111民初3673号",
-          key:2
-        }
-      ]
+      list: []
     };
   },
   mounted() {
-    let myChart = this.$echarts.init(document.getElementById("lawyerPie"));
-    let option_pie = {
-      title: {
-        text: "案由",
-        x: "left",
-        textStyle: {
-          //主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
-          fontSize: 20
+    let url = this.GLOBAL.hostIp;
+    let oid = this.$route.params.id;
+    let echartData = [];
+    this.$http
+      .get(url + "/getOneAttorney", {
+        params: {
+          id: oid
         }
-      },
-      tooltip: {
-        trigger: "item",
-        formatter: "{a} <br/>{b}: {c} ({d}%)"
-      },
-      color: [
-        "rgb(86,150,244)",
-        "rgb(71,204,127)",
-        "rgb(214,54,86)",
-        "rgb(253,193,43)",
-        "rgb(250,128,4)"
-      ],
-      legend: {
-        orient: "horizontal",
-        x: "center",
-        y: "bottom",
-        data: ["其他婚姻家庭、继承纠纷", "离婚纠纷", "劳动合同纠纷", "民间借贷纠纷", "机动车交通事故责任纠纷"]
-      },
-      series: [
-        {
-          name: "访问来源",
-          type: "pie",
-          radius: ["30%", "50%"],
-          center: ["50%", "40%"],
-          avoidLabelOverlap: false,
-          label: {
-            normal: {
-              show: false,
-              position: "center"
-            },
-            emphasis: {
-              show: true,
-              textStyle: {
-                fontSize: "30",
-                fontWeight: "bold"
-              }
+      })
+      .then(({ data }) => {
+        this.cases.push(data[0]);
+        this.cases[0].title = data[0].title.split(",");
+        this.cases[0].title.pop();
+        echartData = data[0].data;
+        this.list = data[1];
+      })
+      .then(() => {
+        let myChart = this.$echarts.init(document.getElementById("lawyerPie"));
+        let option_pie = {
+          title: {
+            text: "案由",
+            x: "left",
+            textStyle: {
+              //主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
+              fontSize: 20
             }
           },
-          labelLine: {
-            normal: {
-              show: false
-            }
+          tooltip: {
+            trigger: "item",
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
           },
-          data: [
-            { value: 6, name: "其他婚姻家庭、继承纠纷" },
-            { value: 13, name: "离婚纠纷" },
-            { value: 15, name: "劳动合同纠纷" },
-            { value: 22, name: "民间借贷纠纷" },
-            { value: 26, name: "机动车交通事故责任纠纷" }
+          color: [
+            "rgb(86,150,244)",
+            "rgb(71,204,127)",
+            "rgb(214,54,86)",
+            "rgb(253,193,43)",
+            "rgb(250,128,4)"
+          ],
+          legend: {
+            orient: "horizontal",
+            x: "center",
+            y: "bottom",
+            data: echartData[0]
+          },
+          series: [
+            {
+              name: "访问来源",
+              type: "pie",
+              radius: ["30%", "50%"],
+              center: ["50%", "40%"],
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  show: false,
+                  position: "center"
+                },
+                emphasis: {
+                  show: true,
+                  textStyle: {
+                    fontSize: "30",
+                    fontWeight: "bold"
+                  }
+                }
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: echartData[2]
+            }
           ]
-        }
-      ]
-    };
-    myChart.setOption(option_pie);
+        };
+        myChart.setOption(option_pie);
+      });
   },
-  methods:{
-   getCaseDetail(key){
-     this.$router.push({ name: "caseDetail", params: { key: key } });
-   }
+  methods: {
+    getCaseDetail(key) {
+      this.$router.push({ name: "caseDetail", params: { key: key } });
+    }
   }
 };
 </script>
@@ -217,13 +198,13 @@ export default {
     font-size: 0.8rem;
     color: #b7b8b8;
   }
-  .pie-echart{
+  .pie-echart {
     background-color: #eee;
   }
-  .weui-panel{
+  .weui-panel {
     margin-top: 0;
   }
-  .title{
+  .title {
     font-size: 1rem;
     padding-left: 0.6rem;
     padding-top: 0.5rem;
@@ -233,7 +214,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .content{
+  .content {
     font-size: 0.8rem;
     color: #b7b8b8;
     padding-left: 0.6rem;

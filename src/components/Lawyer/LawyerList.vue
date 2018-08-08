@@ -5,9 +5,16 @@
       v-model="searchValue"
       :auto-fixed="false"
       top="46px"
-      ref="search"></search>
+      @on-submit="getLawyer"
+      ref="search"
+      v-on:input.native="getAutoData"></search>
+      <ul class="auto-data">
+          <li v-for="(item,index) in autoData" @click="setSearchValue(item.name.value)" :key="item.id" v-if="index<5">
+              <p v-text="item.name.value"></p>
+          </li>
+      </ul>
       <div class="list-body">
-        <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)">
+        <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)" :key="item.oid">
           <flexbox-item :span="4">
             <div class="list-item photo">
                <img class="lawyer-photo" :src="item.imagepath">
@@ -21,7 +28,7 @@
               <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
             </div>
             <div class="list-item">
-              <p  v-for="(labels,index) in item.title" v-if="index<3" >
+              <p  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
                 <span class="label" v-text="labels"></span>
               </p>
             </div>            
@@ -42,56 +49,63 @@ export default {
   components: { contentHeader, Search, Group, Cell, XButton },
   data() {
     return {
-      searchValue:this.$route.params.msg,
-      cases: [
-        {
-          bility: "其他婚姻家庭、继承纠纷:6,机动车交通事故责任纠纷:26,民间借贷纠纷:22,劳动合同纠纷:15,离婚纠纷:13,",
-          city: "南京市",
-          imagepath: require("../../../static/lawyerPhoto/1517555714.jpg"),
-          index: "0",
-          introduce: "最近受理案件在 2017.09.26 法院是 江苏省南京市浦口区人民法院",
-          lawOfficeOid: "",
-          lawoffice: "江苏张院生律师事务所",
-          name: "张院生",
-          oid: "8a4b8c7b-4380-306b-bbcc-2ad1c590ba79",
-          reasonCode: "0020203",
-          title:['其他婚姻家庭、继承纠纷','机动车交通事故责任纠纷','民间借贷纠纷,劳动合同纠纷,离婚纠纷'],
-          workage: "18"
-        },
-        {
-          bility: "其他婚姻家庭、继承纠纷:6,机动车交通事故责任纠纷:26,民间借贷纠纷:22,劳动合同纠纷:15,离婚纠纷:13,",
-          city: "南京市",
-          imagepath: require("../../../static/lawyerPhoto/1517555714.jpg"),
-          index: "0",
-          introduce: "最近受理案件在 2017.09.26 法院是 江苏省南京市浦口区人民法院",
-          lawOfficeOid: "",
-          lawoffice: "江苏张院生律师事务所",
-          name: "张院生",
-          oid: "8a4b8c7b-4380-306b-bbcc-2ad1c590ba79",
-          reasonCode: "0020203",
-          title:['其他婚姻家庭、继承纠纷','机动车交通事故责任纠纷','民间借贷纠纷,劳动合同纠纷,离婚纠纷'],
-          workage: "18"
-        },
-        {
-          bility: "其他婚姻家庭、继承纠纷:6,机动车交通事故责任纠纷:26,民间借贷纠纷:22,劳动合同纠纷:15,离婚纠纷:13,",
-          city: "南京市",
-          imagepath: require("../../../static/lawyerPhoto/1517555714.jpg"),
-          index: "0",
-          introduce: "最近受理案件在 2017.09.26 法院是 江苏省南京市浦口区人民法院",
-          lawOfficeOid: "",
-          lawoffice: "江苏张院生律师事务所",
-          name: "张院生",
-          oid: "8a4b8c7b-4380-306b-bbcc-2ad1c590ba79",
-          reasonCode: "0020203",
-          title:['其他婚姻家庭、继承纠纷','机动车交通事故责任纠纷','民间借贷纠纷,劳动合同纠纷,离婚纠纷'],
-          workage: "18"
-        }
-      ]
+      searchValue:this.$route.params.msg,      
+      autoData:[],
+      cases: []
     };
+  },
+  mounted(){
+    let url =this.GLOBAL.hostIp;
+    let message = this.$route.params.msg;
+    this.$http
+        .get(url + "/findAttorneyBySpeciality", {
+          params: {
+            message : message
+          }
+        })
+        .then(({ data }) => {
+          this.cases = data;
+          for (let i = 0; i < this.cases.length; i++) {
+            this.cases[i].title = data[i].title.split(",");
+          }
+        });
   },
   methods:{
      getDetails(oid){
       this.$router.push({ name: "lawyerDetail", params: { id: oid } });
+    },
+    getAutoData() {        
+      let url = this.GLOBAL.hostIp;
+      let value = this.searchValue;
+      this.$http
+        .get(url + "/tosearchJudgePaper", {
+          params: {
+            query: value
+          }
+        })
+        .then(({ data }) => {
+          this.autoData=data;
+        });
+    },
+    setSearchValue(value){
+        this.searchValue = value;
+        this.autoData = [];
+    },
+    getLawyer(){
+       let url =this.GLOBAL.hostIp;
+    let message = this.searchValue;
+    this.$http
+        .get(url + "/findAttorneyBySpeciality", {
+          params: {
+            message : message
+          }
+        })
+        .then(({ data }) => {
+          this.cases = data;
+          for (let i = 0; i < this.cases.length; i++) {
+            this.cases[i].title = data[i].title.split(",");
+          }
+        });
     }
   }
 };
@@ -149,5 +163,22 @@ export default {
     border-radius: 5.5rem;
     margin-top: -0.2rem;
   }
+  .auto-data{
+    float: left;
+    position: relative;
+    text-align: left;
+    top: 0rem;
+    height: 0;
+    li{
+    width: 18rem!important;
+    border: 1px solid #e7e7e7;
+    background: #fff;
+    }
+    p{
+            padding: 2px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    }
+}
 }
 </style>
