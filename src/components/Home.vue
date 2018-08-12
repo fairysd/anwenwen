@@ -71,16 +71,16 @@
       </flexbox-item>
     </flexbox>
     <tab class="news-class" bar-active-color=""  :line-width="1">
-      <tab-item v-for="item in newsClass" v-text="item.name" :key="item.oid"></tab-item>
+      <tab-item v-for="item in newsClass" v-text="item.name" :key="item.code" @on-item-click="getNewsList(item.code)"></tab-item>
     </tab>
     <ul class="news-content">
-      <li class="content-list" v-for="item in newsList" :key="item.oid">
+      <li class="content-list" v-for="(item,index) in newsList" :key="item.oid" v-if="index<3" @click="getNewsDetail(item.oid)">
         <div class="text-part">
           <h4 v-text="item.title"></h4>
-          <p v-text="item.desc"></p>
+          <p v-text="item.content"></p>
         </div>
         <div class="img-part">
-          <img :src="item.imgSrc" alt="">
+          <img v-for="img in item.imgPath" :src="img" alt="">
         </div>               
       </li>
     </ul>
@@ -95,34 +95,25 @@ export default {
     return {
       searchValue: "",
       autoData: [],
-      newsClass: [
-        { name: "分类A", oid: "as" },
-        { name: "分类A", oid: "as" },
-        { name: "分类A", oid: "as" },
-        { name: "分类A", oid: "as" },
-        { name: "分类A", oid: "as" }
-      ],
-      newsList: [{
-        oid:"asd",
-        title:"title",
-        desc:"descafagfsafdgsdfgsdfgsdfg",
-        imgSrc:"../../static/icons/icon_8.png"
-      },
-      {
-        oid:"asd",
-        title:"title",
-        desc:"descafagfsafdgsdfgsdfgsdfg",
-        imgSrc:"../../static/icons/icon_8.png"
-      },
-      {
-        oid:"asd",
-        title:"title",
-        desc:"descafagfsafdgsdfgsdfgsdfg",
-        imgSrc:"../../static/icons/icon_8.png"
-      }]
+      newsClass: [],
+      newsList: []
     };
   },
-  mounted() {},
+  mounted() {
+     let url = this.GLOBAL.hostIp;
+    this.$http
+      .get(url + "/order/getArticleCategory", {
+        params: {
+          key: 0
+        }
+      })
+      .then(({ data }) => {
+        if(data){
+          this.newsClass = data.data;
+          this.getNewsList(0);
+        }
+      })
+  },
   methods: {
     checkList(msg) {
       this.$router.push({ name: "lawyerList", params: { msg: msg } });
@@ -147,6 +138,23 @@ export default {
     getLawyer() {
       let message = this.searchValue;
       this.$router.push({ name: "lawyerList", params: { msg: message } });
+    },
+    getNewsList(code){
+       let url = this.GLOBAL.hostIp;
+    this.$http
+      .get(url + "/order/getArticeList", {
+        params: {
+          category : code
+        }
+      })
+      .then(({ data }) => {
+        if(data){
+          this.newsList = data.data;
+        }
+      })
+    },
+    getNewsDetail(id){
+      this.$router.push({ name: "newsDetail", params: { id: id } });
     }
   }
 };

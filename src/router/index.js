@@ -7,6 +7,7 @@ import User from '@/components/User'
 import LawyerList from '@/components/Lawyer/LawyerList'
 import LawyerDetail from '@/components/Lawyer/LawyerDetail'
 import CaseDetail from '@/components/Case/CaseDetail'
+import NewsDetail from '@/components/News/NewsDetail'
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ export default new Router({
           path:'caseDetail',
           name:'caseDetail',
           component:CaseDetail
+        },
+        {
+          path:'newsDetail',
+          name:'newsDetail',
+          component:NewsDetail
         }
       ]
     },
