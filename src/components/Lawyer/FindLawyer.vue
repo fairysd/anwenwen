@@ -1,17 +1,5 @@
 <template>
-  <div class="lawyer-list">
-    <search
-      v-model="searchValue"
-      :auto-fixed="false"
-      top="46px"
-      @on-submit="getLawyer"
-      ref="search"
-      v-on:input.native="getAutoData"></search>
-      <ul class="auto-data">
-          <li v-for="(item,index) in autoData" @click="setSearchValue(item.name.value)" :key="item.id" v-if="index<5">
-              <p v-text="item.name.value"></p>
-          </li>
-      </ul>
+  <div class="lawyer-find">
       <div class="list-body">
         <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)" :key="item.oid">
           <flexbox-item :span="4">
@@ -43,12 +31,10 @@
 <script>
 import { Search, Group, Cell, XButton } from "vux";
 export default {
-  name: "caseList",
-  components: { Search, Group, Cell, XButton },
+  name: "lawyerFind",
+  components: {  Search, Group, Cell, XButton },
   data() {
-    return {
-      searchValue:this.$route.params.msg,      
-      autoData:[],
+    return {  
       cases: []
     };
   },
@@ -56,34 +42,14 @@ export default {
     let url =this.GLOBAL.hostIp;
     let message = this.$route.params.msg;
     this.$http
-        .get(url + "/findAttorneyBySpeciality", {
-          params: {
-            message : message
-          }
-        })
+        .get(url + "/getCity")
         .then(({ data }) => {
-          this.cases = data;
-          for (let i = 0; i < this.cases.length; i++) {
-            this.cases[i].title = data[i].title.split(",");
-          }
+         console.log(data)
         });
   },
   methods:{
      getDetails(oid){
       this.$router.push({ name: "lawyerDetail", params: { id: oid } });
-    },
-    getAutoData() {        
-      let url = this.GLOBAL.hostIp;
-      let value = this.searchValue;
-      this.$http
-        .get(url + "/tosearchJudgePaper", {
-          params: {
-            query: value
-          }
-        })
-        .then(({ data }) => {
-          this.autoData=data;
-        });
     },
     setSearchValue(value){
         this.searchValue = value;
@@ -111,7 +77,7 @@ export default {
 
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
-.lawyer-list{
+.lawyer-find{
   font-size:0.8rem;
   .body{
         border-bottom: 1px dotted #d5d5d6;

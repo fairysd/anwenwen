@@ -11,7 +11,7 @@
           <img slot="icon-active" src="../assets/images/icons/icon_12.png" >
         <span slot="label">法律咨询</span>
       </tabbar-item>
-      <tabbar-item>        
+      <tabbar-item link="/findLawyer">        
           <img slot="icon" src="../assets/images/icons/icon_06.png">
           <img slot="icon-active" src="../assets/images/icons/icon_13.png" >
         <span slot="label">找律师</span>

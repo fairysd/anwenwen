@@ -4,6 +4,7 @@ import Content from '@/components/Content'
 import Home from '@/components/Home'
 import CreateCase from '@/components/CreateCase'
 import User from '@/components/User'
+import FindLawyer from '@/components/Lawyer/FindLawyer'
 import LawyerList from '@/components/Lawyer/LawyerList'
 import LawyerDetail from '@/components/Lawyer/LawyerDetail'
 import CaseDetail from '@/components/Case/CaseDetail'
@@ -38,6 +39,11 @@ export default new Router({
           path:'lawyerList',
           name:'lawyerList',
           component:LawyerList
+        },
+        {
+          path:'findLawyer',
+          name:'findLawyer',
+          component:FindLawyer
         },
         {
           path:'lawyerDetail',
