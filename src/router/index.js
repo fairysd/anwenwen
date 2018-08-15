@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Login from '@/components/Login'
+import State from '@/components/State'
 import Content from '@/components/Content'
 import Home from '@/components/Home'
 import CreateCase from '@/components/CreateCase'
@@ -25,6 +27,7 @@ export default new Router({
         },
         {
           path:'home',
+          name:"home",
           component:Home
         },
         {
@@ -62,5 +65,15 @@ export default new Router({
         }
       ]
     },
+    {
+      path:"/login",
+      name:"login",
+      component:Login
+    },
+    {
+      path:"/state",
+      name:"state",
+      component:State
+    }
   ]
 })

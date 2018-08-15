@@ -96,23 +96,47 @@ export default {
       searchValue: "",
       autoData: [],
       newsClass: [],
-      newsList: []
+      newsList: [],
+      isLogin: false
     };
   },
   mounted() {
-     let url = this.GLOBAL.hostIp;
+    let url = this.GLOBAL.hostIp;
+    let userid = this.getCookie("userId");
+    console.log(userid)
+    //
     this.$http
-      .get(url + "/order/getArticleCategory", {
-        params: {
-          key: 0
-        }
+      .post(url + "order/CheckLogin", {
+        userid: userid
       })
       .then(({ data }) => {
-        if(data){
-          this.newsClass = data.data;
-          this.getNewsList(0);
+        // if (data.code == 4) {
+        //   this.$router.push({ name: "login"});
+        // }
+        if (userid) {
+          this.isLogin = true;
         }
+        if (!this.isLogin) {
+          this.$router.push({ name: "login"});
+        }                
       })
+      .then(data => {
+        if (this.isLogin) {
+          this.$http
+            .get(url + "/order/getArticleCategory", {
+              params: {
+                key: 0
+              }
+            })
+            .then(({ data }) => {
+              if (data) {
+                this.newsClass = data.data;
+                this.getNewsList(0);
+              }
+            });
+        }
+      });
+    //
   },
   methods: {
     checkList(msg) {
@@ -139,22 +163,42 @@ export default {
       let message = this.searchValue;
       this.$router.push({ name: "lawyerList", params: { msg: message } });
     },
-    getNewsList(code){
-       let url = this.GLOBAL.hostIp;
-    this.$http
-      .get(url + "/order/getArticeList", {
-        params: {
-          category : code
-        }
-      })
-      .then(({ data }) => {
-        if(data){
-          this.newsList = data.data;
-        }
-      })
+    getNewsList(code) {
+      let url = this.GLOBAL.hostIp;
+      this.$http
+        .get(url + "/order/getArticeList", {
+          params: {
+            category: code
+          }
+        })
+        .then(({ data }) => {
+          if (data) {
+            this.newsList = data.data;
+          }
+        });
     },
-    getNewsDetail(id){
+    getNewsDetail(id) {
       this.$router.push({ name: "newsDetail", params: { id: id } });
+    },
+    //设置cookie
+    setCookie: function(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+      var expires = "expires=" + d.toUTCString();
+      console.info(cname + "=" + cvalue + "; " + expires);
+      document.cookie = cname + "=" + cvalue + "; " + expires;
+      console.info(document.cookie);
+    },
+    //获取cookie
+    getCookie: function(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") c = c.substring(1);
+        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+      }
+      return "";
     }
   }
 };
@@ -218,8 +262,8 @@ export default {
     text-align: left;
     li {
       padding-left: 3%;
-      padding-top: 0.5rem;     
-      padding-bottom: 0.5rem; 
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
       border-bottom: 1px solid #e7e7e7;
     }
     li > div {
@@ -228,10 +272,10 @@ export default {
     .text-part {
       width: 70%;
       vertical-align: middle;
-      h4{
-            color: #4d4e50;
-    font-weight: 500;
-    font-size: 1.2rem;
+      h4 {
+        color: #4d4e50;
+        font-weight: 500;
+        font-size: 1.2rem;
       }
       p {
         color: #b7b8b8;
