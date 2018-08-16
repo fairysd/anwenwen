@@ -82,16 +82,16 @@ export default {
   components: { contentHeader, Search, Group, Cell, XButton, Panel },
   data() {
     return {
-      showloadmore:true,
-      showloadless:false,
+      showloadmore: true,
+      showloadless: false,
       newsModel: {
-          images:[]
+        images: []
       },
-      words:"",
-      lesswords:"",
-      morewords:'',
+      words: "",
+      lesswords: "",
+      morewords: "",
 
-      cases:[]
+      cases: []
     };
   },
   mounted() {
@@ -104,66 +104,69 @@ export default {
         }
       })
       .then(({ data }) => {
-          this.newsModel = data.data;
-          this.morewords = data.data.content;
-      })   
-      ////临时数据
-      this.$http
-        .get(url + "/findAttorneyBySpeciality", {
-          params: {
-            message : "交通事故"
-          }
-        })
-        .then(({ data }) => {
-          this.cases = data;
-          for (let i = 0; i < this.cases.length; i++) {
-            this.cases[i].title = data[i].title.split(",");
-          }
-        });
+        this.newsModel = data.data;
+        this.morewords = data.data.content;
+      });
+    ////临时数据
+    this.$http
+      .get(url + "/findAttorneyBySpeciality", {
+        params: {
+          message: "交通事故"
+        }
+      })
+      .then(({ data }) => {
+        this.cases = data;
+        for (let i = 0; i < this.cases.length; i++) {
+          this.cases[i].title = data[i].title.split(",");
+        }
+      });
   },
   methods: {
-      loadmore(){
-          this.showloadmore = false;
-          this.showloadless = true;
-          this.words=this.morewords;
-      },
-      loadless(){
-          this.showloadmore = true;
-          this.showloadless = false;
-          this.words=this.lesswords;
-      }
+    loadmore() {
+      this.showloadmore = false;
+      this.showloadless = true;
+      this.words = this.morewords;
+    },
+    loadless() {
+      this.showloadmore = true;
+      this.showloadless = false;
+      this.words = this.lesswords;
+    },
+    getDetails(oid) {
+      this.$router.push({ name: "lawyerDetail", params: { id: oid } });
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
-.news-detail {  
-  .content{
-      padding: 0 1rem 0 1rem;
-      h4{
-          padding: 1rem 0 1rem 0;
-          font-size: 1.4rem;
-          line-height: 1.4rem;
-      }
-      p{
-          padding: 0 0 1rem 0;  
-      }
-      img{
-          width: 100%;
-      }
+.news-detail {
+  .content {
+    padding: 0 1rem 0 1rem;
+    h4 {
+      padding: 1rem 0 1rem 0;
+      font-size: 1.4rem;
+      line-height: 1.4rem;
+    }
+    p {
+      padding: 0 0 1rem 0;
+    }
+    img {
+      width: 100%;
+    }
   }
 
-.words{
+  .words {
     font-size: 0.7rem;
     color: #838485;
-    padding: 0.8rem ;
+    padding: 0.8rem;
     margin-bottom: 0.5rem;
     padding-left: 0.6rem;
     padding-right: 0.6rem;
-}
-.load{
-        width: 8rem;
+  }
+  .load {
+    width: 8rem;
     color: #fa8004;
     border: 1px solid #fa8004;
     border-radius: 3rem;
@@ -171,109 +174,108 @@ export default {
     height: 2rem;
     font-size: 0.9rem;
     background-color: #fff;
-}
-.consult-box{
-    
-    a{
-        display: block;
+  }
+  .consult-box {
+    a {
+      display: block;
     }
-    .consultfree{
-        padding-top: 1rem;
-        text-align: center;
-        border-right: solid 1px #e7e7e7;
-        img{
-            width: 20%;
-            padding: 5%;
-            padding-top: 0;
+    .consultfree {
+      padding-top: 1rem;
+      text-align: center;
+      border-right: solid 1px #e7e7e7;
+      img {
+        width: 20%;
+        padding: 5%;
+        padding-top: 0;
+      }
+      p {
+        vertical-align: top;
+        text-align: left;
+        width: 55%;
+        font-size: 1rem;
+        span {
+          font-size: 0.7rem;
         }
-        p{
-            vertical-align: top;
-            text-align: left;
-            width: 55%;
-            font-size: 1rem;
-            span{
-                font-size: 0.7rem;
-            }
+      }
+    }
+    .consultfree > * {
+      display: inline-block;
+    }
+    .consultcall {
+      padding-top: 1rem;
+      text-align: center;
+      img {
+        width: 20%;
+        padding: 5%;
+        padding-top: 0;
+      }
+      p {
+        vertical-align: top;
+        text-align: left;
+        width: 55%;
+        font-size: 1rem;
+        span {
+          font-size: 0.7rem;
         }
+      }
     }
-    .consultfree>*{
-        display: inline-block;
+    .consultcall > * {
+      display: inline-block;
     }
-    .consultcall{     
-        padding-top: 1rem;   
-        text-align: center;
-        img{
-            width: 20%;
-            padding: 5%;
-            padding-top: 0;
-        }
-        p{
-            vertical-align: top;
-            text-align: left;
-            width: 55%;
-            font-size: 1rem;
-            span{
-                font-size: 0.7rem;
-            }
-        }
-    }
-    .consultcall>*{
-        display: inline-block;
-    }
-}
-.consult-boxone{
+  }
+  .consult-boxone {
     border-bottom: solid 1px #e7e7e7;
-}
-.btn-box{
-        margin-top: 0.8rem;
+  }
+  .btn-box {
+    margin-top: 0.8rem;
     margin-bottom: 0.5rem;
-}
-.list-body{
+  }
+  .list-body {
     padding-top: 1rem;
-     .body {
-    border-bottom: 1px dotted #d5d5d6;
-    padding-bottom: 0.5rem;
+    .body {
+      border-bottom: 1px dotted #d5d5d6;
+      padding-bottom: 0.5rem;
+    }
+    .name {
+      color: #4d4e50;
+      font-weight: 500;
+    }
+    .workage {
+      color: #f9ab13;
+      font-size: 0.6rem;
+      margin-left: 0.8rem;
+    }
+    .local {
+      color: #878889;
+      font-size: 0.6rem;
+    }
+    .label {
+      display: inline-block;
+      background-color: #2a7af3;
+      padding: 0.1rem 0.3rem;
+      font-size: 0.5rem;
+      border-radius: 0.3rem;
+      color: #fff;
+      margin-right: 0.2rem;
+      margin-bottom: 0.1rem;
+      line-height: 0.7rem;
+    }
+    .recent {
+      color: #b7b8b8;
+      font-size: 0.5rem;
+    }
+    .body {
+      margin: 0.3rem 0;
+    }
+    .photo {
+      text-align: center;
+    }
+    .lawyer-photo {
+      width: 5.5rem;
+      height: 5.5rem;
+      border-radius: 5.5rem;
+      margin-top: -0.2rem;
+    }
   }
-  .name {
-    color: #4d4e50;
-    font-weight: 500;
-  }
-  .workage {
-    color: #f9ab13;
-    font-size: 0.6rem;
-    margin-left: 0.8rem;
-  }
-  .local {
-    color: #878889;
-    font-size: 0.6rem;
-  }
-  .label {
-    display: inline-block;
-    background-color: #2a7af3;
-    padding: 0.1rem 0.3rem;
-    font-size: 0.5rem;
-    border-radius: 0.3rem;
-    color: #fff;
-    margin-right: 0.2rem;
-    margin-bottom: 0.1rem;
-    line-height: 0.7rem;
-  }
-  .recent {
-    color: #b7b8b8;
-    font-size: 0.5rem;
-  }
-  .body {
-    margin: 0.3rem 0;
-  }
-  .photo {
-    text-align: center;
-  }
-  .lawyer-photo {
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: 5.5rem;
-    margin-top: -0.2rem;
-  }
-}
 }
 </style>

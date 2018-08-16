@@ -1,6 +1,5 @@
 <template>
   <div class="case-detail">
-      <contentHeader></contentHeader>
       <flexbox>      
         <flexbox-item class="btn submit-btn">
             <div style="text-align:left;position:relative;">

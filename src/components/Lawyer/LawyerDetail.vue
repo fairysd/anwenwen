@@ -1,6 +1,5 @@
 <template>
   <div class="lawyer-detail">
-     <contentHeader></contentHeader>
       <div class="list-body">
         <flexbox class="body" v-for="item in cases" :key="item.oid">
           <flexbox-item :span="4">

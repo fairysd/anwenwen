@@ -1,6 +1,5 @@
 <template>
   <div class="create-case">    
-      <contentHeader></contentHeader>
      <group label-width="4.5em" label-margin-right="2em" label-align="right">      
       <x-input title="姓名" placeholder="请输入姓名"></x-input>
       <x-input title="联系方式" placeholder="请输入联系方式"></x-input>    
