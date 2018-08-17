@@ -90,7 +90,6 @@ export default {
       words: "",
       lesswords: "",
       morewords: "",
-
       cases: []
     };
   },
@@ -106,20 +105,24 @@ export default {
       .then(({ data }) => {
         this.newsModel = data.data;
         this.morewords = data.data.content;
+        this.cases = data.data.articleLawyer;
+        for (let i = 0; i < this.cases.length; i++) {
+          this.cases[i].title = this.cases[i].title.split(",");
+        }
       });
     ////临时数据
-    this.$http
-      .get(url + "/findAttorneyBySpeciality", {
-        params: {
-          message: "交通事故"
-        }
-      })
-      .then(({ data }) => {
-        this.cases = data;
-        for (let i = 0; i < this.cases.length; i++) {
-          this.cases[i].title = data[i].title.split(",");
-        }
-      });
+    // this.$http
+    //   .get(url + "/findAttorneyBySpeciality", {
+    //     params: {
+    //       message: "交通事故"
+    //     }
+    //   })
+    //   .then(({ data }) => {
+    //     this.cases = data;
+    //     for (let i = 0; i < this.cases.length; i++) {
+    //       this.cases[i].title = data[i].title.split(",");
+    //     }
+    //   });
   },
   methods: {
     loadmore() {

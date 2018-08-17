@@ -31,32 +31,12 @@ export default {
         }
       })
       .then(({ data }) => {
-        this.setCookie("userId","U1532356321695SdgZO",0.5)
-        this.setCookie("token","a67d19ccfc5b6621fb905572d4632b8e2cb8b7ff",0.5)
+        this.common.setCookie("userId","U1532356321695SdgZO",0.5)
+        this.common.setCookie("token","a67d19ccfc5b6621fb905572d4632b8e2cb8b7ff",0.5)
         this.$router.push({ name: "home"});
     });
   },
-  methods:{
-       //设置cookie
-    setCookie: function(cname, cvalue, exdays) {
-      var d = new Date();
-      d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-      var expires = "expires=" + d.toUTCString();
-      console.info(cname + "=" + cvalue + "; " + expires);
-      document.cookie = cname + "=" + cvalue + "; " + expires;
-      console.info(document.cookie);
-    },
-    //获取cookie
-    getCookie: function(cname) {
-      var name = cname + "=";
-      var ca = document.cookie.split(";");
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == " ") c = c.substring(1);
-        if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
-      }
-      return "";
-    }
+  methods:{    
   }
 };
 </script>

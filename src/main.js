@@ -5,6 +5,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import FastClick from 'fastclick'
 import VueRouter from 'vue-router'
+import common from './assets/js/common.js'
 import router from './router'
 import App from './App'
 import echarts from 'echarts'
@@ -14,6 +15,7 @@ Vue.use(AjaxPlugin)
 Vue.use(ElementUI);
 import global_ from './components/Global'
 Vue.prototype.GLOBAL = global_
+Vue.prototype.common = common
 
 
 

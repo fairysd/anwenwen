@@ -6,7 +6,7 @@
         <img slot="icon-active" src="../assets/images/icons/icon_03.png" >
         <span slot="label">首页</span>
       </tabbar-item>
-      <tabbar-item>        
+      <tabbar-item :link="kefuUrl">        
           <img slot="icon" src="../assets/images/icons/icon_05.png">
           <img slot="icon-active" src="../assets/images/icons/icon_12.png" >
         <span slot="label">法律咨询</span>
@@ -41,7 +41,15 @@ export default {
   },
   data() {
     return {
+      kefuUrl:"http://kefu.anwenwen.com/wechat/Agent"
     };
+  },
+  mounted(){
+    let userId = this.common.getCookie("userId")
+    this.kefuUrl+="?userId="+userId;
+  },
+  methods:{
+     
   }
 };
 </script>
