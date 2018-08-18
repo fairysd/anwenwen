@@ -1,17 +1,19 @@
 <template>
   <div class="lawyer-list">
-    <search
-      v-model="searchValue"
-      :auto-fixed="false"
-      top="46px"
-      @on-submit="getLawyer"
-      ref="search"
-      v-on:input.native="getAutoData"></search>
-      <ul class="auto-data">
+    <ul class="search-box"> 
+          <li class="local"><img src="../../../static/icons/map_03.png" alt=""><p class="city">南京市</p></li>
+          <li class="input-box"><input v-on:input="getAutoData" v-model="searchValue" class="search" type="text" placeholder="请输入关键字搜索咨询"><img @click="getLawyer" src="../../../static/icons/icon_11.png" alt=""></li>
+          <li class="search-btn"></li>
+      </ul>
+       <ul class="auto-data">
           <li v-for="(item,index) in autoData" @click="setSearchValue(item.name.value)" :key="item.id" v-if="index<5">
               <p v-text="item.name.value"></p>
           </li>
       </ul>
+      <flexbox class="">
+          <flexbox-item class="divider">                            
+            </flexbox-item>
+      </flexbox>  
       <div class="list-body">
         <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)" :key="item.oid">
           <flexbox-item :span="4">
@@ -112,6 +114,73 @@ export default {
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
 .lawyer-list{
+  .divider {
+    height: 1rem;
+    background-color: #f0f0f0;
+  }
+  .search-box {
+    line-height: 2.5rem;
+    background: #fff;
+    text-align: left;
+    color: #a1a2a2;
+    margin-bottom: 1rem;
+    margin-top: 1.2rem;
+    li {
+      vertical-align: middle;
+      display: inline-block;
+      * {
+        display: inline-block;
+      }
+    }
+    .local {
+      padding-left: 1.5rem;
+      img {
+        width: 1.2rem;
+        vertical-align: middle;
+        padding-right: 0.5rem;
+      }
+      p {
+        font-size: 0.8rem;
+        vertical-align: middle;
+        padding-left: 0.2rem;
+      }
+    }
+    .input-box {
+      margin-left: 1rem;
+      padding-left: 1.2rem;
+      padding-right: 1.2rem;
+      background-color: #f5f5f5;
+      border-radius: 1.2rem;
+      > * {
+        display: inline-block;
+      }
+      input {
+        color: #a1a2a2;
+        border: none;
+        text-align: left;
+        padding-right: 2rem;
+        background: transparent;
+      }
+      input:focus {
+        outline: none;
+      }
+      img {
+        width: 1.2rem;
+        vertical-align: middle;
+      }
+    }
+    .search-btn {
+      img {
+        width: 1.5rem;
+        vertical-align: middle;
+      }
+      p {
+        font-size: 0.9rem;
+        vertical-align: middle;
+        padding-left: 0.3rem;
+      }
+    }
+  }
   font-size:0.8rem;
   .body{
         border-bottom: 1px dotted #d5d5d6;

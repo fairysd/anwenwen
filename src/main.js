@@ -11,6 +11,7 @@ import App from './App'
 import echarts from 'echarts'
 import { Flexbox, FlexboxItem } from 'vux'
 import { AjaxPlugin } from 'vux'
+
 Vue.use(AjaxPlugin)
 Vue.use(ElementUI);
 import global_ from './components/Global'

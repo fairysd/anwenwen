@@ -11,8 +11,14 @@ import LawyerList from '@/components/Lawyer/LawyerList'
 import LawyerDetail from '@/components/Lawyer/LawyerDetail'
 import CaseDetail from '@/components/Case/CaseDetail'
 import NewsDetail from '@/components/News/NewsDetail'
+import Delegation from '@/components/Content/Delegation'
+import Offline from '@/components/Content/Offline'
+import Collection from '@/components/InfoCenter/Collection'
+import Relate from '@/components/InfoCenter/Relate'
+import Mycase from '@/components/InfoCenter/Case'
 
-Vue.use(Router)
+
+Vue.use(Router) 
 
 export default new Router({
   routes: [
@@ -62,6 +68,34 @@ export default new Router({
           path:'newsDetail',
           name:'newsDetail',
           component:NewsDetail
+        },
+        {
+          path:'delegation',
+          name:'delegation',
+          component:Delegation,
+          meta: {
+            title: '委托'
+          },
+        },
+        {
+          path:'offline',
+          name:'offline',
+          component:Offline
+        },
+        {
+          path:'collection',
+          name:'collection',
+          component:Collection
+        },
+        {
+          path:'relate',
+          name:'relate',
+          component:Relate
+        },
+        {
+          path:'mycase',
+          name:'mycase',
+          component:Mycase
         }
       ]
     },

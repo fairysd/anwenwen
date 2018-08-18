@@ -12,10 +12,13 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "async_hooks": "^1.0.0",
+    "axios": "^0.18.0",
     "echarts": "^4.1.0",
     "element-ui": "^2.4.6",
     "fastclick": "^1.0.6",
     "mockjs": "^1.0.1-beta3",
+    "qs": "^6.5.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^2.1.1",

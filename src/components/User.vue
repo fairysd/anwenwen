@@ -11,9 +11,9 @@
         <cell :title="'我的委托'" is-link></cell>
      </group>
      <group class="group">
-        <cell :title="'我的案例'" is-link></cell>
-        <cell :title="'关联案例'" is-link></cell>
-        <cell :title="'我的收藏'" is-link></cell>
+        <cell :title="'我的案例'" is-link @click.native="goto('mycase')"></cell>
+        <cell :title="'关联案例'" is-link @click.native="goto('relate')"></cell>
+        <cell :title="'我的收藏'" is-link @click.native="goto('collection')"></cell>
      </group>
   </div>
 </template>
@@ -26,6 +26,12 @@ export default {
   data() {
     return {
     };
+  },
+  //
+  methods:{
+    goto(path){
+       this.$router.push({ name: path});
+    }
   }
 };
 </script>

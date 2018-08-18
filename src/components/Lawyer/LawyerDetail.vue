@@ -24,6 +24,14 @@
             </div>
           </flexbox-item>
       </flexbox>
+      <flexbox class="query">
+          <flexbox-item>
+              <button @click="gotoPayment('offline')">线下咨询</button>
+          </flexbox-item>
+          <flexbox-item>
+              <button @click="gotoPayment('delegation')">委托预约</button>
+          </flexbox-item>
+      </flexbox>
       <flexbox>
           <flexbox-item>
               <div id="lawyerPie" class="pie-echart" :style="'height:300px;width:100%;'"></div>
@@ -133,6 +141,16 @@ export default {
   methods: {
     getCaseDetail(key) {
       this.$router.push({ name: "caseDetail", params: { key: key } });
+    },
+    gotoPayment(type){
+      switch(type){
+        case "offline":{
+          this.$router.push({ name: "offline"});
+        }
+        case "delegation":{
+          this.$router.push({ name: "delegation"});
+        }
+      }
     }
   }
 };
@@ -142,6 +160,16 @@ export default {
 @import "~vux/src/styles/1px.less";
 .lawyer-detail {
   font-size: 0.8rem;
+  .query{
+    text-align: center;
+    padding-bottom: 0.3rem;  
+  }
+  button{
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+  }
   .body {
     border-bottom: 1px dotted #d5d5d6;
     padding-bottom: 0.5rem;

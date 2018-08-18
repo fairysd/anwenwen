@@ -19,21 +19,21 @@
           <button v-show="showloadless" @click="loadless" class="load">收起 ▲</button>
       </div>
        <flexbox class="consult-box consult-boxone" >
-          <flexbox-item :span=6>
+          <flexbox-item :span=6 @click.native="gotoKefu">
               <div class="consultfree">
                   <img src="../../assets/images/icons/icon_05.png" alt="">
                   <p>免费咨询</br><span>免费咨询1分钟响应</span></p>
               </div>
           </flexbox-item>
           <flexbox-item :span=6>
-              <a class="consultcall" href="tel:15806213493">
+              <a class="consultcall" href="tel:18911732711">
                   <img src="../../assets/images/icons/icon_05.png" alt="">
                   <p style="color:#080808;">电话咨询</br><span>电话沟通更高效</span></p>
               </a>
           </flexbox-item>          
       </flexbox>
        <flexbox class="consult-box" >
-          <flexbox-item :span=6>
+          <flexbox-item :span=6 @click.native="gotoKefu">
               <div class="consultfree">
                   <img src="../../assets/images/icons/icon_05.png" alt="">
                   <p>代写文书</br><span>量身定制满意为止</span></p>
@@ -137,6 +137,12 @@ export default {
     },
     getDetails(oid) {
       this.$router.push({ name: "lawyerDetail", params: { id: oid } });
+    },
+    gotoKefu(){
+      let kefuUrl = "http://kefu.anwenwen.com/wechat/Agent";
+       let userId = this.common.getCookie("userId")
+      kefuUrl+="?userId="+userId;
+      location.href = kefuUrl;
     }
   }
 };

@@ -10,11 +10,17 @@
       </x-textarea>
       <x-input title="标的" placeholder="请输入具体金额"></x-input>   
     </group>
+    <div v-transfer-dom>
+      <alert v-model="show" :title="'请求成功'" > {{ '提交成功'}}</alert>
+    </div>
+    <div v-transfer-dom>
+      <alert v-model="errorshow" :title="'请求失败'" > {{ '请检查参数'}}</alert>
+    </div>
     <group>
     <flexbox>
       <flexbox-item class="btn submit-btn">
         </flexbox-item>
-        <flexbox-item class="btn submit-btn">
+        <flexbox-item class="btn submit-btn" @click.native="submitCase">
           <x-button  type="primary">提交</x-button>
         </flexbox-item>
         <flexbox-item class="btn cancel-btn">
@@ -28,7 +34,7 @@
 </template>
 <script>
 import contentHeader from './Content/contentHeader'
-import {  GroupTitle, Group, Cell, XInput, Selector, PopupPicker, Datetime, XNumber, ChinaAddressData, XAddress, XTextarea, XSwitch,CheckIcon,Checker, CheckerItem,Popup,TransferDom,XButton   } from "vux";
+import {  GroupTitle, Group, Cell, XInput, Selector, PopupPicker, Datetime, XNumber, ChinaAddressData, XAddress, XTextarea, XSwitch,CheckIcon,Checker, CheckerItem,Popup,XButton,AlertModule, Alert,  TransferDomDirective as TransferDom   } from "vux";
 
 export default {
   name: "createCase",
@@ -36,25 +42,55 @@ export default {
     TransferDom
   },
   components: {
-    GroupTitle, Group, Cell, XInput, Selector, PopupPicker, Datetime, XNumber, ChinaAddressData, XAddress, XTextarea, XSwitch,CheckIcon ,Checker, CheckerItem,Popup,XButton ,contentHeader
+    GroupTitle, Group, Cell, XInput, Selector, PopupPicker, Datetime, XNumber, ChinaAddressData, XAddress, XTextarea, XSwitch,CheckIcon ,Checker, CheckerItem,Popup,XButton ,contentHeader,TransferDom,XButton,AlertModule, Alert
   },
   data() {
     return {        
       showPopup: false,
       caseType: ['民事'],
       list:[['民事']],
+      show:false,
+      errorshow:false,
       caseModel:{
         lawyerId:"2eac92d0-ba91-3526-94f0-e5d41d674d21",
         userTel:"",
         userName:"",
-        caseType:0,
+        caseType:1,
         remark:"",
         orderPrice:"",
-        userId:"U1532356321695SdgZO"
+        userId:"",
+        token:""
       }
     };
   },
+  mounted(){
+    this.caseModel.userId =this.common.getCookie("userId")
+    this.caseModel.token =this.common.getCookie("token")
+  },
   methods:{     
+    submitCase(){
+       let url = this.GLOBAL.hostIp;
+       let caseModel = this.caseModel
+      this.$http
+      .post(url + "order/SubmitPreOrder", {
+        lawyerId:caseModel.lawyerId,
+        userTel:caseModel.userTel,
+        userName:caseModel.userName,
+        caseType:caseModel.caseType,
+        remark:caseModel.remark,
+        orderPrice:caseModel.orderPrice,
+        userId:caseModel.userId,
+        token:caseModel.token
+      })
+      .then(({ data }) => {
+        if (data.code == 4) {
+         this.errorshow = true;
+        }else{
+          this.show =true;
+        }
+        console.log(data)
+      })
+    }
   }
 };
 </script>

@@ -14,7 +14,7 @@
           </el-select>
         </li>
         <li> 
-          <el-cascader
+          <el-cascader placeholder="选择案由"
             :options="types"
             v-model="typeValue"
             :popper-class='typepop'
@@ -71,26 +71,12 @@ export default {
     return {
       cases: [],
       citys: [],
-      types:[{
-          value: 'minshi',
-          label: '民事类',
-          children: [{
-            value: 'yiban',
-            label: '一般民事',            
-          }, {
-            value: 'hetong',
-            label: '合同纠纷',            
-          }]
-        }
-      ],
+      types:[],
       sorts:[
           {
-          value: 'ai',
+          value: 'particleyear:desc',
           label: '智能排序'
-        }, {
-          value: 'distance',
-          label: '距离'
-        },
+        }
         ],
         cityValue:'',
         typeValue:[],
@@ -99,33 +85,37 @@ export default {
     };
   },
   mounted() {
+    this.sortValue = "particleyear:desc";
+    this.cityValue = "南京市";
     let url = this.GLOBAL.hostIp;
     let message = this.$route.params.msg;
     this.$http.get(url + "/getCity").then(({ data }) => {
       this.citys = data;
     });
-    this.$http.get(url + "/getReasonType").then(({ data }) => {
-      
-      let datas = data.data;
-      
+    this.$http.get(url + "/getReasonType").then(({ data }) => {      
+      let datas = data.data;      
       let marray = datas.mainReason;
       let sarray = datas.simpleReason;
       let jarray = [];
-      let narray = [];
-      for (let j = 0; j < sarray.length; j++) {          
-          jarray.push({
-            value:sarray[j].code,
-            label:sarray[j].name,
-          })          
-        }  
-      for (let i = 0; i < marray.length; i++) {              
+      let narray = [];     
+      for (let i = 0; i < marray.length; i++) {  
+        let carray = [];
+         for (let j = 0; j < sarray.length; j++) {    
+          if (sarray[j].code.indexOf(marray[i].code) == 0) {
+            carray.push({
+              value:sarray[j].name,
+              label:sarray[j].name
+            })
+          }      
+        }              
         narray.push({
           value:marray[i].code,
           label:marray[i].name,
-          children:jarray
+          children:carray
         })
       }
       this.types = narray;
+      this.getLawyer();
     });
   },
   methods: {
@@ -144,22 +134,20 @@ export default {
       if (!type) {
         type='';
       }
-      console.log(1)
-      console.log(type)
-      console.log(city)
-      console.log(sort)
-      // this.$http
-      //   .get(url + "/findAttorneyBySpeciality", {
-      //     params: {
-      //       message: message
-      //     }
-      //   })
-      //   .then(({ data }) => {
-      //     this.cases = data;
-      //     for (let i = 0; i < this.cases.length; i++) {
-      //       this.cases[i].title = data[i].title.split(",");
-      //     }
-      //   });
+      this.$http
+        .get(url + "/findAttorneyBySpeciality", {
+          params: {
+            message:type,
+            cityCode: city,
+            sortBy:sort
+          }
+        })
+        .then(({ data }) => {
+          this.cases = data;
+          for (let i = 0; i < this.cases.length; i++) {
+            this.cases[i].title = data[i].title.split(",");
+          }
+        });
     }
   }
 };
