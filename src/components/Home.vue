@@ -111,13 +111,13 @@ export default {
     let url = this.GLOBAL.hostIp;
     let userid = this.common.getCookie("userId");
     this.$http
-      .post(url + "order/CheckLogin", {
+      .post(url + "order/CheckLogin",this.qs.stringify({
         userid: userid
-      })
+      }) )
       .then(({ data }) => {
-        // if (data.code == 4) {
-        //   this.$router.push({ name: "login"});
-        // }
+        if (data.code !== 1) {
+          this.$router.push({ name: "login"});
+        }
         if (userid) {
           this.isLogin = true;
         }

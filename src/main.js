@@ -10,9 +10,11 @@ import router from './router'
 import App from './App'
 import echarts from 'echarts'
 import { Flexbox, FlexboxItem } from 'vux'
-import { AjaxPlugin } from 'vux'
+import axios from 'axios'
+import Qs from 'qs'
 
-Vue.use(AjaxPlugin)
+Vue.prototype.$http= axios
+Vue.prototype.qs= Qs
 Vue.use(ElementUI);
 import global_ from './components/Global'
 Vue.prototype.GLOBAL = global_

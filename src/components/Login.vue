@@ -19,14 +19,12 @@ export default {
   },
   mounted() {
     let url = this.GLOBAL.hostIp;
-    let callbackurl = url+"#login";
+    let callbackurl = url+"#state";
     let appId = "wxbd8754a5fcbba2b5"; 
     if (!this.common.getCookie("userId")&&!this.common.getCookie("token")) {    
-    //  var  sendurl ="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+encodeURIComponent(callbackurl)
-    //         +"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-    //     location.href = sendurl;
-
-    this.$router.push({ name: "state"});
+     var  sendurl ="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+encodeURIComponent(callbackurl)
+            +"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+        location.href = sendurl;
     }
   },
   methods:{   
