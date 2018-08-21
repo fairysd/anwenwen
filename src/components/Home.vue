@@ -104,16 +104,24 @@ export default {
       autoData: [],
       newsClass: [],
       newsList: [],
-      isLogin: false
+      newsListClone:[],
+      isLogin: false,
+      newsLength:1
     };
   },
+  created() {    
+  },
   mounted() {
+    let self = this;
     let url = this.GLOBAL.hostIp;
     let userid = this.common.getCookie("userId");
     this.$http
-      .post(url + "order/CheckLogin",this.qs.stringify({
-        userid: userid
-      }) )
+      .post(
+        url + "order/CheckLogin",
+        this.qs.stringify({
+          userid: userid
+        })
+      )
       .then(({ data }) => {
         if (data.code !== 1) {
           this.$router.push({ name: "login"});
@@ -143,7 +151,23 @@ export default {
         }
       });
     //
-  
+    window.onscroll = function() {
+      //变量scrollTop是滚动条滚动时，距离顶部的距离
+      var scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      //变量windowHeight是可视区的高度
+      var windowHeight =
+        document.documentElement.clientHeight || document.body.clientHeight;
+      //变量scrollHeight是滚动条的总高度
+      var scrollHeight =
+        document.documentElement.scrollHeight || document.body.scrollHeight;
+      //滚动条到底部的条件
+      if ((scrollTop + windowHeight).toFixed(0) == scrollHeight) {
+        //写后台加载数据的函数
+        self.setNewsLength(self.newsLength)
+        self.newsLength++
+      }
+    };
   },
   methods: {
     checkList(msg) {
@@ -180,12 +204,17 @@ export default {
         })
         .then(({ data }) => {
           if (data) {
-            this.newsList = data.data;
+            this.newsLength = 1;
+            this.newsList = data.data.slice(0,this.newsLength);
+            this.newsListClone = data.data;            
           }
         });
     },
     getNewsDetail(id) {
       this.$router.push({ name: "newsDetail", params: { id: id } });
+    },
+    setNewsLength(length) {
+      this.newsList = this.newsListClone.slice(0,length)
     }
   }
 };
@@ -310,8 +339,8 @@ export default {
   }
   .bgimg {
   }
-  .menu.two{
-    margin-bottom: 2.0rem;
+  .menu.two {
+    margin-bottom: 2rem;
   }
   .menu p {
     color: #575757;
@@ -338,7 +367,7 @@ export default {
   margin-top: 0rem;
   border-top: 1px solid #e7e7e7;
   height: 3rem;
-  padding-top:0;
+  padding-top: 0;
 }
 .weui-panel__hd {
   color: #000 !important;
