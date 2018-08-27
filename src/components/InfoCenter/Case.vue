@@ -21,7 +21,7 @@
         </flexbox>
         <div v-if="isTrue[index]" >
             <div v-for="(obj,stindex ) in caseProcess">
-                  <flow orientation="vertical" v-for = "(caseItem,caindex) in obj">
+                  <flow orientation="vertical" v-for = "(caseItem,caindex) in obj" :key="caseItem.id">
                     <flow-state :title="(caseItem.name)"></flow-state>
                     <flow-line :line-span="45"></flow-line>
                     <!-- <flow-state v-if="!caseItem.workTime==null" :title="(caseItem.workTime)"></flow-state> -->                    
