@@ -165,6 +165,7 @@ export default {
       autoData: [],
       newsClass: [],
       newsList: [],
+<<<<<<< HEAD
       topNewsList:[],
       isLogin: false,
       userState:0,
@@ -178,16 +179,27 @@ export default {
       getBarWidth: function () {
         return (3.5 + 1) * 22 + 'px'
       }
+=======
+      newsListClone:[],
+      isLogin: false,
+      newsLength:1
+>>>>>>> fd31828072bebdb09b294fbbd9c5a5bb86a2c6bd
     };
+  },
+  created() {    
   },
   mounted() {
     let self = this;
+<<<<<<< HEAD
     this.cityValue = "320101";
+=======
+>>>>>>> fd31828072bebdb09b294fbbd9c5a5bb86a2c6bd
     let url = this.GLOBAL.hostIp;
     let userid = this.common.getCookie("userId");
     console.log("mon> ",self)
 
     this.$http
+<<<<<<< HEAD
       .post(url + "order/CheckLogin",this.qs.stringify({
         userid: userid}) 
             )
@@ -197,6 +209,19 @@ export default {
           this.$router.push({ name: "login"});
         }
         if (userid&&this.userState==0) {
+=======
+      .post(
+        url + "order/CheckLogin",
+        this.qs.stringify({
+          userid: userid
+        })
+      )
+      .then(({ data }) => {
+        if (data.code !== 1) {
+          this.$router.push({ name: "login"});
+        }
+        if (userid) {
+>>>>>>> fd31828072bebdb09b294fbbd9c5a5bb86a2c6bd
           this.isLogin = true;
         }
         if (!this.isLogin) {
@@ -223,7 +248,11 @@ export default {
         }
       });
     //
+<<<<<<< HEAD
       window.onscroll = function() {
+=======
+    window.onscroll = function() {
+>>>>>>> fd31828072bebdb09b294fbbd9c5a5bb86a2c6bd
       //变量scrollTop是滚动条滚动时，距离顶部的距离
       var scrollTop =
         document.documentElement.scrollTop || document.body.scrollTop;
@@ -235,6 +264,7 @@ export default {
         document.documentElement.scrollHeight || document.body.scrollHeight;
       //滚动条到底部的条件
       if ((scrollTop + windowHeight).toFixed(0) == scrollHeight) {
+<<<<<<< HEAD
         
         //写后台加载数据的函数
         self.setNewsLength(self.newsLength)
@@ -250,6 +280,13 @@ export default {
     
     // 获取置顶文章
    
+=======
+        //写后台加载数据的函数
+        self.setNewsLength(self.newsLength)
+        self.newsLength++
+      }
+    };
+>>>>>>> fd31828072bebdb09b294fbbd9c5a5bb86a2c6bd
   },
   methods: {
     getDetails(oid){
@@ -340,17 +377,24 @@ export default {
         })
         .then(({ data }) => {
           if (data) {
+<<<<<<< HEAD
             //this.newsLength = 1;
             this.newsList = data.data.slice(0,this.newsLength);
             this.newsListClone = data.data;
             this.maxPage = data.maxPage;
             this.isBottom = false;   
+=======
+            this.newsLength = 1;
+            this.newsList = data.data.slice(0,this.newsLength);
+            this.newsListClone = data.data;            
+>>>>>>> fd31828072bebdb09b294fbbd9c5a5bb86a2c6bd
           }
         });
     },
     getNewsDetail(id) {
       this.$router.push({ name: "newsDetail", params: { id: id } });
     },
+<<<<<<< HEAD
     
     setNewsLength(length) {      
       console.log(length,this.newsListClone.length,this.newsList.length);
@@ -394,6 +438,10 @@ export default {
       }
 
 
+=======
+    setNewsLength(length) {
+      this.newsList = this.newsListClone.slice(0,length)
+>>>>>>> fd31828072bebdb09b294fbbd9c5a5bb86a2c6bd
     }
   }
 };
@@ -596,8 +644,15 @@ export default {
       }
     }
   }
+<<<<<<< HEAD
   .menu.two{
     margin-bottom:0.6rem;
+=======
+  .bgimg {
+  }
+  .menu.two {
+    margin-bottom: 2rem;
+>>>>>>> fd31828072bebdb09b294fbbd9c5a5bb86a2c6bd
   }
   .menu p {
     color: #575757;
@@ -632,7 +687,7 @@ export default {
   margin-top: 0rem;
   border-top: 1px solid #e7e7e7;
   height: 3rem;
-  padding-top:0;
+  padding-top: 0;
 }
 .weui-panel__hd {
   color: #000 !important;
