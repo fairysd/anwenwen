@@ -1,8 +1,22 @@
 <template>
-  <div class="home">
+  <div id="home">
     <ul class="search-box"> 
-          <li class="local"><img src="../../static/icons/map_03.png" alt=""><p class="city">南京市</p></li>
-          <li class="input-box"><input v-on:input="getAutoData" v-model="searchValue" class="search" type="text" placeholder="请输入关键字搜索咨询"><img @click="getLawyer" src="../../static/icons/icon_11.png" alt=""></li>
+          <li class="local"><img src="../../static/icons/map_03.png" alt="">
+            <!-- <p class="city">南京市</p> -->
+            <el-select class="city" v-model="cityValue"  placeholder="选择城市">
+              <el-option
+                v-for="item in citys"
+                :key="item.code"
+                :label="item.name"
+                :value="item.code"
+                >
+              </el-option>
+            </el-select>
+          </li>
+          <li class="input-box">
+            <input v-on:input="getAutoData" v-model="searchValue" class="search" type="text" placeholder="请输入关键字搜索咨询">
+            <img @click="getLawyer" src="../../static/icons/icon_11.png" alt="">
+          </li>
           <li class="search-btn"></li>
       </ul>
        <ul class="auto-data">
@@ -22,25 +36,25 @@
             </flexbox-item>
       </flexbox>   
         <flexbox class="menu one">
-            <flexbox-item @click.native="checkList('婚姻家庭')">
+            <flexbox-item @click.native="checkList('婚姻家庭',cityValue)">
                 <div class="case-class">
                     <img src="../../static/icons/1.png" alt="">
                     <p>婚姻家庭</p>
                 </div>                
             </flexbox-item>
-             <flexbox-item @click.native="checkList('交通事故')">
+             <flexbox-item @click.native="checkList('交通事故',cityValue)">
                 <div class="case-class">
                     <img src="../../static/icons/2.png" alt="">
                     <p>交通事故</p>
                 </div> 
             </flexbox-item>
-             <flexbox-item @click.native="checkList('继承纠纷')">
+             <flexbox-item @click.native="checkList('继承纠纷',cityValue)">
                 <div class="case-class">
                     <img src="../../static/icons/3.png" alt="">
                     <p>继承纠纷</p>
                 </div> 
             </flexbox-item>
-             <flexbox-item @click.native="checkList('拆迁安置')">
+             <flexbox-item @click.native="checkList('拆迁安置',cityValue)">
                 <div class="case-class">
                     <img src="../../static/icons/4.png" alt="">
                     <p>拆迁安置</p>
@@ -48,25 +62,25 @@
             </flexbox-item>
     </flexbox>
         <flexbox class="menu two">
-      <flexbox-item @click.native="checkList('劳动仲裁')">
+      <flexbox-item @click.native="checkList('劳动仲裁',cityValue)">
           <div class="case-class">
                     <img src="../../static/icons/5.png" alt="">
                     <p>劳动仲裁</p>
                 </div> 
       </flexbox-item>
-      <flexbox-item @click.native="checkList('消费权益')">
+      <flexbox-item @click.native="checkList('消费权益',cityValue)">
           <div class="case-class">
                     <img src="../../static/icons/6.png" alt="">
                     <p>消费权益</p>
                 </div> 
       </flexbox-item>
-      <flexbox-item @click.native="checkList('刑事辩护')">
+      <flexbox-item @click.native="checkList('刑事辩护',cityValue)">
           <div class="case-class">
                     <img src="../../static/icons/7.png" alt="">
                     <p>刑事辩护</p>
                 </div> 
       </flexbox-item>
-      <flexbox-item @click.native="checkList('人身损害')">
+      <flexbox-item @click.native="checkList('人身损害',cityValue)">
           <div class="case-class">
                     <img src="../../static/icons/8.png" alt="">
                     <p>人身损害</p>
@@ -74,22 +88,66 @@
       </flexbox-item>
     </flexbox>
     <flexbox class="">
-          <flexbox-item class="divider">                            
-            </flexbox-item>
-            </flexbox>
-    <tab class="news-class" bar-active-color=""  :line-width="1">
+      <flexbox-item class="divider">                            
+      </flexbox-item>
+    </flexbox>
+    <!-- <divider>{{ $t('set bar-active-color')}}</divider> -->
+    <tab bar-active-color="#4f88f7" class="news-class" :line-width="1" :custom-bar-width="getBarWidth">
       <tab-item v-for="(item) in newsClass" v-text="item.name" :key="item.code" @on-item-click="getNewsList(item.code)" :selected="item.select"></tab-item>
     </tab>
+
+
     <ul class="news-content">
-      <li class="content-list" v-for="(item,index) in newsList" :key="item.oid" @click="getNewsDetail(item.oid)">
-        <div class="text-part">
+      <li class="content-list" v-for="(item,index) in topNewsList" :key="item.oid" @click="getNewsDetail(item.oid)">
+        <div :class="item.imgPath.length>0? 'text-part' : '' ">
           <h4 v-text="item.title"></h4>
           <p v-text="item.content"></p>
         </div>
-        <div class="img-part">
+        <div :class="item.imgPath.length>0? 'img-part' : '' ">
           <img v-for="(img,index) in item.imgPath"  :src="img" alt="" v-if="index<1">
-        </div>               
+        </div>
       </li>
+    </ul>
+
+    <div class="list-body">
+      <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)" :key="item.oid">
+          <flexbox-item :span="4">
+            <div class="list-item photo">
+               <img class="lawyer-photo" :src="item.imagepath">
+            </div>
+          </flexbox-item>
+          <flexbox-item>
+            <div class="list-item">
+              <p class="name" v-text="item.name"></p>
+            </div>
+            <div class="list-item">
+              <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
+            </div>
+            <div class="list-item">
+              <p class="workage" v-text="item.workage+'年经验'"></p>
+            </div>
+            <!-- <div class="list-item">
+              <p  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
+                <span class="label" v-text="labels"></span>
+              </p>
+            </div>            
+            <div class="list-item">
+              <p class="recent" v-text="item.introduce"></p>
+            </div> -->
+          </flexbox-item>
+      </flexbox>
+    </div>
+    <ul class="news-content">
+      <li class="content-list" v-for="(item,index) in newsList" :key="item.oid" @click="getNewsDetail(item.oid)">
+        <div :class="item.imgPath.length>0? 'text-part' : '' ">
+          <h4 v-text="item.title"></h4>
+          <p v-text="item.content"></p>
+        </div>
+        <div :class="item.imgPath.length>0? 'img-part' : '' ">
+          <img v-for="(img,index) in item.imgPath"  :src="img" alt="" v-if="index<1">
+        </div>
+      </li>
+      <li v-show="isBottom" style="padding-bottom:1rem;text-align:center;color:#b7b8b8">没有更多了</li>
     </ul>
   </div>
 </template>
@@ -100,25 +158,45 @@ export default {
   components: { Panel, Search, Tab, TabItem },
   data() {
     return {
+      cases: [],
+      citys: [],
+      cityValue:'',
       searchValue: "",
       autoData: [],
       newsClass: [],
       newsList: [],
-      isLogin: false
+      topNewsList:[],
+      isLogin: false,
+      userState:0,
+      newsListClone:[],
+      pages:1,
+      maxPage:0,
+      catagoryCode:"1",
+      isLogin: true,
+      newsLength:3,//初始载入数组长度
+      isBottom:false,
+      getBarWidth: function () {
+        return (3.5 + 1) * 22 + 'px'
+      }
     };
   },
   mounted() {
+    let self = this;
+    this.cityValue = "320101";
     let url = this.GLOBAL.hostIp;
     let userid = this.common.getCookie("userId");
+    console.log("mon> ",self)
+
     this.$http
-      .post(url + "order/CheckLogin", {
-        userid: userid
-      })
+      .post(url + "order/CheckLogin",this.qs.stringify({
+        userid: userid}) 
+            )
       .then(({ data }) => {
-        // if (data.code == 4) {
-        //   this.$router.push({ name: "login"});
-        // }
-        if (userid) {
+        this.userState = data.code;
+        if (data.code !== 0) {
+          this.$router.push({ name: "login"});
+        }
+        if (userid&&this.userState==0) {
           this.isLogin = true;
         }
         if (!this.isLogin) {
@@ -137,17 +215,48 @@ export default {
               if (data) {
                 this.newsClass = data.data;
                 this.newsClass[0].select = true;
-                this.getNewsList(1);
+                this.getNewsList(1,this.pages);
+                this.getTopNewsList();
+                this.getArticleLawyer();
               }
             });
         }
       });
     //
-  
+      window.onscroll = function() {
+      //变量scrollTop是滚动条滚动时，距离顶部的距离
+      var scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      //变量windowHeight是可视区的高度
+      var windowHeight =
+        document.documentElement.clientHeight || document.body.clientHeight;
+      //变量scrollHeight是滚动条的总高度
+      var scrollHeight =
+        document.documentElement.scrollHeight || document.body.scrollHeight;
+      //滚动条到底部的条件
+      if ((scrollTop + windowHeight).toFixed(0) == scrollHeight) {
+        
+        //写后台加载数据的函数
+        self.setNewsLength(self.newsLength)
+        self.newsLength+=3//每次数组长度加多少
+      }
+    };
+
+    // 首页多城市
+     this.$http.get(url + "/getCity").then(({ data }) => {
+      this.citys = data;
+    });
+    // 获取文章推荐律师
+    
+    // 获取置顶文章
+   
   },
   methods: {
-    checkList(msg) {
-      this.$router.push({ name: "lawyerList", params: { msg: msg } });
+    getDetails(oid){
+      this.$router.push({ name: "lawyerDetail", params: { id: oid } });
+    },
+    checkList(msg,code) {
+      this.$router.push({ name: "lawyerList", params: { msg: msg ,cityCode:code} });
     },
     getAutoData() {
       let url = this.GLOBAL.hostIp;
@@ -168,10 +277,61 @@ export default {
     },
     getLawyer() {
       let message = this.searchValue;
-      this.$router.push({ name: "lawyerList", params: { msg: message } });
+      
+      let city = this.cityValue;
+      this.$router.push({ name: "lawyerList", params: { msg: message ,cityCode:city} });
+    },
+    // 获取置顶文章
+    getTopNewsList(){
+      let url = this.GLOBAL.hostIp;
+       this.$http
+      .get(url+"/order/topArticleList",{
+        params: {
+          category : this.catagoryCode,
+        }
+      })
+      .then(({ data }) => {
+      if (data) {
+        console.log(data);
+        if(data.data.length>3){
+          this.topNewsList = data.data.slice(0,3);
+        }else{
+          this.topNewsList = data.data;
+        }
+         
+        
+      }
+    });
+    },
+    // 获取文章推荐律师
+    getArticleLawyer(){
+      let url = this.GLOBAL.hostIp;
+      this.$http
+     .get(url+"/order/getLawyerArticleCatalog",{
+        params: {
+          catalogKey : this.catagoryCode,
+          cityCode:this.cityValue
+        }
+      })
+      .then(({ data }) => {
+      if (data) {
+        console.log(data);
+        this.cases = data.data;
+        for (let i = 0; i < this.cases.length; i++) {
+          this.cases[i].title = data.data[i].title.split(",");
+          this.cases[i].title.pop();
+          // data.data[i].title.split(",").pop();
+        }
+      }
+    });
     },
     getNewsList(code) {
+      this.catagoryCode = code;
+      this.getTopNewsList();
+      this.getArticleLawyer();
+      //console.log(this.catagoryCode)
       let url = this.GLOBAL.hostIp;
+     
       this.$http
         .get(url + "/order/getArticeList", {
           params: {
@@ -180,12 +340,60 @@ export default {
         })
         .then(({ data }) => {
           if (data) {
-            this.newsList = data.data;
+            //this.newsLength = 1;
+            this.newsList = data.data.slice(0,this.newsLength);
+            this.newsListClone = data.data;
+            this.maxPage = data.maxPage;
+            this.isBottom = false;   
           }
         });
     },
     getNewsDetail(id) {
       this.$router.push({ name: "newsDetail", params: { id: id } });
+    },
+    
+    setNewsLength(length) {      
+      console.log(length,this.newsListClone.length,this.newsList.length);
+      //当滚动长度 大于数组长度时，新增元素
+      if(length > this.newsListClone.length){
+        console.log("add ele");
+        //当前页数大于最大页数时
+        if(this.pages >= this.maxPage ){
+          this.isBottom = true;
+          return this;
+        }
+        
+      let url = this.GLOBAL.hostIp;
+      this.$http
+        .get(url + "/order/getArticeList", {
+          params: {
+            category: this.catagoryCode,
+            page:this.pages
+          }
+        })
+        .then(({ data }) => {
+          if (data) {
+            //this.newsLength = 1;
+            for(let i =0;i < data.data.length ;i++){
+                this.newsListClone.push(data.data[i])
+            }
+            this.maxPage = data.maxPage;
+            this.isBottom = false; 
+          //  //截取指定元素
+          //  this.newsList = this.newsListClone.slice(0,length)
+          }
+        });
+
+        this.pages ++;
+      }
+      //截取指定元素
+      this.newsList = this.newsListClone.slice(0,length)
+      
+      if (this.newsListClone.length <= length) {
+        this.isBottom = true;
+      }
+
+
     }
   }
 };
@@ -193,9 +401,25 @@ export default {
 
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
-.home {
+#home {
+   font-size: 0.8rem;
+  /deep/ .el-input--suffix .el-input__inner{
+    border: none;
+    padding: 0;
+    width: 4.3rem;
+    font-size:0.8rem;
+  }
+  .scrollable .vux-tab-item[data-v-fed36922]{
+    font-size:0.9rem;
+  }
+  .xzClass{
+    display: block;
+    height: 1px;
+    left: 0%;
+    right: 74%;
+  }
   .divider {
-    height: 10px;
+    height: 0.5rem;
     background-color: #f0f0f0;
   }
   .search-box {
@@ -203,8 +427,8 @@ export default {
     background: #fff;
     text-align: left;
     color: #a1a2a2;
-    margin-bottom: 1rem;
-    margin-top: 1.2rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
     li {
       vertical-align: middle;
       display: inline-block;
@@ -213,11 +437,14 @@ export default {
       }
     }
     .local {
-      padding-left: 1.2rem;
+      padding-left: 0.5rem;
+      // width:20%;
+      width:5.5rem;
       img {
-        width: 1.2rem;
+        width: 0.7rem;
+        padding-right: 0.1rem;
         vertical-align: middle;
-        padding-right: 0.5rem;
+        // padding-right: 0.5rem;
       }
       p {
         font-size: 0.8rem;
@@ -226,9 +453,11 @@ export default {
       }
     }
     .input-box {
-      margin-left: 1rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
+      // margin-left: 1rem;
+      // width:68%;
+      width:13rem;
+      padding-left: 0.5rem;
+      // padding-right: 1rem;
       background-color: #f5f5f5;
       border-radius: 1.2rem;
       > * {
@@ -238,14 +467,16 @@ export default {
         color: #a1a2a2;
         border: none;
         text-align: left;
-        padding-right: 2rem;
+        width:10.5rem;
+        // padding-right: 22%;
+        // padding-right: 2rem;
         background: transparent;
       }
       input:focus {
         outline: none;
       }
       img {
-        width: 1.2rem;
+        width: 1rem;
         vertical-align: middle;
       }
     }
@@ -267,61 +498,124 @@ export default {
       font-size: 0.8rem;
     }
   }
+  // 律师展示样式
+  .lawyer-photo{
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 5.5rem;
+    margin-top: -0.2rem;
+  }
+  .body{
+      border-bottom: 1px dotted #d5d5d6;
+      // padding-bottom: 0.5rem;
+      margin:0.3rem 0;
+  }
+  .name{
+    color: #4d4e50;
+    font-weight: 500;
+    font-size:0.8rem;
+    padding-bottom: 0.2rem;
+  }
+  .workage{
+    color: #f9ab13;
+    font-size: 0.6rem;
+    padding-bottom: 0.2rem;
+    // margin-left: 0.8rem;
+  }
+  .local{
+    color: #878889;
+    font-size: 0.6rem;
+    padding-bottom: 0.2rem;
+  }
+  .label{
+    display: inline-block;
+    background-color: #2a7af3;
+    padding: 0.2rem 0.3rem;
+    font-size: 0.5rem;
+    border-radius: 0.3rem;
+    color: #fff;
+    margin-right: 0.2rem;
+    margin-bottom: 0.1rem;
+    line-height: 0.7rem;
+  }
+  .recent{
+    color: #b7b8b8;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.5rem;
+  }
+  // 结束
   .news-content {
     text-align: left;
     li {
       padding-left: 3%;
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
+      padding-right:3%; 
+      padding-top: 0.3rem;
+      padding-bottom: 0.4rem;
       border-bottom: 1px solid #e7e7e7;
     }
     li > div {
       display: inline-block;
+       width: 100%;
     }
     .text-part {
       width: 70%;
       vertical-align: middle;
-      h4 {
-        color: #4d4e50;
-        font-weight: 500;
-        font-size: 1.2rem;
-        word-break: keep-all;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      p {
-        color: #b7b8b8;
-        word-break: keep-all;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+     
+    }
+    .content-list h4 {
+      color: #4d4e50;
+      font-weight: 600;
+      font-size: 0.8rem;
+      word-break: keep-all;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .content-list p {
+      color: #b7b8b8;
+      font-size:0.7rem;
+      // word-break: keep-all;
+      // white-space: nowrap;
+      overflow: hidden;    
+      display: -webkit-box;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
     .img-part {
       width: 25%;
-      vertical-align: bottom;
+      vertical-align: middle;
       img {
         display: block;
         margin: auto;
-        height: 3.2rem;
+        height: 3.5rem;
+        width: 5.5rem;
       }
     }
   }
-  .bgimg {
-  }
   .menu.two{
-    margin-bottom: 2.0rem;
+    margin-bottom:0.6rem;
   }
   .menu p {
     color: #575757;
+    font-size:0.8rem;
   }
+
+.vux-tab .vux-tab-item.vux-tab-selected{
+    color: #4f88f7;
+    border-bottom: 3px solid #4f88f7;
 }
-.home img {
+
+}
+#home img {
   width: 42%;
 }
-.home .bgimg img {
+#home .bgimg img {
   width: 100%;
+  height:10rem;
   display: block;
 }
 .case-class {
@@ -329,7 +623,7 @@ export default {
   color: #2d374b;
 }
 .menu {
-  margin-top: 2.5em;
+  margin-top: 0.8em;
 }
 // .menu.one {
 //   margin-top: 0;
@@ -345,20 +639,32 @@ export default {
   font-size: 1.2em !important;
 }
 .auto-data {
-  float: left;
+  float: right;
+  margin-right:0.5rem;
   position: relative;
   text-align: left;
   top: 0;
   height: 0;
   li {
-    width: 18rem !important;
+    width: 16rem!important;
     border: 1px solid #e7e7e7;
     background: #fff;
+    height: 3rem;
+    list-style: none;
+    line-height: 3rem;
   }
   p {
-    padding: 2px 5px;
+    padding-left: 0.5rem;
     white-space: nowrap;
     overflow: hidden;
+    font-size: 0.7rem;
   }
 }
+// 文章类型样式
+.scrollable .vux-tab-item{
+    flex: 0 0 26%;
+    font-size: 1rem;
+}
+
+
 </style>

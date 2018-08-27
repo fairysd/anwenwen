@@ -4,8 +4,11 @@
           <flexbox-item class="">      
               <h4>我的收藏</h4>                      
             </flexbox-item>
-      </flexbox>  
-      <div class="list-body">
+      </flexbox>
+      <div v-if="clawyer">
+        暂无收藏律师
+      </div>  
+      <div class="list-body" v-if="myclawyer">
         <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)" :key="item.oid">
           <flexbox-item :span="4">
             <div class="list-item photo">
@@ -42,7 +45,9 @@ export default {
     return {
       searchValue:this.$route.params.msg,      
       autoData:[],
-      cases: []
+      cases: [],
+      myclawyer:true,
+      clawyer:false
     };
   },
   mounted(){
@@ -58,6 +63,10 @@ export default {
           this.cases = data;
           for (let i = 0; i < this.cases.length; i++) {
             this.cases[i].title = data[i].title.split(",");
+          }
+          if(data.length == 0){
+            this.myclawyer = false;
+            this.clawyer = true;
           }
         });
   },

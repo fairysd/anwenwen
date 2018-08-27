@@ -4,28 +4,51 @@
           <flexbox-item class="">      
               <h4>我的案例</h4>                      
             </flexbox-item>
-      </flexbox>  
-      <div class="list-body">
-        <flexbox class="body" v-for="item in cases" :key="item.oid">
+      </flexbox>
+      <div v-if="icase">
+          暂无案件
+      </div>  
+      <div class="list-body" v-for="(item, index) in cases" :key="item.oid" v-if="mcase">
+        <flexbox class="body">
           <flexbox-item>
               <p v-text="item.lawyerName+'律师接收案件,案件已在处理中，案件受理法院'+item.courtName"></p>
               <p v-text="'委托人:'+item.userName+';案由:'+item.reasonName"></p>
+              <div class="caseBtn">
+                <x-button mini plain  @click.native="loadMore(item.id,index)" v-show="!isTrue[index]">展开案件</x-button>
+                <x-button mini plain type="primary" @click.native="loadLess(item.id,index)" v-show="isTrue[index]">收起</x-button>
+              </div>
           </flexbox-item>
-      </flexbox>
+        </flexbox>
+        <div v-if="isTrue[index]" >
+            <div v-for="(obj,stindex ) in caseProcess">
+                  <flow orientation="vertical" v-for = "(caseItem,caindex) in obj">
+                    <flow-state :title="(caseItem.name)"></flow-state>
+                    <flow-line :line-span="45"></flow-line>
+                    <!-- <flow-state v-if="!caseItem.workTime==null" :title="(caseItem.workTime)"></flow-state> -->                    
+                  </flow>  
+              </div>
+       </div>
+      
       </div>
   </div>
 </template>
 
 <script>
-import { Search, Group, Cell, XButton } from "vux";
+import { Search, Group, Cell, XButton,Flow, FlowState, FlowLine } from "vux";
 export default {
   name: "case",
-  components: { Search, Group, Cell, XButton },
+  components: { Search, Group, Cell, XButton,  Flow,
+    FlowState,
+    FlowLine },
   data() {
     return {
       searchValue:this.$route.params.msg,      
       autoData:[],
-      cases: []
+      cases: [],
+      icase:false,
+      mcase:true,
+      caseProcess:[],
+      isTrue:[]
     };
   },
   mounted(){
@@ -33,21 +56,61 @@ export default {
     let token = this.common.getCookie("token")
     let url =this.GLOBAL.hostIp;
     let data ={          
-            userId : 'U1524917297915RDHiO',
-            token:'b6e608210b4f87666e9cccf2a394b94af0208217',
+            userid : userId,
+            token:token,
             page:0,
             orderState:1          
         }
     this.$http
-        .post(url + "/order/CheckUserOrderList", data)
+        .post(url + "/order/CheckUserOrderList",this.qs.stringify( data))
         .then(({ data }) => {
-           console.log(1)
+          this.cases = data.data;
+          for (let i = 0; i < this.cases.length; i++) {
+            this.isTrue.push(false);
+          }
+          if(data.data.length == 0){
+            this.mcase = false;
+            this.icase = true;
+          }
+          console.log(this.isTrue);
+          //  if(data.data.length==0){
+
+          //  }
         });
   },
   methods:{
-     getDetails(oid){
-      this.$router.push({ name: "lawyerDetail", params: { id: oid } });
-    }, 
+    
+    loadMore:function(id,idx){
+      console.log(idx)
+      //this.isTrue.push(false);
+      //this.expansionCase = false;
+      //this.packCase = true;
+      this.isTrue.splice(idx,1,true);
+      console.log(idx,this.isTrue[idx]);
+
+      console.log(this.isTrue)
+      let url =this.GLOBAL.hostIp;
+      let userId = this.common.getCookie("userId")
+      let token = this.common.getCookie("token")
+      this.$http
+      .post(url+"/order/CheckCaseProcess",this.qs.stringify({
+        id:id,
+        userid:userId,
+        token:token
+      }))
+      .then(({ data }) => {
+          console.log(data);
+         this.caseProcess = data.data;
+        });
+    },
+    loadLess:function(id,idx){
+      //this.expansionCase = true;
+      //this.packCase = false;
+      this.isTrue.splice(idx,1,false);
+      console.log(idx,this.isTrue[idx]);
+
+    },
+    
   }
 };
 </script>
@@ -55,148 +118,42 @@ export default {
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
 .case{
-  .case-title{
-    margin-bottom: 1rem;
-    h4{
-      color: #777;
-      padding: 1rem;
-      font-size: 1.2rem;
-      border-bottom: 1px solid #d5d5d6;
-      font-weight: normal;
-    }
+  .weui-wepay-flow, .weui-wepay-flow-auto{
+    padding:0.8rem
   }
-  .divider {
-    height: 1rem;
-    background-color: #f0f0f0;
+  /deep/ .weui-wepay-flow__bd{
+    display: block;
   }
-  .search-box {
-    line-height: 2.5rem;
-    background: #fff;
-    text-align: left;
-    color: #a1a2a2;
-    margin-bottom: 1rem;
-    margin-top: 1.2rem;
-    li {
-      vertical-align: middle;
-      display: inline-block;
-      * {
-        display: inline-block;
-      }
-    }
-    .local {
-      padding-left: 1.5rem;
-      img {
-        width: 1.2rem;
-        vertical-align: middle;
-        padding-right: 0.5rem;
-      }
-      p {
-        font-size: 0.8rem;
-        vertical-align: middle;
-        padding-left: 0.2rem;
-      }
-    }
-    .input-box {
-      margin-left: 1rem;
-      padding-left: 1.2rem;
-      padding-right: 1.2rem;
-      background-color: #f5f5f5;
-      border-radius: 1.2rem;
-      > * {
-        display: inline-block;
-      }
-      input {
-        color: #a1a2a2;
-        border: none;
-        text-align: left;
-        padding-right: 2rem;
-        background: transparent;
-      }
-      input:focus {
-        outline: none;
-      }
-      img {
-        width: 1.2rem;
-        vertical-align: middle;
-      }
-    }
-    .search-btn {
-      img {
-        width: 1.5rem;
-        vertical-align: middle;
-      }
-      p {
-        font-size: 0.9rem;
-        vertical-align: middle;
-        padding-left: 0.3rem;
-      }
-    }
+  .weui-wepay-flow__li .weui-wepay-flow__state{
+    width:10px;
+    height:10px;
   }
-  font-size:0.8rem;
-  .body{
-        border-bottom: 1px dotted #d5d5d6;
-        padding-bottom: 0.5rem;
-  }
-  .name{
-    color: #4d4e50;
-    font-weight: 500;
-  }
-  .workage{
-    color: #f9ab13;
-    font-size: 0.6rem;
-    margin-left: 0.8rem;
-  }
-  .local{
-    color: #878889;
-    font-size: 0.6rem;
-  }
-  .label{
-    display: inline-block;
-    background-color: #2a7af3;
-    padding: 0.1rem 0.3rem;
-    font-size: 0.5rem;
-    border-radius: 0.3rem;
-    color: #fff;
-    margin-right: 0.2rem;
-    margin-bottom: 0.1rem;
-    line-height: 0.7rem;
-  }
-  .recent{
-    color: #b7b8b8;
-    word-break: keep-all;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 0.5rem;
+  .case-title h4{
+    color: #777;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #d5d5d6;
+    font-weight: normal;
   }
   .body{
-    margin:0.3rem 0;
-  }
-  .photo{
-    text-align:center;
-  }
-  .lawyer-photo{
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: 5.5rem;
-    margin-top: -0.2rem;
-  }
-  .auto-data{
-    float: left;
-    position: relative;
-    text-align: left;
-    top: 0rem;
-    height: 0;
-    li{
-    width: 18rem!important;
-    border: 1px solid #e7e7e7;
-    background: #fff;
-    }
+      width:98%;
+      margin:0 auto;
+      padding-bottom:0.5rem;
     p{
-            padding: 2px 5px;
-    white-space: nowrap;
-    overflow: hidden;
+      font-size:0.8rem;
+      color:#737386;
+     
     }
-}
+    .caseBtn{
+      float: right;
+      margin-top: -1rem;
+      padding-right: 1rem;
+      button{
+        color:#4f88f7;
+        border:1px solid #4f88f7;
+      }
+    }
+  } 
+
 }
 </style>

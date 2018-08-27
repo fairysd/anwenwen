@@ -1,7 +1,17 @@
 <template>
   <div class="lawyer-list">
     <ul class="search-box"> 
-          <li class="local"><img src="../../../static/icons/map_03.png" alt=""><p class="city">南京市</p></li>
+          <li class="local"><img src="../../../static/icons/map_03.png" alt="">
+            <el-select class="city" v-model="cityValue"  placeholder="选择城市">
+              <el-option
+                v-for="item in citys"
+                :key="item.code"
+                :label="item.name"
+                :value="item.code"
+                >
+              </el-option>
+            </el-select>
+          </li>
           <li class="input-box"><input v-on:input="getAutoData" v-model="searchValue" class="search" type="text" placeholder="请输入关键字搜索咨询"><img @click="getLawyer" src="../../../static/icons/icon_11.png" alt=""></li>
           <li class="search-btn"></li>
       </ul>
@@ -44,33 +54,77 @@
 
 <script>
 import { Search, Group, Cell, XButton } from "vux";
+import { defaultCipherList } from 'constants';
 export default {
   name: "caseList",
   components: { Search, Group, Cell, XButton },
   data() {
     return {
+      citys: [],
+      pages:0,
+      maxPage:0,
+      cityValue:'',
       searchValue:this.$route.params.msg,      
       autoData:[],
-      cases: []
+      cases: [],
+      recases:[],
+      newsLength:6,//初始载入数组长度
+      isBottom:false,
     };
   },
   mounted(){
+    let self = this;
     let url =this.GLOBAL.hostIp;
+    console.log(this,self)
     let message = this.$route.params.msg;
+    let cityCode = this.$route.params.cityCode;
+    this.inputContent = message;
+    this.cityValue = cityCode;
+
     this.$http
         .get(url + "/findAttorneyBySpeciality", {
           params: {
-            message : message
+            message : message,
+            cityCode : cityCode,
+            page:this.pages
           }
         })
         .then(({ data }) => {
+          console.log(data);
           this.cases = data;
+          this.recases = data;
+          this.maxPage = data.maxPage;
           for (let i = 0; i < this.cases.length; i++) {
             this.cases[i].title = data[i].title.split(",");
           }
         });
+      // 律师页多城市
+      this.$http.get(url + "/getCity").then(({ data }) => {
+      this.citys = data;
+    });
+
+     //律师加载
+      window.onscroll = function() {
+      //变量scrollTop是滚动条滚动时，距离顶部的距离
+      var scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      //变量windowHeight是可视区的高度
+      var windowHeight =
+        document.documentElement.clientHeight || document.body.clientHeight;
+      //变量scrollHeight是滚动条的总高度
+      var scrollHeight =
+        document.documentElement.scrollHeight || document.body.scrollHeight;
+      //滚动条到底部的条件
+      if ((scrollTop + windowHeight).toFixed(0) == scrollHeight) {
+        //写后台加载数据的函数
+        self.setlawyerLength(self.newsLength);
+        //self.getLawyer();
+        self.newsLength+=6//每次数组长度加多少
+      }
+    };
   },
   methods:{
+    // 跳转到律师详情页
      getDetails(oid){
       this.$router.push({ name: "lawyerDetail", params: { id: oid } });
     },
@@ -91,21 +145,83 @@ export default {
         this.searchValue = value;
         this.autoData = [];
     },
+    // 搜索框搜索律师
     getLawyer(){
-       let url =this.GLOBAL.hostIp;
-    let message = this.searchValue;
-    this.$http
+      let url =this.GLOBAL.hostIp;
+      let message = this.searchValue;
+      let city = this.cityValue;
+      this.$http
         .get(url + "/findAttorneyBySpeciality", {
           params: {
-            message : message
+            message : message,
+            cityCode:city
           }
         })
         .then(({ data }) => {
           this.cases = data;
+
           for (let i = 0; i < this.cases.length; i++) {
             this.cases[i].title = data[i].title.split(",");
           }
+          this.cases = data.slice(0,this.newsLength);
+          this.recases = data;
+          this.maxPage = data.maxPage;
+          this.isBottom = false;  
         });
+    },
+    // 加载律师
+    setlawyerLength(length) {
+      console.log(length,this.recases.length,this.cases.length);
+      //当滚动长度 大于数组长度时，新增元素
+      if(length > this.recases.length){
+
+
+        //当前页数大于最大页数时
+        console.log(this.maxPage)
+        if(this.pages >= this.maxPage ){
+          this.isBottom = true;
+          return this;
+        }
+
+        let url = this.GLOBAL.hostIp;
+        let message = this.searchValue;
+        let city = this.cityValue;
+        this.pages ++;
+        this.$http
+        .get(url + "/findAttorneyBySpeciality", {
+         params: {
+            message : message,
+            cityCode : city,
+            page:this.pages
+          }
+        })
+        .then(({ data }) => {
+          console.log(data);
+          if (data) {
+            //this.newsLength = 1;
+            for (let i = 0; i < data.length; i++) {
+              data[i].title = data[i].title.split(",");
+            }
+            for(let i =0;i < data.length ;i++){
+                this.recases.push(data[i])
+            }
+            this.maxPage = data.maxPage;
+            this.isBottom = false; 
+          //  //截取指定元素
+          //  this.newsList = this.newsListClone.slice(0,length)
+          }
+        });
+      
+      }
+      
+      //截取指定元素
+      this.cases = this.recases.slice(0,length)
+      
+      if (this.recases.length <= length) {
+        this.isBottom = true;
+      }
+
+
     }
   }
 };
@@ -114,8 +230,15 @@ export default {
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
 .lawyer-list{
+  font-size:0.8rem;
+   /deep/ .el-input--suffix .el-input__inner{
+    border: none;
+    padding: 0;
+    width: 4.3rem;
+    font-size:0.8rem;
+  }
   .divider {
-    height: 1rem;
+    height: 0.5rem;
     background-color: #f0f0f0;
   }
   .search-box {
@@ -123,8 +246,8 @@ export default {
     background: #fff;
     text-align: left;
     color: #a1a2a2;
-    margin-bottom: 1rem;
-    margin-top: 1.2rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
     li {
       vertical-align: middle;
       display: inline-block;
@@ -133,11 +256,13 @@ export default {
       }
     }
     .local {
-      padding-left: 1.5rem;
+      padding-left: 0.5rem;
+      width:5.5rem;
       img {
-        width: 1.2rem;
+        width: 0.8rem;
         vertical-align: middle;
-        padding-right: 0.5rem;
+         padding-right: 0.1rem;
+        // padding-right: 0.5rem;
       }
       p {
         font-size: 0.8rem;
@@ -146,9 +271,8 @@ export default {
       }
     }
     .input-box {
-      margin-left: 1rem;
-      padding-left: 1.2rem;
-      padding-right: 1.2rem;
+      width:13rem;
+      padding-left: 0.5rem;
       background-color: #f5f5f5;
       border-radius: 1.2rem;
       > * {
@@ -158,14 +282,14 @@ export default {
         color: #a1a2a2;
         border: none;
         text-align: left;
-        padding-right: 2rem;
+        width:10.5rem;
         background: transparent;
       }
       input:focus {
         outline: none;
       }
       img {
-        width: 1.2rem;
+        width: 1rem;
         vertical-align: middle;
       }
     }
@@ -185,10 +309,12 @@ export default {
   .body{
         border-bottom: 1px dotted #d5d5d6;
         padding-bottom: 0.5rem;
+        margin:0.3rem 0;
   }
   .name{
     color: #4d4e50;
     font-weight: 500;
+    font-size:0.8rem;
   }
   .workage{
     color: #f9ab13;
@@ -202,7 +328,7 @@ export default {
   .label{
     display: inline-block;
     background-color: #2a7af3;
-    padding: 0.1rem 0.3rem;
+    padding: 0.2rem 0.3rem;
     font-size: 0.5rem;
     border-radius: 0.3rem;
     color: #fff;
@@ -217,9 +343,6 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.5rem;
-  }
-  .body{
-    margin:0.3rem 0;
   }
   .photo{
     text-align:center;

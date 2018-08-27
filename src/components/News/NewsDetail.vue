@@ -5,12 +5,19 @@
             <div class="content">                
                 <h4 v-text="newsModel.title" class=""></h4>                
                 <p v-text="newsModel.createTime"></p>
-                <img :src="newsModel.images[0]" alt="">
+                <!-- <img :src="newsModel.images[0]" alt=""> -->
             </div>
         </flexbox-item>
       </flexbox>
+
+      <flexbox>
+        <flexbox-item v-show="showloadmore" class="news">
+          <img :src="newsModel.images[0]" class=""></img>
+          <div v-text="newsModel.digest"></div>
+        </flexbox-item>
+      </flexbox>
       <flexbox>      
-        <flexbox-item class="words">
+        <flexbox-item class="words" v-show="showloadless">
             <div v-html="words"></div>
         </flexbox-item>
       </flexbox>
@@ -152,22 +159,38 @@ export default {
 @import "~vux/src/styles/1px.less";
 .news-detail {
   .content {
-    padding: 0 1rem 0 1rem;
+    padding: 0 0.5rem 0 0.5rem;
     h4 {
-      padding: 1rem 0 1rem 0;
-      font-size: 1.4rem;
+      padding: 0.5rem 0 0.3rem 0;
+      font-size: 1rem;
       line-height: 1.4rem;
     }
     p {
-      padding: 0 0 1rem 0;
+      padding: 0 0 0.5rem 0;
+      font-size:0.8rem;
     }
     img {
       width: 100%;
     }
   }
+  .news{
+    padding:0 0.5rem;
+    img{
+      width:100%;
+    }
+    div{
+      color: #b7b8b8;
+      font-size:0.8rem;
+      overflow: hidden;    
+      display: -webkit-box;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
 
   .words {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: #838485;
     padding: 0.8rem;
     margin-bottom: 0.5rem;
@@ -248,10 +271,11 @@ export default {
     .name {
       color: #4d4e50;
       font-weight: 500;
+      font-size:1.1rem;
     }
     .workage {
       color: #f9ab13;
-      font-size: 0.6rem;
+      font-size: 1rem;
       margin-left: 0.8rem;
     }
     .local {
@@ -261,7 +285,7 @@ export default {
     .label {
       display: inline-block;
       background-color: #2a7af3;
-      padding: 0.1rem 0.3rem;
+      padding: 0.2rem 0.3rem;
       font-size: 0.5rem;
       border-radius: 0.3rem;
       color: #fff;

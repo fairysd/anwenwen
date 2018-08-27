@@ -33,7 +33,7 @@
           </el-select>
         </li>
       </ul>
-    </div>
+      </div>
       <div class="list-body">
         <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)" :key="item.oid">
           <flexbox-item :span="4">
@@ -69,7 +69,11 @@ export default {
   components: { Search, Group, Cell, XButton },
   data() {
     return {
+      pages:0,
+      maxPage:0,
       cases: [],
+      recases:[],
+      newsLength:6,//初始载入数组长度
       citys: [],
       types:[],
       sorts:[
@@ -78,15 +82,17 @@ export default {
           label: '智能排序'
         }
         ],
-        cityValue:'',
-        typeValue:[],
-        sortValue:'',
-        typepop : "typepop"
+      cityValue:'',
+      typeValue:[],
+      sortValue:'',
+      typepop : "typepop",
+      //cityName:"南京市"
     };
   },
   mounted() {
+    let self = this;
     this.sortValue = "particleyear:desc";
-    this.cityValue = "南京市";
+    this.cityValue = "320101";
     let url = this.GLOBAL.hostIp;
     let message = this.$route.params.msg;
     this.$http.get(url + "/getCity").then(({ data }) => {
@@ -117,6 +123,27 @@ export default {
       this.types = narray;
       this.getLawyer();
     });
+
+     //律师加载
+      window.onscroll = function() {
+      //变量scrollTop是滚动条滚动时，距离顶部的距离
+      var scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      //变量windowHeight是可视区的高度
+      var windowHeight =
+        document.documentElement.clientHeight || document.body.clientHeight;
+      //变量scrollHeight是滚动条的总高度
+      var scrollHeight =
+        document.documentElement.scrollHeight || document.body.scrollHeight;
+      //滚动条到底部的条件
+      if ((scrollTop + windowHeight).toFixed(0) == scrollHeight) {
+        //写后台加载数据的函数
+        self.setlawyerLength(self.newsLength);
+        //self.getLawyer();
+        self.newsLength+=6//每次数组长度加多少
+      }
+    };
+
   },
   methods: {
     getDetails(oid) {
@@ -144,10 +171,67 @@ export default {
         })
         .then(({ data }) => {
           this.cases = data;
+          this.recases = data;
+          this.maxPage = data.maxPage;
           for (let i = 0; i < this.cases.length; i++) {
             this.cases[i].title = data[i].title.split(",");
           }
         });
+    },
+
+     // 加载律师
+    setlawyerLength(length) {
+      console.log(length,this.recases.length,this.cases.length);
+      //当滚动长度 大于数组长度时，新增元素
+      if(length > this.recases.length){
+
+
+        //当前页数大于最大页数时
+        console.log(this.maxPage)
+        if(this.pages >= this.maxPage ){
+          this.isBottom = true;
+          return this;
+        }
+
+        let url = this.GLOBAL.hostIp;
+        let type = this.typeValue[1];
+        let city = this.cityValue;
+        this.pages ++;
+        this.$http
+        .get(url + "/findAttorneyBySpeciality", {
+         params: {
+            message : type,
+            cityCode : city,
+            page:this.pages
+          }
+        })
+        .then(({ data }) => {
+          console.log(data);
+          if (data) {
+            //this.newsLength = 1;
+            for (let i = 0; i < data.length; i++) {
+              data[i].title = data[i].title.split(",");
+            }
+            for(let i =0;i < data.length ;i++){
+                this.recases.push(data[i])
+            }
+            this.maxPage = data.maxPage;
+            this.isBottom = false; 
+          //  //截取指定元素
+          //  this.newsList = this.newsListClone.slice(0,length)
+          }
+        });
+      
+      }
+      
+      //截取指定元素
+      this.cases = this.recases.slice(0,length)
+      
+      if (this.recases.length <= length) {
+        this.isBottom = true;
+      }
+
+
     }
   }
 };

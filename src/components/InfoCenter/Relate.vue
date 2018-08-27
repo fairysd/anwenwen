@@ -35,6 +35,7 @@ export default {
     };
   },
   mounted(){   
+     document.title = "我的案件";
   },
   methods:{  
       submitCode(){
@@ -43,13 +44,13 @@ export default {
         let code = this.relCode;
         let url =this.GLOBAL.hostIp;
             this.$http
-                .post(url + "/order/BindOrderByVerifyCode", {
-                    params: {
-                        userId : userId,
+                .post(url + "/order/BindOrderByVerifyCode", 
+                   this.qs.stringify({
+                        userid : userId,
                         token:token,
                         verifyCode:code
                     }
-                })
+                ))
                 .then(({ data }) => {
                  if (data.code==4) {
                      this.errorshow = true;

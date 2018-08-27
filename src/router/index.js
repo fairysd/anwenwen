@@ -16,6 +16,9 @@ import Offline from '@/components/Content/Offline'
 import Collection from '@/components/InfoCenter/Collection'
 import Relate from '@/components/InfoCenter/Relate'
 import Mycase from '@/components/InfoCenter/Case'
+import MyConsult from '@/components/MyService/MyConsult'
+import MyEntrust from '@/components/MyService/MyEntrust'
+import ServiceDetail from '@/components/MyService/ServiceDetail'
 
 
 Vue.use(Router) 
@@ -96,6 +99,21 @@ export default new Router({
           path:'mycase',
           name:'mycase',
           component:Mycase
+        },
+        {
+          path:'MyConsult',
+          name:'MyConsult',
+          component:MyConsult
+        },
+        {
+          path:'MyEntrust',
+          name:'MyEntrust',
+          component:MyEntrust
+        },
+        {
+          path:'ServiceDetail',
+          name:'ServiceDetail',
+          component:ServiceDetail
         }
       ]
     },

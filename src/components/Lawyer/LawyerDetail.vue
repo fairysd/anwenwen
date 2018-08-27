@@ -26,10 +26,10 @@
       </flexbox>
       <flexbox class="query">
           <flexbox-item>
-              <button @click="gotoPayment('offline')">线下咨询</button>
+              <button @click.stop="gotoPayment('offline',offlineId)" :key="offlineId">线下咨询</button>
           </flexbox-item>
           <flexbox-item>
-              <button @click="gotoPayment('delegation')">委托预约</button>
+              <button @click.stop="gotoPayment('delegation', delegateId)" :key="delegateId">委托预约</button>
           </flexbox-item>
       </flexbox>
       <flexbox>
@@ -50,6 +50,7 @@
 <script>
 import contentHeader from "../Content/contentHeader";
 import { Search, Group, Cell, XButton, Panel } from "vux";
+import { defaultCipherList } from 'constants';
 export default {
   name: "lawyerDetail",
   components: { contentHeader, Search, Group, Cell, XButton, Panel },
@@ -58,13 +59,26 @@ export default {
       searchValue: this.$route.params.msg,
       cases: [],
       type: "1",
-      list: []
+      list: [],
+      offlineId:'',
+      delegateId:''
     };
   },
   mounted() {
     let url = this.GLOBAL.hostIp;
     let oid = this.$route.params.id;
     let echartData = [];
+    // 支付
+    this.$http
+    .post(url+"/order/getProductList",this.qs.stringify({
+      category:0,
+      page:0
+    }))
+    .then(({data}) => {
+      this.offlineId = data.data[0].id;
+      this.delegateId = data.data[1].id;
+      // debugger;
+    })
     this.$http
       .get(url + "/getOneAttorney", {
         params: {
@@ -142,15 +156,8 @@ export default {
     getCaseDetail(key) {
       this.$router.push({ name: "caseDetail", params: { key: key } });
     },
-    gotoPayment(type){
-      switch(type){
-        case "offline":{
-          this.$router.push({ name: "offline"});
-        }
-        case "delegation":{
-          this.$router.push({ name: "delegation"});
-        }
-      }
+    gotoPayment(type,n){
+        this.$router.push({ name: type, params:{key:n}});
     }
   }
 };
@@ -162,12 +169,13 @@ export default {
   font-size: 0.8rem;
   .query{
     text-align: center;
-    padding-bottom: 0.3rem;  
+    padding-bottom: 1rem;
+    padding-top:1rem;  
   }
   button{
     background-color: #fff;
-    border: 1px solid #000;
-    padding: 0.5rem 1.5rem;
+    border: 1px solid #848484;
+    padding: 0.6rem 2.5rem;
     border-radius: 0.5rem;
   }
   .body {
@@ -176,6 +184,7 @@ export default {
   }
   .name {
     color: #4d4e50;
+    font-size:0.8rem;
     font-weight: 500;
   }
   .workage {
@@ -190,7 +199,7 @@ export default {
   .label {
     display: inline-block;
     background-color: #2a7af3;
-    padding: 0.1rem 0.3rem;
+    padding: 0.2rem 0.3rem;
     font-size: 0.5rem;
     border-radius: 0.3rem;
     color: #fff;
@@ -232,7 +241,7 @@ export default {
     margin-top: 0;
   }
   .title {
-    font-size: 1rem;
+    font-size: 0.8rem;
     padding-left: 0.6rem;
     padding-top: 0.5rem;
     color: #404143;
@@ -242,7 +251,7 @@ export default {
     text-overflow: ellipsis;
   }
   .content {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: #b7b8b8;
     padding-left: 0.6rem;
   }
