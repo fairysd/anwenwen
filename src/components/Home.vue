@@ -14,7 +14,7 @@
             </el-select>
           </li>
           <li class="input-box">
-            <input v-on:input="getAutoData" v-model="searchValue" class="search" type="text" placeholder="请输入关键字搜索咨询">
+            <input v-on:input="getAutoData" v-model="searchValue" class="search" type="text" placeholder="输入关键字搜索咨询">
             <img @click="getLawyer" src="../../static/icons/icon_11.png">
           </li>
           <li class="search-btn"></li>
