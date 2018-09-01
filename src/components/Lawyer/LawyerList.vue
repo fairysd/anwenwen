@@ -38,12 +38,12 @@
               <span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
             <div class="list-item">
-              <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
+              <p class="local" v-text="item.lawoffice"></p>
             </div>
             <div class="list-item">
-              <p  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
+              <span  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
                 <span class="label" v-text="labels"></span>
-              </p>
+              </span>
             </div>            
             <div class="list-item">
               <p class="recent" v-text="item.introduce"></p>
@@ -315,7 +315,7 @@ export default {
       }
     }
     .input-box {
-      width:13rem;
+      width:12rem;
       padding-left: 0.5rem;
       background-color: #f5f5f5;
       border-radius: 1.2rem;
@@ -326,7 +326,7 @@ export default {
         color: #a1a2a2;
         border: none;
         text-align: left;
-        width:10.5rem;
+        width:9.5rem;
         background: transparent;
       }
       input:focus {

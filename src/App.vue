@@ -39,12 +39,12 @@ body {
 }
 @media only screen and (max-width: 1080px), only screen and (max-device-width:1080px) {
     html,body {
-        font-size:54px!important;
+        font-size:50px!important;
     }
 }
 @media only screen and (max-width: 960px), only screen and (max-device-width:960px) {
     html,body {
-        font-size:48px!important;
+        font-size:44px!important;
     }
 }
 @media only screen and (max-width: 800px), only screen and (max-device-width:800px) {

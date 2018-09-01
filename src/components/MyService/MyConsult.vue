@@ -30,7 +30,7 @@
     },
     data() {
       return {
-        catagory:"1",
+        catagory:"0",
         serviceList: []
       };
     },

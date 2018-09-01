@@ -28,7 +28,7 @@
     },
     data() {
       return {
-        catagory:"0",
+        catagory:"1",
         serviceList: []
       };
     },

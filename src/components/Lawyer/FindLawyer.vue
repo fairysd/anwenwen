@@ -46,12 +46,12 @@
               <span class="name" v-text="item.name"></span><span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
             <div class="list-item">
-              <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
+              <p class="local" v-text="item.lawoffice"></p>
             </div>
             <div class="list-item">
-              <p  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
+              <span  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
                 <span class="label" v-text="labels"></span>
-              </p>
+              </span>
             </div>            
             <div class="list-item">
               <p class="recent" v-text="item.introduce"></p>
