@@ -16,11 +16,16 @@
         <img slot="icon-active" src="../assets/images/icons/icon_14.png" >
         <span slot="label" class="spanlineheight">收藏</span>
       </tabbar-item>
-      <tabbar-item link="/user">        
+      <tabbar-item link="/createCase">        
+        <img slot="icon" src="../assets/images/icons/icon_07.png" >
+        <img slot="icon-active" src="../assets/images/icons/icon_14.png" >
+        <span slot="label" class="spanlineheight">案件委托</span>
+      </tabbar-item>
+      <!-- <tabbar-item link="/user">        
         <img slot="icon" src="../assets/images/icons/icon_08.png">
         <img slot="icon-active" src="../assets/images/icons/icon_15.png" >
         <span slot="label" class="spanlineheight">我的</span>
-      </tabbar-item>
+      </tabbar-item> -->
     </tabbar>
     <div v-transfer-dom>
       <alert v-model="show" :title="'收藏成功'"> {{ '已收藏'}}</alert>
@@ -62,8 +67,8 @@ export default {
   methods:{
       collect(){
       let url = this.GLOBAL.hostIp;
+      //let oid = this.common.getCookie("lawyerOid")
       let oid = this.common.getCookie("lawyerOid")
-      
       let userId =  this.common.getCookie("userId")
       //alert(oid)
       this.$http
@@ -98,7 +103,7 @@ export default {
   color:#4f88f7;
 }
 .spanlineheight{
-  line-height:3;
+  line-height:2;
   font-size: 0.8rem;
 }
 

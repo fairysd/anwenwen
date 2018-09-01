@@ -1,4 +1,5 @@
 <template>
+
   <div class="delegation">
      <flexbox class="advantage">
         <flexbox-item>

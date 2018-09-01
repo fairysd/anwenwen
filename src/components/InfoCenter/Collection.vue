@@ -45,6 +45,9 @@
 import { Search, Group, Cell, XButton,Alert , TransferDomDirective as TransferDom} from "vux";
 export default {
   name: "collection",
+  directives: {
+    TransferDom
+  },
   components: { Search, Group, Cell, XButton,Alert,TransferDom },
   inject:['reload'],
   data() {
@@ -195,9 +198,11 @@ export default {
         border-bottom: 1px dotted #d5d5d6;
         padding-bottom: 0.5rem;
         .cancle{
-          padding-left: 2.8rem;
-          color: #a1a1a2;
-          font-size: 0.7rem;
+          color: #4f88f7;
+          font-size: 0.6rem;
+          padding: 0.1rem 0.3rem;
+          border-radius: 0.2rem;
+          border: 1px solid #4f88f7;
         }
   }
   .name{
@@ -208,6 +213,7 @@ export default {
     color: #f9ab13;
     font-size: 0.6rem;
     margin-left: 0.8rem;
+    padding-right:3rem;
   }
   .local{
     color: #7e7e7f;

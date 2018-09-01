@@ -81,7 +81,7 @@ export default {
           value: 'particleyear:desc',
           label: '智能排序'
         }
-        ],
+      ],
       cityValue:'',
       typeValue:[],
       sortValue:'',

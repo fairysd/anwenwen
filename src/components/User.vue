@@ -78,11 +78,11 @@ export default {
       width:100%;
     }
   }
-  /deep/ .weui-cells{
-    margin-top:0rem;
-    padding:0.3rem 0 0.3rem 0;
-    font-size:0.8rem;
-  }
+  // /deep/ .weui-cells{
+  //   margin-top:0rem;
+  //   padding:0.3rem 0 0.3rem 0;
+  //   font-size:0.8rem;
+  // }
   .group{
     text-align: left;
   }

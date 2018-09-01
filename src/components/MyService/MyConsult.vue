@@ -1,5 +1,10 @@
-<template>
+<template>                   
   <div>
+    <flexbox class="case-title">
+      <flexbox-item class="">      
+          <h4>线下咨询</h4>                      
+      </flexbox-item>
+    </flexbox>       
     <div  v-for="(item,index) in serviceList" :key="item.id">
       <divider>{{ item.serviceName }}</divider>
       <card :header="{title:item.title }"  :footer="{title: '查看详情',link:'/ServiceDetail?id='+item.id+'&returnLink=MyConsult'}  ">
@@ -45,7 +50,7 @@
           for(let i=0;i<data.data.length;i++){
 
             data.data[i].title ="<p>订单号:&nbsp;"+data.data[i].orderNumber+
-              "<span style='margin-left:20%;'>"+data.data[i].createTime+"</span></p>";
+              "<span style='margin-left:1rem;'>"+data.data[i].createTime+"</span></p>";
             if(data.data[i].state == "0") {
               data.data[i].showCode = false;
 
@@ -99,6 +104,13 @@
   .price{
     font-size: 2rem;
     text-align: center;
+  }
+  .case-title h4{
+    color: #777;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #d5d5d6;
+    font-weight: normal;
   }
 
 

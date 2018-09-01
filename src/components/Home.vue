@@ -15,7 +15,7 @@
           </li>
           <li class="input-box">
             <input v-on:input="getAutoData" v-model="searchValue" class="search" type="text" placeholder="请输入关键字搜索咨询">
-            <img @click="getLawyer" src="../../static/icons/icon_11.png" @click.native="showLoading">
+            <img @click="getLawyer" src="../../static/icons/icon_11.png">
           </li>
           <li class="search-btn"></li>
       </ul>
@@ -35,7 +35,7 @@
           <flexbox-item class="divider">                            
             </flexbox-item>
       </flexbox>   
-        <flexbox class="menu one" @click.native="showLoading" >
+        <flexbox class="menu one">
             <flexbox-item @click.native="checkList('婚姻家庭',cityValue)">
                 <div class="case-class">
                     <img src="../../static/icons/1.png" alt="">
@@ -61,7 +61,7 @@
                 </div> 
             </flexbox-item>
         </flexbox>
-        <flexbox class="menu two" @click.native="showLoading" >
+        <flexbox class="menu two">
           <flexbox-item @click.native="checkList('劳动仲裁',cityValue)">
               <div class="case-class">
                         <img src="../../static/icons/5.png" alt="">
@@ -158,12 +158,12 @@
 <script>
 
 
-import { Panel, Search, Tab, TabItem, Loading,TransferDomDirective as TransferDom } from "vux";
+import { Panel, Search, Tab, TabItem,TransferDomDirective as TransferDom } from "vux";
 export default {
   directives:{
     TransferDom
   },
-  components: { Panel, Search, Tab, TabItem , Loading},
+  components: { Panel, Search, Tab, TabItem },
   data() {
     return {
       cases: [],
@@ -266,14 +266,14 @@ export default {
    
   },
   methods: {
-    showLoading () {
-      this.$vux.loading.show({
-        text: 'Loading'
-      })
-      setTimeout(() => {
-        this.$vux.loading.hide()
-      }, 2000)
-    },
+    // showLoading () {
+    //   this.$vux.loading.show({
+    //     text: 'Loading'
+    //   })
+    //   setTimeout(() => {
+    //     this.$vux.loading.hide()
+    //   }, 2000)
+    // },
     getDetails(oid){
       this.$router.push({ name: "lawyerDetail", params: { id: oid } });
     },

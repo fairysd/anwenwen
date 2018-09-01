@@ -9,7 +9,9 @@
           </flexbox-item>
           <flexbox-item>
             <div class="list-item">
-              <span class="name" v-text="item.name"></span><span class="workage" v-text="item.workage+'年经验'"></span>
+              <span class="name" v-text="item.name"></span>
+              <img src="../../assets/images/icons/experienceIcon.png" class="experienceIcon">
+              <span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
             <div class="list-item">
               <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
@@ -67,24 +69,90 @@ export default {
     };
   },
   mounted() {
+    let storage = window.localStorage;
+
     let url = this.GLOBAL.hostIp;
     let oid = this.$route.params.id;
     this.lawyerOid = this.$route.params.id;
-
-    let storage = window.localStorage;
+    //this.common.setCookie("lawyerOid", this.lawyerOid);
+    //storage.setItem("lawyerOid",this.lawyerOid);
+    let localoid = storage.getItem("lawyerOid");
+    //let oid = this.common.getCookie("lawyerOid");
+    //console.log(localoid)
+    
     // 页面返回从localstorage读取数据
     if(typeof oid == "undefined" || oid == null || oid == ""){
       let localdeCases=JSON.parse(storage.getItem("localdeCases"));
       let localList = JSON.parse(storage.getItem("localList"));
       let localEchartData = JSON.parse(storage.getItem("localEchartData"));
+      //debugger
       //let localCases=JSON.parse(localCasesSting);
-      this.detailcases = localCases;
+      this.detailcases = localdeCases;
       this.list = localList;
       this.echartData = localEchartData;
+
+
+
+      let myChart = this.$echarts.init(document.getElementById("lawyerPie"));
+        let option_pie = {
+          title: {
+            text: "案由",
+            x: "left",
+            textStyle: {
+              //主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
+              fontSize: 20
+            }
+          },
+          tooltip: {
+            trigger: "item",
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+          },
+          color: [
+            "rgb(86,150,244)",
+            "rgb(71,204,127)",
+            "rgb(214,54,86)",
+            "rgb(253,193,43)",
+            "rgb(250,128,4)"
+          ],
+          legend: {
+            orient: "horizontal",
+            x: "center",
+            y: "bottom",
+            data: this.echartData[0]
+          },
+          series: [
+            {
+              name: "访问来源",
+              type: "pie",
+              radius: ["30%", "50%"],
+              center: ["50%", "40%"],
+              avoidLabelOverlap: false,
+              label: {
+                normal: {
+                  show: false,
+                  position: "center"
+                },
+                emphasis: {
+                  show: true,
+                  textStyle: {
+                    fontSize: "30",
+                    fontWeight: "bold"
+                  }
+                }
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: this.echartData[2]
+            }
+          ]
+        };
+        myChart.setOption(option_pie);
+     
       return;
     }
-
-
 
     //let echartData = [];
     // 支付
@@ -187,7 +255,7 @@ export default {
       this.$router.push({ name: "caseDetail", params: { key: key } });
     },
     gotoPayment(type,n){
-        this.$router.push({ name: type, params:{key:n}});
+      this.$router.push({ name: type, params:{key:n}});
     },
    
   }
@@ -218,10 +286,14 @@ export default {
     font-size:0.8rem;
     font-weight: 500;
   }
+  .experienceIcon{
+    width: 0.8rem;
+    vertical-align: middle;
+    padding-left:1rem;
+  }
   .workage {
     color: #f9ab13;
     font-size: 0.6rem;
-    margin-left: 0.8rem;
   }
   .local {
     color: #7e7e7f;

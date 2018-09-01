@@ -52,7 +52,7 @@ export default {
       show:false,
       errorshow:false,
       caseModel:{
-        lawyerId:"2eac92d0-ba91-3526-94f0-e5d41d674d21",
+        lawyerId:"",
         userTel:"",
         userName:"",
         caseType:1,
@@ -66,11 +66,14 @@ export default {
   mounted(){
     this.caseModel.userId = this.common.getCookie("userId")
     this.caseModel.token = this.common.getCookie("token")
+    this.caseModel.lawyerId = this.common.getCookie("lawyerOid")
   },
   methods:{     
     submitCase(){
        let url = this.GLOBAL.hostIp;
        let caseModel = this.caseModel
+       //let oid = this.common.getCookie("lawyerOid")
+      
       this.$http
       .post(url + "order/SubmitPreOrder",this.qs.stringify({
         lawyerId:caseModel.lawyerId,

@@ -70,7 +70,7 @@ export default {
   color:#4f88f7;
 }
 .spanlineheight{
-  line-height:3;
+  line-height:2;
   font-size: 0.8rem;
 }
 
