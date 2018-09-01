@@ -19,17 +19,24 @@ import Mycase from '@/components/InfoCenter/Case'
 import MyConsult from '@/components/MyService/MyConsult'
 import MyEntrust from '@/components/MyService/MyEntrust'
 import ServiceDetail from '@/components/MyService/ServiceDetail'
+import Footer from '@/components/Footer'
+import FooterDetail from '@/components/FooterDetail'
 
 
 Vue.use(Router) 
-
+Vue.use(LoadingPlugin)
+import  { LoadingPlugin } from 'vux'
 export default new Router({
   routes: [
     {
       path: '/',
       name: 'Content',
-      component: Content,
-      children:[
+      components:{
+          default:Content,
+          footer1:Footer
+      },
+      children:
+      [
         {
           path:'',
           component:Home
@@ -39,6 +46,8 @@ export default new Router({
           name:"home",
           component:Home
         },
+
+
         {
           path:'createCase',
           component:CreateCase
@@ -57,11 +66,12 @@ export default new Router({
           name:'findLawyer',
           component:FindLawyer
         },
-        {
-          path:'lawyerDetail',
-          name:'lawyerDetail',
-          component:LawyerDetail
-        },
+        // {
+        //   path:'lawyerDetail',
+        //   name:'lawyerDetail',
+        //   component:LawyerDetail,
+
+        // },
         {
           path:'caseDetail',
           name:'caseDetail',
@@ -126,6 +136,22 @@ export default new Router({
       path:"/state",
       name:"state",
       component:State
+    },{
+        path:'/lawyerDetails',
+        name:'lawyerDetails',
+        components:{
+          default:Content,
+          footer1:FooterDetail  
+        },
+        children:[
+            {
+              path:'lawyerDetail',
+              name:'lawyerDetail',
+              component:LawyerDetail,
+             }
+        ]
+
     }
+
   ]
 })

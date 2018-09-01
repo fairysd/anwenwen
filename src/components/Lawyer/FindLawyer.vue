@@ -266,22 +266,22 @@ export default {
     margin-left: 0.8rem;
   }
   .local {
-    color: #878889;
+    color: #7e7e7f;
     font-size: 0.6rem;
   }
   .label {
     display: inline-block;
-    background-color: #2a7af3;
-    padding: 0.1rem 0.3rem;
-    font-size: 0.5rem;
+    padding: 0.2rem 0.3rem;
+    border: 1px solid #4f88f7;
+    font-size: 0.45rem;
     border-radius: 0.3rem;
-    color: #fff;
-    margin-right: 0.2rem;
+    color: #4f88f7;
+    margin-right: 0.1rem;
     margin-bottom: 0.1rem;
     line-height: 0.7rem;
   }
   .recent {
-    color: #b7b8b8;
+    color: #a1a1a2;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;

@@ -68,14 +68,12 @@ export default {
           for (let i = 0; i < this.cases.length; i++) {
             this.isTrue.push(false);
           }
-          if(data.data.length == 0){
+          // debugger;
+          if(this.cases.length == 0){
             this.mcase = false;
             this.icase = true;
           }
           console.log(this.isTrue);
-          //  if(data.data.length==0){
-
-          //  }
         });
   },
   methods:{

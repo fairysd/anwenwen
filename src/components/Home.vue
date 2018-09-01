@@ -15,7 +15,7 @@
           </li>
           <li class="input-box">
             <input v-on:input="getAutoData" v-model="searchValue" class="search" type="text" placeholder="请输入关键字搜索咨询">
-            <img @click="getLawyer" src="../../static/icons/icon_11.png" alt="">
+            <img @click="getLawyer" src="../../static/icons/icon_11.png" @click.native="showLoading">
           </li>
           <li class="search-btn"></li>
       </ul>
@@ -35,7 +35,7 @@
           <flexbox-item class="divider">                            
             </flexbox-item>
       </flexbox>   
-        <flexbox class="menu one">
+        <flexbox class="menu one" @click.native="showLoading" >
             <flexbox-item @click.native="checkList('婚姻家庭',cityValue)">
                 <div class="case-class">
                     <img src="../../static/icons/1.png" alt="">
@@ -60,33 +60,33 @@
                     <p>拆迁安置</p>
                 </div> 
             </flexbox-item>
-    </flexbox>
-        <flexbox class="menu two">
-      <flexbox-item @click.native="checkList('劳动仲裁',cityValue)">
-          <div class="case-class">
-                    <img src="../../static/icons/5.png" alt="">
-                    <p>劳动仲裁</p>
-                </div> 
-      </flexbox-item>
-      <flexbox-item @click.native="checkList('消费权益',cityValue)">
-          <div class="case-class">
-                    <img src="../../static/icons/6.png" alt="">
-                    <p>消费权益</p>
-                </div> 
-      </flexbox-item>
-      <flexbox-item @click.native="checkList('刑事辩护',cityValue)">
-          <div class="case-class">
-                    <img src="../../static/icons/7.png" alt="">
-                    <p>刑事辩护</p>
-                </div> 
-      </flexbox-item>
-      <flexbox-item @click.native="checkList('人身损害',cityValue)">
-          <div class="case-class">
-                    <img src="../../static/icons/8.png" alt="">
-                    <p>人身损害</p>
-                </div> 
-      </flexbox-item>
-    </flexbox>
+        </flexbox>
+        <flexbox class="menu two" @click.native="showLoading" >
+          <flexbox-item @click.native="checkList('劳动仲裁',cityValue)">
+              <div class="case-class">
+                        <img src="../../static/icons/5.png" alt="">
+                        <p>劳动仲裁</p>
+                    </div> 
+          </flexbox-item>
+          <flexbox-item @click.native="checkList('消费权益',cityValue)">
+              <div class="case-class">
+                        <img src="../../static/icons/6.png" alt="">
+                        <p>消费权益</p>
+                    </div> 
+          </flexbox-item>
+          <flexbox-item @click.native="checkList('刑事辩护',cityValue)">
+              <div class="case-class">
+                        <img src="../../static/icons/7.png" alt="">
+                        <p>刑事辩护</p>
+                    </div> 
+          </flexbox-item>
+          <flexbox-item @click.native="checkList('人身损害',cityValue)">
+              <div class="case-class">
+                        <img src="../../static/icons/8.png" alt="">
+                        <p>人身损害</p>
+                    </div> 
+          </flexbox-item>
+      </flexbox>
     <flexbox class="">
       <flexbox-item class="divider">                            
       </flexbox-item>
@@ -111,20 +111,21 @@
 
     <div class="list-body">
       <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)" :key="item.oid">
-          <flexbox-item :span="3">
+          <flexbox-item :span="2">
             <div class="list-item photo">
                <img class="lawyer-photo" :src="item.imagepath" style="">
             </div>
           </flexbox-item>
           <flexbox-item>
-            <div class="list-item">
+            <div class="list-item info">
               <p class="name" v-text="item.name"></p>
             </div>
-            <div class="list-item">
+            <div class="list-item info">
               <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
             </div>
-            <div class="list-item">
-              <p class="workage" v-text="item.workage+'年经验'"></p>
+            <div class="list-item info">
+              <img src="../assets/images/icons/experienceIcon.png" alt="">
+              <span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
             <!-- <div class="list-item">
               <p  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
@@ -143,7 +144,7 @@
           <h4 v-text="item.title"></h4>
           <p v-text="item.content"></p>
         </div>
-        <div :class="item.imgPath.length>0? 'img-part' : '' ">
+        <div :class="item.imgPath.length>0? 'img-part' : '' " v-if="item.imgPath.length>0">
           <img v-for="(img,index) in item.imgPath"  :src="img" alt="" v-if="index<1">
         </div>
       </li>
@@ -152,10 +153,17 @@
   </div>
 </template>
 
+
+
 <script>
-import { Panel, Search, Tab, TabItem } from "vux";
+
+
+import { Panel, Search, Tab, TabItem, Loading,TransferDomDirective as TransferDom } from "vux";
 export default {
-  components: { Panel, Search, Tab, TabItem },
+  directives:{
+    TransferDom
+  },
+  components: { Panel, Search, Tab, TabItem , Loading},
   data() {
     return {
       cases: [],
@@ -176,7 +184,7 @@ export default {
       newsLength:3,//初始载入数组长度
       isBottom:false,
       getBarWidth: function () {
-        return (3.5 + 1) * 22 + 'px'
+        return (3 + 1) * 22 + 'px'
       }
     };
   },
@@ -188,6 +196,10 @@ export default {
     let url = this.GLOBAL.hostIp;
     let userid = this.common.getCookie("userId");
     console.log("mon> ",self)
+    // loading
+     this.timer = setInterval(() => {
+      //console.log(this.$vux.loading.isVisible())
+    }, 1000)
 
     this.$http
       .post(url + "order/CheckLogin",this.qs.stringify({
@@ -254,6 +266,14 @@ export default {
    
   },
   methods: {
+    showLoading () {
+      this.$vux.loading.show({
+        text: 'Loading'
+      })
+      setTimeout(() => {
+        this.$vux.loading.hide()
+      }, 2000)
+    },
     getDetails(oid){
       this.$router.push({ name: "lawyerDetail", params: { id: oid } });
     },
@@ -412,7 +432,10 @@ export default {
     font-size:0.8rem;
   }
   .scrollable .vux-tab-item[data-v-fed36922]{
-    font-size:0.9rem;
+    font-size:0.8rem;
+  }
+  .scrollable .vux-tab-item[data-v-fed36922]{
+        flex: 0 0 22%;
   }
   .xzClass{
     display: block;
@@ -440,13 +463,12 @@ export default {
     }
     .local {
       padding-left: 0.5rem;
-      // width:20%;
+      height:2.2rem;
       width:5.5rem;
       img {
         width: 0.7rem;
         padding-right: 0.1rem;
         vertical-align: middle;
-        // padding-right: 0.5rem;
       }
       p {
         font-size: 0.8rem;
@@ -455,11 +477,8 @@ export default {
       }
     }
     .input-box {
-      // margin-left: 1rem;
-      // width:68%;
       width:13rem;
       padding-left: 0.5rem;
-      // padding-right: 1rem;
       background-color: #f5f5f5;
       border-radius: 1.2rem;
       > * {
@@ -470,8 +489,6 @@ export default {
         border: none;
         text-align: left;
         width:10.5rem;
-        // padding-right: 22%;
-        // padding-right: 2rem;
         background: transparent;
       }
       input:focus {
@@ -502,16 +519,25 @@ export default {
   }
   // 律师展示样式
   .lawyer-photo{
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 3.3rem;
+    height: 3.3rem;
     border-radius: 5.5rem;
     margin-top: -0.2rem;
   }
   .body{
       border-bottom: 1px dotted #d5d5d6;
-      margin-top: 0.5rem;
+      margin-top: 0.4rem;
       margin-bottom: 0.2rem;
-      padding-left: 0.5rem;
+      padding-left: 0.8rem;
+      padding-bottom:0.2rem;
+  }
+  .info{
+    padding-left:1rem;
+    line-height: 1rem;
+    img{
+      width:0.8rem;
+      vertical-align: middle;
+    }
   }
   .name{
     color: #4d4e50;
@@ -529,6 +555,7 @@ export default {
     color: #878889;
     font-size: 0.6rem;
     padding-bottom: 0.2rem;
+
   }
   .label{
     display: inline-block;
@@ -555,8 +582,8 @@ export default {
     li {
       padding-left: 3%;
       padding-right:3%; 
-      padding-top: 0.3rem;
-      padding-bottom: 0.4rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
       border-bottom: 1px solid #e7e7e7;
     }
     li > div {
@@ -564,14 +591,14 @@ export default {
        width: 100%;
     }
     .text-part {
-      width: 70%;
+      width: 72%;
       vertical-align: middle;
      
     }
     .content-list h4 {
       color: #4d4e50;
       font-weight: 600;
-      font-size: 0.8rem;
+      font-size: 0.86rem;
       word-break: keep-all;
       white-space: nowrap;
       overflow: hidden;
@@ -579,7 +606,7 @@ export default {
     }
     .content-list p {
       color: #b7b8b8;
-      font-size:0.7rem;
+      font-size:0.6rem;
       // word-break: keep-all;
       // white-space: nowrap;
       overflow: hidden;    
@@ -594,8 +621,8 @@ export default {
       img {
         display: block;
         margin: auto;
-        height: 3.5rem;
-        width: 5.5rem;
+        height: 2.9rem;
+        width: 5rem;
       }
     }
   }
@@ -604,7 +631,7 @@ export default {
   }
   .menu p {
     color: #575757;
-    font-size:0.8rem;
+    font-size:0.67rem;
   }
 
 .vux-tab .vux-tab-item.vux-tab-selected{
@@ -618,7 +645,7 @@ export default {
 }
 #home .bgimg img {
   width: 100%;
-  height:10rem;
+  height:8.26rem;
   display: block;
 }
 .case-class {
@@ -634,7 +661,7 @@ export default {
 .news-class {
   margin-top: 0rem;
   border-top: 1px solid #e7e7e7;
-  height: 3rem;
+  height: 2.3rem;
   padding-top: 0;
 }
 .weui-panel__hd {

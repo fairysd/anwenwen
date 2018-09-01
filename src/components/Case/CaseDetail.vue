@@ -23,36 +23,37 @@
           <button v-show="showloadmore" @click="loadmore" class="load">展开 ▼</button>
           <button v-show="showloadless" @click="loadless" class="load">收起 ▲</button>
       </div>
-       <flexbox>
+      <!-- 图表展示 -->
+      <flexbox>
           <flexbox-item>
-              <div id="lawyerPie" class="pie-echart echarts" :style="'height:300px;width:100%;'"></div>
+              <div id="lawyerPie" class="pie-echart echarts" :style="'height:350px;width:100%;'"></div>
           </flexbox-item>
       </flexbox>
       <flexbox>
           <flexbox-item>
-              <div id="lawyerAddress" class="address-echart echarts" :style="'height:300px;width:100%;'"></div>
+              <div id="lawyerAddress" class="address-echart echarts" :style="'height:320px;width:100%;'"></div>
           </flexbox-item>
       </flexbox>
       <flexbox>
           <flexbox-item>
-              <div id="main_line" class="year-echart echarts" :style="'height:300px;width:100%;'"></div>
+              <div id="main_line" class="year-echart echarts" :style="'height:320px;width:100%;'"></div>
           </flexbox-item>
       </flexbox>
       <flexbox>
           <flexbox-item>
-              <div id="main_routine" class="routime-echart echarts" :style="'height:300px;width:100%;'"></div>
+              <div id="main_routine" class="routime-echart echarts" :style="'height:320px;width:100%;'"></div>
           </flexbox-item>
       </flexbox>
       <flexbox>
           <flexbox-item>
-              <div id="main_book" class="book-echart echarts" :style="'height:300px;width:100%;'"></div>
+              <div id="main_book" class="book-echart echarts" :style="'height:320px;width:100%;'"></div>
           </flexbox-item>
       </flexbox>
       <div class="list-body">
         <flexbox class="body">
           <flexbox-item :span="4">
             <div class="list-item photo">
-               <img class="lawyer-photo" src='http://ytm.mynatapp.cc/mob/img/dicon_.jpg'>
+               <img class="lawyer-photo" src='../../assets/images/icons/lawyer.png'>
             </div>
           </flexbox-item>
           <flexbox-item>
@@ -136,6 +137,7 @@ export default {
             orient: "horizontal",
             x: "center",
             y: "bottom",
+            bottom:0,
             data: hearCourtCount[0]
           },
           series: [
@@ -441,12 +443,11 @@ export default {
     padding-right: 0.6rem;
   }
   .load {
-    width: 8rem;
-    color: #fa8004;
-    border: 1px solid #fa8004;
-    border-radius: 3rem;
-    margin-right: 0.3rem;
-    height: 2rem;
+    width: 13rem;
+    color: #4f88f7;
+    border: 1px solid #4f88f7;
+    border-radius: 0.5rem;
+    height: 2.3rem;
     font-size: 0.9rem;
     background-color: #fff;
   }

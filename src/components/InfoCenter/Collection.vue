@@ -18,6 +18,7 @@
           <flexbox-item>
             <div class="list-item">
               <span class="name" v-text="item.name"></span><span class="workage" v-text="item.workage+'年经验'"></span>
+              <span @click.stop="cancleCollect(item.oid)" class="cancle">取消收藏</span>
             </div>
             <div class="list-item">
               <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
@@ -33,17 +34,23 @@
           </flexbox-item>
       </flexbox>
       </div>
+      <div v-transfer-dom>
+        <alert v-model="show" > {{ '取消成功'}}</alert>
+      </div>
   </div>
+  
 </template>
 
 <script>
-import { Search, Group, Cell, XButton } from "vux";
+import { Search, Group, Cell, XButton,Alert , TransferDomDirective as TransferDom} from "vux";
 export default {
   name: "collection",
-  components: { Search, Group, Cell, XButton },
+  components: { Search, Group, Cell, XButton,Alert,TransferDom },
+  inject:['reload'],
   data() {
     return {
-      searchValue:this.$route.params.msg,      
+      searchValue:this.$route.params.msg,   
+      show:false,   
       autoData:[],
       cases: [],
       myclawyer:true,
@@ -74,6 +81,31 @@ export default {
      getDetails(oid){
       this.$router.push({ name: "lawyerDetail", params: { id: oid } });
     }, 
+    cancleCollect(id){
+      let userId = this.common.getCookie("userId")
+      console.log(userId)
+      console.log(id);
+      let url =this.GLOBAL.hostIp;
+      if(id){
+         this.$http
+        .get(url + "order/deleteStoreLawyer", 
+        {
+          params:{
+            userid: userId,
+            lawyerOid:id
+            }
+        })
+        .then(({ data }) => {
+          console.log(data);
+          if(data.code==0){
+            this.show =true;
+            
+          }
+          this.reload();
+        });
+        
+      }
+    }
   }
 };
 </script>
@@ -162,6 +194,11 @@ export default {
   .body{
         border-bottom: 1px dotted #d5d5d6;
         padding-bottom: 0.5rem;
+        .cancle{
+          padding-left: 2.8rem;
+          color: #a1a1a2;
+          font-size: 0.7rem;
+        }
   }
   .name{
     color: #4d4e50;
@@ -173,22 +210,22 @@ export default {
     margin-left: 0.8rem;
   }
   .local{
-    color: #878889;
+    color: #7e7e7f;
     font-size: 0.6rem;
   }
   .label{
     display: inline-block;
-    background-color: #2a7af3;
-    padding: 0.1rem 0.3rem;
-    font-size: 0.5rem;
+    padding: 0.2rem 0.3rem;
+    border: 1px solid #4f88f7;
+    font-size: 0.45rem;
     border-radius: 0.3rem;
-    color: #fff;
-    margin-right: 0.2rem;
+    color: #4f88f7;
+    margin-right: 0.1rem;
     margin-bottom: 0.1rem;
     line-height: 0.7rem;
   }
   .recent{
-    color: #b7b8b8;
+    color: #a1a1a3;;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;
@@ -219,10 +256,11 @@ export default {
     background: #fff;
     }
     p{
-            padding: 2px 5px;
+    padding: 2px 5px;
     white-space: nowrap;
     overflow: hidden;
     }
+    
 }
 }
 </style>

@@ -22,37 +22,38 @@
         </flexbox-item>
       </flexbox>
       <div class="btn-box">
-          <button v-show="showloadmore" @click="loadmore" class="load">查看全文 ▼</button>
-          <button v-show="showloadless" @click="loadless" class="load">收起 ▲</button>
+          <button v-show="showloadmore" @click="loadmore" class="load">查看全文 &nbsp; ▼</button>
+          <button v-show="showloadless" @click="loadless" class="load">收起 &nbsp; ▲</button>
       </div>
        <flexbox class="consult-box consult-boxone" >
-          <flexbox-item :span=6 @click.native="gotoKefu">
-              <div class="consultfree">
-                  <img src="../../assets/images/icons/icon_05.png" alt="">
+          <flexbox-item :span=3 @click.native="gotoKefu">
+              <div >
+                  <img src="../../assets/images/icons/newIcon-1.png" alt="">
                   <p>免费咨询</br><span>免费咨询1分钟响应</span></p>
               </div>
           </flexbox-item>
-          <flexbox-item :span=6>
-              <a class="consultcall" href="tel:18911732711">
-                  <img src="../../assets/images/icons/icon_05.png" alt="">
+          <flexbox-item :span=3>
+              <a href="tel:18911732711">
+                  <img src="../../assets/images/icons/newIcon-2.png" alt="">
                   <p style="color:#080808;">电话咨询</br><span>电话沟通更高效</span></p>
               </a>
-          </flexbox-item>          
-      </flexbox>
-       <flexbox class="consult-box" >
-          <flexbox-item :span=6 @click.native="gotoKefu">
-              <div class="consultfree">
-                  <img src="../../assets/images/icons/icon_05.png" alt="">
+          </flexbox-item>  
+          <flexbox-item :span=3 @click.native="gotoKefu">
+              <div>
+                  <img src="../../assets/images/icons/newIcon-3.png" alt="">
                   <p>代写文书</br><span>量身定制满意为止</span></p>
               </div>
           </flexbox-item>
-          <flexbox-item :span=6>
-              <div class="consultcall" href="tel:15806213493">
-                  <img src="../../assets/images/icons/icon_05.png" alt="">
+          <flexbox-item :span=3>
+              <div href="tel:15806213493">
+                  <img src="../../assets/images/icons/newIcon-4.png" alt="">
                   <p style="color:#080808;">文书模板</br><span>文书模板desc</span></p>
               </div>
-          </flexbox-item>          
+          </flexbox-item>        
       </flexbox>
+       <!-- <flexbox class="consult-box" >
+                    
+      </flexbox> -->
         <div class="list-body">
         <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)" :key="item.oid">
           <flexbox-item :span="4">
@@ -117,19 +118,7 @@ export default {
           this.cases[i].title = this.cases[i].title.split(",");
         }
       });
-    ////临时数据
-    // this.$http
-    //   .get(url + "/findAttorneyBySpeciality", {
-    //     params: {
-    //       message: "交通事故"
-    //     }
-    //   })
-    //   .then(({ data }) => {
-    //     this.cases = data;
-    //     for (let i = 0; i < this.cases.length; i++) {
-    //       this.cases[i].title = data[i].title.split(",");
-    //     }
-    //   });
+
   },
   methods: {
     loadmore() {
@@ -147,7 +136,7 @@ export default {
     },
     gotoKefu(){
       let kefuUrl = "http://kefu.anwenwen.com/wechat/Agent";
-       let userId = this.common.getCookie("userId")
+      let userId = this.common.getCookie("userId")
       kefuUrl+="?userId="+userId;
       location.href = kefuUrl;
     }
@@ -158,16 +147,22 @@ export default {
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
 .news-detail {
+   /deep/ .vux-flexbox .vux-flexbox-item{
+      margin-left: 0 !important;
+      text-align: center;
+    }
   .content {
     padding: 0 0.5rem 0 0.5rem;
     h4 {
       padding: 0.5rem 0 0.3rem 0;
       font-size: 1rem;
       line-height: 1.4rem;
+      text-align: left;
     }
     p {
       padding: 0 0 0.5rem 0;
       font-size:0.8rem;
+      text-align: left;
     }
     img {
       width: 100%;
@@ -198,12 +193,12 @@ export default {
     padding-right: 0.6rem;
   }
   .load {
-    width: 8rem;
-    color: #fa8004;
-    border: 1px solid #fa8004;
-    border-radius: 3rem;
-    margin-right: 0.3rem;
-    height: 2rem;
+    width: 19rem;
+    color: #4f88f7;
+    border: 1px solid #4f88f7;
+    border-radius: 0.5rem;
+    // margin-right: 0.3rem;
+    height: 2.3rem;
     font-size: 0.9rem;
     background-color: #fff;
   }
@@ -211,15 +206,28 @@ export default {
     a {
       display: block;
     }
-    .consultfree {
-      padding-top: 1rem;
-      text-align: center;
-      border-right: solid 1px #e7e7e7;
-      img {
-        width: 20%;
+    img {
+        width: 2rem;
         padding: 5%;
         padding-top: 0;
-      }
+    }
+   
+    p{
+      font-size:0.8rem;
+    }
+    span{
+      font-size:0.22rem;
+      color:#a1a1a2;
+    }
+    .consultfree {
+      // padding-top: 1rem;
+      text-align: center;
+      // border-right: solid 1px #e7e7e7;
+      // img {
+      //   width: 2rem;
+      //   padding: 5%;
+      //   padding-top: 0;
+      // }
       p {
         vertical-align: top;
         text-align: left;
@@ -236,11 +244,7 @@ export default {
     .consultcall {
       padding-top: 1rem;
       text-align: center;
-      img {
-        width: 20%;
-        padding: 5%;
-        padding-top: 0;
-      }
+     
       p {
         vertical-align: top;
         text-align: left;
@@ -256,7 +260,9 @@ export default {
     }
   }
   .consult-boxone {
-    border-bottom: solid 1px #e7e7e7;
+    // border-bottom: solid 1px #e7e7e7;
+    // padding:0 0.5rem;
+    padding:1rem 1rem 1rem 0.1rem;
   }
   .btn-box {
     margin-top: 0.8rem;

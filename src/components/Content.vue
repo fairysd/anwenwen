@@ -2,8 +2,11 @@
   <div>
     <div class="vux-demo">
       <router-view></router-view>
+      <router-view name="footer1"></router-view>
     </div>
-    <wafooter></wafooter>
+
+    <!-- <router-view name="footer2"></router-view> -->
+    <!-- <wafooter></wafooter> -->
   </div>
 </template>
 

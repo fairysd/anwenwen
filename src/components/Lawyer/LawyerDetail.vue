@@ -1,7 +1,7 @@
 <template>
   <div class="lawyer-detail">
       <div class="list-body">
-        <flexbox class="body" v-for="item in cases" :key="item.oid">
+        <flexbox class="body" v-for="item in detailcases" :key="item.oid">
           <flexbox-item :span="4">
             <div class="list-item photo">
                <img class="lawyer-photo" :src="item.imagepath">
@@ -45,8 +45,6 @@
       </flexbox>
       </div>
   </div>
-  
-  
 </template>
 
 <script>
@@ -59,17 +57,36 @@ export default {
   data() {
     return {
       searchValue: this.$route.params.msg,
-      cases: [],
+      detailcases: [],
       type: "1",
       list: [],
+      echartData:[],
       offlineId:'',
-      delegateId:''
+      delegateId:'',
+      lawyerOid:''
     };
   },
   mounted() {
     let url = this.GLOBAL.hostIp;
     let oid = this.$route.params.id;
-    let echartData = [];
+    this.lawyerOid = this.$route.params.id;
+
+    let storage = window.localStorage;
+    // 页面返回从localstorage读取数据
+    if(typeof oid == "undefined" || oid == null || oid == ""){
+      let localdeCases=JSON.parse(storage.getItem("localdeCases"));
+      let localList = JSON.parse(storage.getItem("localList"));
+      let localEchartData = JSON.parse(storage.getItem("localEchartData"));
+      //let localCases=JSON.parse(localCasesSting);
+      this.detailcases = localCases;
+      this.list = localList;
+      this.echartData = localEchartData;
+      return;
+    }
+
+
+
+    //let echartData = [];
     // 支付
     this.$http
     .post(url+"/order/getProductList",this.qs.stringify({
@@ -79,8 +96,10 @@ export default {
     .then(({data}) => {
       this.offlineId = data.data[0].id;
       this.delegateId = data.data[1].id;
+     
       // debugger;
     })
+    // 页面初始化加载
     this.$http
       .get(url + "/getOneAttorney", {
         params: {
@@ -88,11 +107,20 @@ export default {
         }
       })
       .then(({ data }) => {
-        this.cases.push(data[0]);
-        this.cases[0].title = data[0].title.split(",");
-        this.cases[0].title.pop();
-        echartData = data[0].data;
+        this.detailcases.push(data[0]);
+        this.detailcases[0].title = data[0].title.split(",");
+        this.detailcases[0].title.pop();
+        this.echartData = data[0].data;
         this.list = data[1];
+
+        // 存储在localStorage
+        let localdeCases =JSON.stringify(this.detailcases); 
+        let localList =JSON.stringify(this.list); 
+        let localEchartData =JSON.stringify(this.echartData); 
+        storage.setItem("localdeCases",localdeCases);
+        storage.setItem("localList",localList);
+        storage.setItem("localEchartData",localEchartData);
+
       })
       .then(() => {
         let myChart = this.$echarts.init(document.getElementById("lawyerPie"));
@@ -120,7 +148,7 @@ export default {
             orient: "horizontal",
             x: "center",
             y: "bottom",
-            data: echartData[0]
+            data: this.echartData[0]
           },
           series: [
             {
@@ -147,7 +175,7 @@ export default {
                   show: false
                 }
               },
-              data: echartData[2]
+              data: this.echartData[2]
             }
           ]
         };
@@ -160,7 +188,8 @@ export default {
     },
     gotoPayment(type,n){
         this.$router.push({ name: type, params:{key:n}});
-    }
+    },
+   
   }
 };
 </script>
@@ -195,22 +224,22 @@ export default {
     margin-left: 0.8rem;
   }
   .local {
-    color: #878889;
+    color: #7e7e7f;
     font-size: 0.6rem;
   }
   .label {
     display: inline-block;
-    background-color: #2a7af3;
     padding: 0.2rem 0.3rem;
-    font-size: 0.5rem;
+    border: 1px solid #4f88f7;
+    font-size: 0.45rem;
     border-radius: 0.3rem;
-    color: #fff;
-    margin-right: 0.2rem;
+    color: #4f88f7;
+    margin-right: 0.1rem;
     margin-bottom: 0.1rem;
     line-height: 0.7rem;
   }
   .recent {
-    color: #b7b8b8;
+    color: #a1a1a3;
     font-size: 0.5rem;
   }
   .body {
@@ -243,7 +272,7 @@ export default {
     margin-top: 0;
   }
   .title {
-    font-size: 0.8rem;
+    font-size: 0.86rem;
     padding-left: 0.6rem;
     padding-top: 0.5rem;
     color: #404143;

@@ -1,6 +1,5 @@
 <template>
   <div>    
-    
     <tabbar class="page-footer">
       <tabbar-item selected link="/home">        
         <img slot="icon" src="../assets/images/icons/icon_11.png">
@@ -12,15 +11,10 @@
         <img slot="icon-active" src="../assets/images/icons/icon_12.png" >
         <span slot="label" class="spanlineheight">法律咨询</span>
       </tabbar-item>
-      <tabbar-item link="/findLawyer">        
-        <img slot="icon" src="../assets/images/icons/icon_06.png">
-        <img slot="icon-active" src="../assets/images/icons/icon_13.png" >
-        <span slot="label" class="spanlineheight">找律师</span>
-      </tabbar-item>
-      <tabbar-item link="/createCase">        
+       <tabbar-item @on-item-click="collect">        
         <img slot="icon" src="../assets/images/icons/icon_07.png" >
         <img slot="icon-active" src="../assets/images/icons/icon_14.png" >
-        <span slot="label" class="spanlineheight">案件委托</span>
+        <span slot="label" class="spanlineheight">收藏</span>
       </tabbar-item>
       <tabbar-item link="/user">        
         <img slot="icon" src="../assets/images/icons/icon_08.png">
@@ -28,20 +22,34 @@
         <span slot="label" class="spanlineheight">我的</span>
       </tabbar-item>
     </tabbar>
+    <div v-transfer-dom>
+      <alert v-model="show" :title="'收藏成功'"> {{ '已收藏'}}</alert>
+    </div>
+    <div v-transfer-dom>
+      <alert v-model="unshow"> {{ '收藏失败'}}</alert>
+    </div>
   </div>
 </template>
 
 <script>
-import { Tabbar, TabbarItem } from "vux";
+import { Tabbar, TabbarItem,Alert, TransferDomDirective as TransferDom} from "vux";
 
 export default {
-  name: "wafooter",
+   directives: {
+    TransferDom
+  },
+  name: "FooterDetail",
   components: {
+    Alert, 
     Tabbar,
-    TabbarItem
+    TabbarItem,
+    TransferDom
   },
   data() {
     return {
+      show:false,
+      unshow:false,
+      msg:'',
       kefuUrl:"http://kefu.anwenwen.com/wechat/Agent"
     };
   },
@@ -52,7 +60,27 @@ export default {
     this.kefuUrl+="?userName="+nickname+"&headImg="+heading+"&userId="+userId;
   },
   methods:{
-     
+      collect(){
+      let url = this.GLOBAL.hostIp;
+      let oid = this.common.getCookie("lawyerOid")
+      
+      let userId =  this.common.getCookie("userId")
+      //alert(oid)
+      this.$http
+      .post(url + "/order/saveLawyer",this.qs.stringify({
+        userid:userId,
+        lawyerOid:oid
+      }))
+      .then(({ data }) => {
+        //console.log(data)
+        if(data.code ==0){
+          this.show = true
+          //this.msg = data.message;
+        }else{
+          this.unshow = true
+        }
+      })
+    }
   }
 };
 </script>
