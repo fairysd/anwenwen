@@ -40,9 +40,7 @@ export default {
       this.common.getCookie("headimg");
       this.common.getCookie("nickName");
       this.name =  this.common.getCookie("nickname");
-      console.log("name",this.name)
       this.nickimg = this.common.getCookie("headimg");
-      console.log("img",this.nickimg)
    },
   //
   methods:{

@@ -86,10 +86,8 @@ export default {
     this.inputContent = message;
     this.cityValue = cityCode;
     let storage = window.localStorage;
-    
     // loading
      this.timer = setInterval(() => {
-      //console.log(this.$vux.loading.isVisible())
     }, 1000)
     // 律师页多城市
       this.$http.get(url + "/getCity").then(({ data }) => {
@@ -101,7 +99,6 @@ export default {
       let localCases=JSON.parse(localCasesSting);
       let cityCode = storage.getItem("localCityCode")
       let localMsg = storage.getItem("localMsg")
-      //console.log("localjson",localCases,cityCode,localMsg);
       this.cityValue = cityCode;
       this.searchValue = localMsg;
       this.cases = localCases;
@@ -119,7 +116,6 @@ export default {
           }
         })
         .then(({ data }) => {
-          console.log(data);
           this.cases = data;
           this.recases = data;
           this.maxPage = data.maxPage;
@@ -221,13 +217,12 @@ export default {
     },
     // 加载律师
     setlawyerLength(length) {
-      console.log(length,this.recases.length,this.cases.length);
+      //console.log(length,this.recases.length,this.cases.length);
       //当滚动长度 大于数组长度时，新增元素
       if(length > this.recases.length){
 
 
         //当前页数大于最大页数时
-        console.log(this.maxPage)
         if(this.pages >= this.maxPage ){
           this.isBottom = true;
           return this;
@@ -246,7 +241,6 @@ export default {
           }
         })
         .then(({ data }) => {
-          console.log(data);
           if (data) {
             //this.newsLength = 1;
             for (let i = 0; i < data.length; i++) {

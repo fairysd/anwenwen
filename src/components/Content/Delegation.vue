@@ -80,7 +80,6 @@ export default {
           id:key
       }))
       .then(({data}) => {
-        //console.log(data);
         this.payInfo = data.data;
 
     })
@@ -100,7 +99,6 @@ export default {
               userId:userId
           }))
           .then(({data}) => {
-              console.log(data);
               if(data.code==0){
                  this.orderid = data.data.id
                  location.href=url + "order/PayServiceOrder?orderId="+ this.orderid+"&returnUrl="+encodeURIComponent(callbackurl+"ServiceDetail?returnLink=MyEntrust");

@@ -195,10 +195,8 @@ export default {
     this.cityValue = "320101";
     let url = this.GLOBAL.hostIp;
     let userid = this.common.getCookie("userId");
-    console.log("mon> ",self)
     // loading
      this.timer = setInterval(() => {
-      //console.log(this.$vux.loading.isVisible())
     }, 1000)
 
     this.$http
@@ -314,7 +312,6 @@ export default {
       })
       .then(({ data }) => {
       if (data) {
-        console.log(data);
         if(data.data.length>3){
           this.topNewsList = data.data.slice(0,3);
         }else{
@@ -337,7 +334,6 @@ export default {
       })
       .then(({ data }) => {
       if (data) {
-        console.log(data);
         this.cases = data.data;
         for (let i = 0; i < this.cases.length; i++) {
           this.cases[i].title = data.data[i].title.split(",");
@@ -351,7 +347,6 @@ export default {
       this.catagoryCode = code;
       this.getTopNewsList();
       this.getArticleLawyer();
-      //console.log(this.catagoryCode)
       let url = this.GLOBAL.hostIp;
      
       this.$http
@@ -375,10 +370,8 @@ export default {
     },
     
     setNewsLength(length) {      
-      console.log(length,this.newsListClone.length,this.newsList.length);
       //当滚动长度 大于数组长度时，新增元素
       if(length > this.newsListClone.length){
-        console.log("add ele");
         //当前页数大于最大页数时
         if(this.pages >= this.maxPage ){
           this.isBottom = true;

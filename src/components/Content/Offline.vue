@@ -81,7 +81,6 @@ export default {
           id:key
       }))
       .then(({data}) => {
-        //console.log(data);
         this.payInfo = data.data;
 
     })
@@ -99,7 +98,6 @@ export default {
               userId:userId
           }))
           .then(({data}) => {
-              console.log(data);
               if(data.code==0){
                  this.orderid = data.data.id
                 //  

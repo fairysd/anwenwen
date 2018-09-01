@@ -33,7 +33,6 @@ export default {
         }
         })
       .then(({ data }) => {
-        console.log(data);
         if(data.code != 0){
           if (debug){
           //debugger;
@@ -70,7 +69,6 @@ export default {
                 name=arr[i].substring(0,num);
                 value=arr[i].substr(num+1);
                 this[name]=value;
-                 console.log(this[name],name);
             }
            
         }

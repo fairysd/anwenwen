@@ -86,8 +86,6 @@ export default {
     }, 
     cancleCollect(id){
       let userId = this.common.getCookie("userId")
-      console.log(userId)
-      console.log(id);
       let url =this.GLOBAL.hostIp;
       if(id){
          this.$http
@@ -99,7 +97,7 @@ export default {
             }
         })
         .then(({ data }) => {
-          console.log(data);
+
           if(data.code==0){
             this.show =true;
             

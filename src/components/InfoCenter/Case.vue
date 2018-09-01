@@ -75,20 +75,17 @@ export default {
             this.mcase = false;
             this.icase = true;
           }
-          console.log(this.isTrue);
         });
   },
   methods:{
     
     loadMore:function(id,idx){
-      console.log(idx)
       //this.isTrue.push(false);
       //this.expansionCase = false;
       //this.packCase = true;
       this.isTrue.splice(idx,1,true);
-      console.log(idx,this.isTrue[idx]);
+     // console.log(idx,this.isTrue[idx]);
 
-      console.log(this.isTrue)
       let url =this.GLOBAL.hostIp;
       let userId = this.common.getCookie("userId")
       let token = this.common.getCookie("token")
@@ -99,7 +96,6 @@ export default {
         token:token
       }))
       .then(({ data }) => {
-          console.log(data);
          this.caseProcess = data.data;
         });
     },
@@ -107,7 +103,7 @@ export default {
       //this.expansionCase = true;
       //this.packCase = false;
       this.isTrue.splice(idx,1,false);
-      console.log(idx,this.isTrue[idx]);
+      //console.log(idx,this.isTrue[idx]);
 
     },
     

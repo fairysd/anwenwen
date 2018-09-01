@@ -63,7 +63,6 @@
             data.data[i].useState =this.setUseState(data.data[i].useState);
             data.data[i].state = this.setState(data.data[i].state);
 
-            console.log(this.serviceList);
 
           }
 

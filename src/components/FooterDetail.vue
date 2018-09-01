@@ -77,7 +77,6 @@ export default {
         lawyerOid:oid
       }))
       .then(({ data }) => {
-        //console.log(data)
         if(data.code ==0){
           this.show = true
           //this.msg = data.message;

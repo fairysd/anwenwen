@@ -181,13 +181,12 @@ export default {
 
      // 加载律师
     setlawyerLength(length) {
-      console.log(length,this.recases.length,this.cases.length);
+      //console.log(length,this.recases.length,this.cases.length);
       //当滚动长度 大于数组长度时，新增元素
       if(length > this.recases.length){
 
 
         //当前页数大于最大页数时
-        console.log(this.maxPage)
         if(this.pages >= this.maxPage ){
           this.isBottom = true;
           return this;
@@ -206,7 +205,6 @@ export default {
           }
         })
         .then(({ data }) => {
-          console.log(data);
           if (data) {
             //this.newsLength = 1;
             for (let i = 0; i < data.length; i++) {

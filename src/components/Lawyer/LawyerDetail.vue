@@ -78,7 +78,6 @@ export default {
     //storage.setItem("lawyerOid",this.lawyerOid);
     let localoid = storage.getItem("lawyerOid");
     //let oid = this.common.getCookie("lawyerOid");
-    //console.log(localoid)
     
     // 页面返回从localstorage读取数据
     if(typeof oid == "undefined" || oid == null || oid == ""){
