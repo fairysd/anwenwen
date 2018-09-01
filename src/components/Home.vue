@@ -118,14 +118,17 @@
           </flexbox-item>
           <flexbox-item>
             <div class="list-item info">
-              <p class="name" v-text="item.name"></p>
-            </div>
-            <div class="list-item info">
-              <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
-            </div>
-            <div class="list-item info">
+              <span class="name" v-text="item.name"></span>
               <img src="../assets/images/icons/experienceIcon.png" alt="">
               <span class="workage" v-text="item.workage+'年经验'"></span>
+            </div>
+            <div class="list-item info">
+              <p class="local" v-text="item.lawoffice"></p>
+            </div>
+            <div class="list-item info">
+              <span  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
+                <span class="label" v-text="labels"></span>
+              </span>
             </div>
             <!-- <div class="list-item">
               <p  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
@@ -156,11 +159,15 @@
 
 
 <script>
-
-
-import { Panel, Search, Tab, TabItem,TransferDomDirective as TransferDom } from "vux";
+import {
+  Panel,
+  Search,
+  Tab,
+  TabItem,
+  TransferDomDirective as TransferDom
+} from "vux";
 export default {
-  directives:{
+  directives: {
     TransferDom
   },
   components: { Panel, Search, Tab, TabItem },
@@ -168,51 +175,78 @@ export default {
     return {
       cases: [],
       citys: [],
-      cityValue:'',
+      cityValue: "",
       searchValue: "",
       autoData: [],
       newsClass: [],
       newsList: [],
-      topNewsList:[],
+      topNewsList: [],
       isLogin: false,
-      userState:0,
-      newsListClone:[],
-      pages:1,
-      maxPage:0,
-      catagoryCode:"1",
+      userState: 0,
+      newsListClone: [],
+      pages: 1,
+      maxPage: 0,
+      catagoryCode: "1",
       isLogin: true,
-      newsLength:3,//初始载入数组长度
-      isBottom:false,
-      getBarWidth: function () {
-        return (3 + 1) * 22 + 'px'
+      newsLength: 3, //初始载入数组长度
+      isBottom: false,
+      getBarWidth: function() {
+        return (3 + 1) * 22 + "px";
       }
     };
   },
-  created() {    
-  },
+  created() {},
   mounted() {
     let self = this;
     this.cityValue = "320101";
     let url = this.GLOBAL.hostIp;
     let userid = this.common.getCookie("userId");
     // loading
-     this.timer = setInterval(() => {
-    }, 1000)
+    this.timer = setInterval(() => {}, 1000);
 
     this.$http
-      .post(url + "order/CheckLogin",this.qs.stringify({
-        userid: userid}) 
-            )
+      .post(
+        url + "order/CheckLogin",
+        this.qs.stringify({
+          userid: userid
+        })
+      )
       .then(({ data }) => {
         this.userState = data.code;
         if (data.code !== 0) {
-          this.$router.push({ name: "login"});
+          let url = this.GLOBAL.host;
+          let callbackurl = this.GLOBAL.callbackurl;
+          let debug = this.GLOBAL.isDebugger;
+
+          //location.href =url+"api/order/WeChatLogin?returnUrl="+encodeURIComponent(callbackurl+"state")
+          if (!debug) {
+            location.href =
+              url +
+              "api/order/WeChatLogin?returnUrl=" +
+              encodeURIComponent(callbackurl + "state");
+          } else {
+            location.href =
+              "http://localhost:8080/#/state?code=081YUQ9t1px6Ic0vBQat1vTV9t1YUQ9c&state=STATE";
+          }
         }
-        if (userid&&this.userState==0) {
+        if (userid && this.userState == 0) {
           this.isLogin = true;
         }
         if (!this.isLogin) {
-          this.$router.push({ name: "login" });
+          let url = this.GLOBAL.host;
+          let callbackurl = this.GLOBAL.callbackurl;
+          let debug = this.GLOBAL.isDebugger;
+
+          //location.href =url+"api/order/WeChatLogin?returnUrl="+encodeURIComponent(callbackurl+"state")
+          if (!debug) {
+            location.href =
+              url +
+              "api/order/WeChatLogin?returnUrl=" +
+              encodeURIComponent(callbackurl + "state");
+          } else {
+            location.href =
+              "http://localhost:8080/#/state?code=081YUQ9t1px6Ic0vBQat1vTV9t1YUQ9c&state=STATE";
+          }
         }
       })
       .then(data => {
@@ -227,7 +261,7 @@ export default {
               if (data) {
                 this.newsClass = data.data;
                 this.newsClass[0].select = true;
-                this.getNewsList(1,this.pages);
+                this.getNewsList(1, this.pages);
                 this.getTopNewsList();
                 this.getArticleLawyer();
               }
@@ -235,7 +269,7 @@ export default {
         }
       });
     //
-      window.onscroll = function() {
+    window.onscroll = function() {
       //变量scrollTop是滚动条滚动时，距离顶部的距离
       var scrollTop =
         document.documentElement.scrollTop || document.body.scrollTop;
@@ -247,21 +281,19 @@ export default {
         document.documentElement.scrollHeight || document.body.scrollHeight;
       //滚动条到底部的条件
       if ((scrollTop + windowHeight).toFixed(0) == scrollHeight) {
-        
         //写后台加载数据的函数
-        self.setNewsLength(self.newsLength)
-        self.newsLength+=3//每次数组长度加多少
+        self.setNewsLength(self.newsLength);
+        self.newsLength += 3; //每次数组长度加多少
       }
     };
 
     // 首页多城市
-     this.$http.get(url + "/getCity").then(({ data }) => {
+    this.$http.get(url + "/getCity").then(({ data }) => {
       this.citys = data;
     });
     // 获取文章推荐律师
-    
+
     // 获取置顶文章
-   
   },
   methods: {
     // showLoading () {
@@ -272,11 +304,14 @@ export default {
     //     this.$vux.loading.hide()
     //   }, 2000)
     // },
-    getDetails(oid){
+    getDetails(oid) {
       this.$router.push({ name: "lawyerDetail", params: { id: oid } });
     },
-    checkList(msg,code) {
-      this.$router.push({ name: "lawyerList", params: { msg: msg ,cityCode:code} });
+    checkList(msg, code) {
+      this.$router.push({
+        name: "lawyerList",
+        params: { msg: msg, cityCode: code }
+      });
     },
     getAutoData() {
       let url = this.GLOBAL.hostIp;
@@ -297,58 +332,59 @@ export default {
     },
     getLawyer() {
       let message = this.searchValue;
-      
+
       let city = this.cityValue;
-      this.$router.push({ name: "lawyerList", params: { msg: message ,cityCode:city} });
+      this.$router.push({
+        name: "lawyerList",
+        params: { msg: message, cityCode: city }
+      });
     },
     // 获取置顶文章
-    getTopNewsList(){
-      let url = this.GLOBAL.hostIp;
-       this.$http
-      .get(url+"/order/topArticleList",{
-        params: {
-          category : this.catagoryCode,
-        }
-      })
-      .then(({ data }) => {
-      if (data) {
-        if(data.data.length>3){
-          this.topNewsList = data.data.slice(0,3);
-        }else{
-          this.topNewsList = data.data;
-        }
-         
-        
-      }
-    });
-    },
-    // 获取文章推荐律师
-    getArticleLawyer(){
+    getTopNewsList() {
       let url = this.GLOBAL.hostIp;
       this.$http
-     .get(url+"/order/getLawyerArticleCatalog",{
-        params: {
-          catalogKey : this.catagoryCode,
-          cityCode:this.cityValue
-        }
-      })
-      .then(({ data }) => {
-      if (data) {
-        this.cases = data.data;
-        for (let i = 0; i < this.cases.length; i++) {
-          this.cases[i].title = data.data[i].title.split(",");
-          this.cases[i].title.pop();
-          // data.data[i].title.split(",").pop();
-        }
-      }
-    });
+        .get(url + "/order/topArticleList", {
+          params: {
+            category: this.catagoryCode
+          }
+        })
+        .then(({ data }) => {
+          if (data) {
+            if (data.data.length > 3) {
+              this.topNewsList = data.data.slice(0, 3);
+            } else {
+              this.topNewsList = data.data;
+            }
+          }
+        });
+    },
+    // 获取文章推荐律师
+    getArticleLawyer() {
+      let url = this.GLOBAL.hostIp;
+      this.$http
+        .get(url + "/order/getLawyerArticleCatalog", {
+          params: {
+            catalogKey: this.catagoryCode,
+            cityCode: this.cityValue
+          }
+        })
+        .then(({ data }) => {
+          if (data) {
+            this.cases = data.data;
+            for (let i = 0; i < this.cases.length; i++) {
+              this.cases[i].title = data.data[i].title.split(",");
+              this.cases[i].title.pop();
+              // data.data[i].title.split(",").pop();
+            }
+          }
+        });
     },
     getNewsList(code) {
       this.catagoryCode = code;
       this.getTopNewsList();
       this.getArticleLawyer();
       let url = this.GLOBAL.hostIp;
-     
+
       this.$http
         .get(url + "/order/getArticeList", {
           params: {
@@ -358,57 +394,55 @@ export default {
         .then(({ data }) => {
           if (data) {
             //this.newsLength = 1;
-            this.newsList = data.data.slice(0,this.newsLength);
+            this.newsList = data.data.slice(0, this.newsLength);
             this.newsListClone = data.data;
             this.maxPage = data.maxPage;
-            this.isBottom = false;   
+            this.isBottom = false;
           }
         });
     },
     getNewsDetail(id) {
       this.$router.push({ name: "newsDetail", params: { id: id } });
     },
-    
-    setNewsLength(length) {      
+
+    setNewsLength(length) {
       //当滚动长度 大于数组长度时，新增元素
-      if(length > this.newsListClone.length){
+      if (length > this.newsListClone.length) {
         //当前页数大于最大页数时
-        if(this.pages >= this.maxPage ){
+        if (this.pages >= this.maxPage) {
           this.isBottom = true;
           return this;
         }
-        
-      let url = this.GLOBAL.hostIp;
-      this.$http
-        .get(url + "/order/getArticeList", {
-          params: {
-            category: this.catagoryCode,
-            page:this.pages
-          }
-        })
-        .then(({ data }) => {
-          if (data) {
-            //this.newsLength = 1;
-            for(let i =0;i < data.data.length ;i++){
-                this.newsListClone.push(data.data[i])
-            }
-            this.maxPage = data.maxPage;
-            this.isBottom = false; 
-          //  //截取指定元素
-          //  this.newsList = this.newsListClone.slice(0,length)
-          }
-        });
 
-        this.pages ++;
+        let url = this.GLOBAL.hostIp;
+        this.$http
+          .get(url + "/order/getArticeList", {
+            params: {
+              category: this.catagoryCode,
+              page: this.pages
+            }
+          })
+          .then(({ data }) => {
+            if (data) {
+              //this.newsLength = 1;
+              for (let i = 0; i < data.data.length; i++) {
+                this.newsListClone.push(data.data[i]);
+              }
+              this.maxPage = data.maxPage;
+              this.isBottom = false;
+              //  //截取指定元素
+              //  this.newsList = this.newsListClone.slice(0,length)
+            }
+          });
+
+        this.pages++;
       }
       //截取指定元素
-      this.newsList = this.newsListClone.slice(0,length)
-      
+      this.newsList = this.newsListClone.slice(0, length);
+
       if (this.newsListClone.length <= length) {
         this.isBottom = true;
       }
-
-
     }
   }
 };
@@ -417,20 +451,20 @@ export default {
 <style lang="less" scoped>
 @import "~vux/src/styles/1px.less";
 #home {
-   font-size: 0.8rem;
-  /deep/ .el-input--suffix .el-input__inner{
+  font-size: 0.8rem;
+  /deep/ .el-input--suffix .el-input__inner {
     border: none;
     padding: 0;
     width: 4.3rem;
-    font-size:0.8rem;
+    font-size: 0.8rem;
   }
-  .scrollable .vux-tab-item[data-v-fed36922]{
-    font-size:0.8rem;
+  .scrollable .vux-tab-item[data-v-fed36922] {
+    font-size: 0.8rem;
   }
-  .scrollable .vux-tab-item[data-v-fed36922]{
-        flex: 0 0 22%;
+  .scrollable .vux-tab-item[data-v-fed36922] {
+    flex: 0 0 22%;
   }
-  .xzClass{
+  .xzClass {
     display: block;
     height: 1px;
     left: 0%;
@@ -456,8 +490,8 @@ export default {
     }
     .local {
       padding-left: 0.5rem;
-      height:2.2rem;
-      width:5.5rem;
+      height: 2.2rem;
+      width: 5.5rem;
       img {
         width: 0.7rem;
         padding-right: 0.1rem;
@@ -470,7 +504,7 @@ export default {
       }
     }
     .input-box {
-      width:13rem;
+      width: 12rem;
       padding-left: 0.5rem;
       background-color: #f5f5f5;
       border-radius: 1.2rem;
@@ -481,7 +515,7 @@ export default {
         color: #a1a2a2;
         border: none;
         text-align: left;
-        width:10.5rem;
+        width: 9.5rem;
         background: transparent;
       }
       input:focus {
@@ -511,57 +545,56 @@ export default {
     }
   }
   // 律师展示样式
-  .lawyer-photo{
+  .lawyer-photo {
     width: 3.3rem;
     height: 3.3rem;
     border-radius: 5.5rem;
     margin-top: -0.2rem;
   }
-  .body{
-      border-bottom: 1px dotted #d5d5d6;
-      margin-top: 0.4rem;
-      margin-bottom: 0.2rem;
-      padding-left: 0.8rem;
-      padding-bottom:0.2rem;
+  .body {
+    border-bottom: 1px dotted #d5d5d6;
+    margin-top: 0.4rem;
+    margin-bottom: 0.2rem;
+    padding-left: 0.8rem;
+    padding-bottom: 0.2rem;
   }
-  .info{
-    padding-left:1rem;
+  .info {
+    padding-left: 1rem;
     line-height: 1rem;
-    img{
-      width:0.8rem;
+    img {
+      width: 0.8rem;
       vertical-align: middle;
     }
   }
-  .name{
+  .name {
     color: #4d4e50;
     font-weight: 500;
-    font-size:0.8rem;
+    font-size: 0.8rem;
     padding-bottom: 0.2rem;
+    margin-right: 1rem;
   }
-  .workage{
+  .workage {
     color: #f9ab13;
     font-size: 0.6rem;
     padding-bottom: 0.2rem;
     // margin-left: 0.8rem;
   }
-  .local{
+  .local {
     color: #878889;
     font-size: 0.6rem;
-    padding-bottom: 0.2rem;
-
   }
-  .label{
+  .label {
     display: inline-block;
-    background-color: #2a7af3;
     padding: 0.2rem 0.3rem;
-    font-size: 0.5rem;
+    border: 1px solid #4f88f7;
+    font-size: 0.45rem;
     border-radius: 0.3rem;
-    color: #fff;
-    margin-right: 0.2rem;
+    color: #4f88f7;
+    margin-right: 0.1rem;
     margin-bottom: 0.1rem;
     line-height: 0.7rem;
   }
-  .recent{
+  .recent {
     color: #b7b8b8;
     word-break: keep-all;
     white-space: nowrap;
@@ -574,19 +607,18 @@ export default {
     text-align: left;
     li {
       padding-left: 3%;
-      padding-right:3%; 
+      padding-right: 3%;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
       border-bottom: 1px solid #e7e7e7;
     }
     li > div {
       display: inline-block;
-       width: 100%;
+      width: 100%;
     }
     .text-part {
       width: 72%;
       vertical-align: middle;
-     
     }
     .content-list h4 {
       color: #4d4e50;
@@ -599,10 +631,10 @@ export default {
     }
     .content-list p {
       color: #b7b8b8;
-      font-size:0.6rem;
+      font-size: 0.6rem;
       // word-break: keep-all;
       // white-space: nowrap;
-      overflow: hidden;    
+      overflow: hidden;
       display: -webkit-box;
       text-overflow: ellipsis;
       -webkit-line-clamp: 2;
@@ -619,26 +651,25 @@ export default {
       }
     }
   }
-  .menu.two{
-    margin-bottom:0.6rem;
+  .menu.two {
+    margin-bottom: 0.6rem;
   }
   .menu p {
     color: #575757;
-    font-size:0.67rem;
+    font-size: 0.67rem;
   }
 
-.vux-tab .vux-tab-item.vux-tab-selected{
+  .vux-tab .vux-tab-item.vux-tab-selected {
     color: #4f88f7;
     border-bottom: 3px solid #4f88f7;
-}
-
+  }
 }
 #home img {
   width: 42%;
 }
 #home .bgimg img {
   width: 100%;
-  height:8.26rem;
+  height: 8.26rem;
   display: block;
 }
 .case-class {
@@ -663,13 +694,13 @@ export default {
 }
 .auto-data {
   float: right;
-  margin-right:0.5rem;
+  margin-right: 0.5rem;
   position: relative;
   text-align: left;
   top: 0;
   height: 0;
   li {
-    width: 16rem!important;
+    width: 16rem !important;
     border: 1px solid #e7e7e7;
     background: #fff;
     height: 3rem;
@@ -684,10 +715,8 @@ export default {
   }
 }
 // 文章类型样式
-.scrollable .vux-tab-item{
-    flex: 0 0 26%;
-    font-size: 1rem;
+.scrollable .vux-tab-item {
+  flex: 0 0 26%;
+  font-size: 1rem;
 }
-
-
 </style>
