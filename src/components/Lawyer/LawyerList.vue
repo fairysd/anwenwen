@@ -352,8 +352,8 @@ export default {
   font-size:0.8rem;
   .body{
     border-bottom: 1px dotted #d5d5d6;
-    padding-bottom: 0.5rem;
-    margin:0.3rem 0;
+    // padding-bottom: 0.1rem;
+    margin:0 0 0.2rem 0;
   }
   .experienceIcon{
     width: 0.8rem;
@@ -396,10 +396,13 @@ export default {
     text-align:center;
   }
   .lawyer-photo{
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: 5.5rem;
-    margin-top: -0.2rem;
+    // width: 5.5rem;
+    // height: 5.5rem;
+    // border-radius: 5.5rem;
+    // margin-top: -0.2rem;
+    width:100px;
+    height:100px;
+    border-radius: 100px;
   }
   .auto-data{
       float: right;

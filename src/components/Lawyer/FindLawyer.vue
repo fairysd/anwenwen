@@ -252,7 +252,7 @@ export default {
   }
   .body {
     border-bottom: 1px dotted #d5d5d6;
-    padding-bottom: 0.5rem;
+    // padding-bottom: 0.5rem;
   }
   .name {
     color: #4d4e50;
@@ -287,16 +287,21 @@ export default {
     font-size: 0.5rem;
   }
   .body {
-    margin: 0.3rem 0;
+    // margin: 0.3rem 0;
+    margin:0 0 0.2rem 0;
   }
   .photo {
     text-align: center;
   }
   .lawyer-photo {
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: 5.5rem;
-    margin-top: -0.2rem;
+    // width: 5.5rem;
+    // height: 5.5rem;
+    // border-radius: 5.5rem;
+    // margin-top: -0.2rem;
+    
+    width:100px;
+    height:100px;
+    border-radius: 100px;
   }
   .auto-data {
     float: left;
