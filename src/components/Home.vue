@@ -459,7 +459,7 @@ export default {
     font-size: 0.8rem;
   }
   .scrollable .vux-tab-item[data-v-fed36922] {
-    font-size: 0.8rem;
+    font-size: 0.64rem;
   }
   .scrollable .vux-tab-item[data-v-fed36922] {
     flex: 0 0 22%;
