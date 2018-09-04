@@ -2,7 +2,7 @@
   <div class="lawyer-list">
     <ul class="search-box"> 
           <li class="local"><img src="../../../static/icons/map_03.png" alt="">
-            <el-select class="city" v-model="cityValue"  placeholder="选择城市">
+            <el-select class="city" v-model="cityValue"  placeholder="选择城市" @change="setCityStorage">
               <el-option
                 v-for="item in citys"
                 :key="item.code"
@@ -130,7 +130,12 @@ export default {
 
         });
      
-
+        
+    if (cityCode) {
+      this.cityValue = cityCode;
+    }else{
+      this.cityValue = "320101";
+    }
      //律师加载
       window.onscroll = function() {
       //变量scrollTop是滚动条滚动时，距离顶部的距离
@@ -266,6 +271,11 @@ export default {
       }
 
 
+    },
+    setCityStorage(){
+      let stroage = window.localStorage;
+      let cityCode = this.cityValue;
+      stroage.setItem("localCityCode",cityCode)
     }
   }
 };

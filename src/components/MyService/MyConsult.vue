@@ -11,9 +11,24 @@
         <p slot="content" class="card-padding price" v-text="item.price"></p>
         <p slot="content" class="card-padding">状态:&nbsp;{{item.state}}</p>
         <p slot="content" class="card-padding"  v-if="item.showCode">消费码:&nbsp; {{item.code}}<span style='margin-left:30%;' v-text="item.useState"></span></p>
-
-
       </card>
+      <el-table
+      :data="tableData"
+      style="width: 100%">
+      <el-table-column
+        prop="orderNumber"
+        label="订单号"
+        >
+      </el-table-column>
+      <el-table-column
+        prop="price"
+        label="售价">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="支付状态">
+      </el-table-column>
+    </el-table>
     </div>
   </div>
 </template>

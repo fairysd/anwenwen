@@ -47,10 +47,10 @@ export default {
              location.href =this.GLOBAL.host+"/wechatapp";
        
         }
-        this.common.setCookie("userId",data.data.userId,0.5)
-        this.common.setCookie("token",data.data.token,0.5)
-        this.common.setCookie("headimg",data.data.headimg,0.5)
-        this.common.setCookie("nickname",data.data.nickName,0.5)
+        this.common.setCookie("userId",data.data.userId,30)
+        this.common.setCookie("token",data.data.token,30)
+        this.common.setCookie("headimg",data.data.headimg,30)
+        this.common.setCookie("nickname",data.data.nickName,30)
         this.$router.push({ name: "home"});
 
     });

@@ -17,16 +17,18 @@
           </flexbox-item>
           <flexbox-item>
             <div class="list-item">
-              <span class="name" v-text="item.name"></span><span class="workage" v-text="item.workage+'年经验'"></span>
+              <span class="name" v-text="item.name"></span>
+              <img src="../../assets/images/icons/experienceIcon.png" class="experienceIcon">
+              <span class="workage" v-text="item.workage+'年经验'"></span>
               <span @click.stop="cancleCollect(item.oid)" class="cancle">取消收藏</span>
             </div>
             <div class="list-item">
-              <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
+              <p class="local" v-text="item.lawoffice"></p>
             </div>
             <div class="list-item">
-              <p  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
+              <span  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
                 <span class="label" v-text="labels"></span>
-              </p>
+              </span>
             </div>            
             <div class="list-item">
               <p class="recent" v-text="item.introduce"></p>
@@ -124,6 +126,11 @@ export default {
       font-weight: normal;
     }
   }
+   .experienceIcon{
+    width: 0.8rem;
+    vertical-align: middle;
+    padding-left:1rem;
+  }
   .divider {
     height: 1rem;
     background-color: #f0f0f0;
@@ -210,8 +217,7 @@ export default {
   .workage{
     color: #f9ab13;
     font-size: 0.6rem;
-    margin-left: 0.8rem;
-    padding-right:3rem;
+    padding-right:1.5rem;
   }
   .local{
     color: #7e7e7f;

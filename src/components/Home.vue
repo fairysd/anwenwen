@@ -3,7 +3,7 @@
     <ul class="search-box"> 
           <li class="local"><img src="../../static/icons/map_03.png" alt="">
             <!-- <p class="city">南京市</p> -->
-            <el-select class="city" v-model="cityValue"  placeholder="选择城市">
+            <el-select class="city" v-model="cityValue"  placeholder="选择城市" @change="setCityStorage">
               <el-option
                 v-for="item in citys"
                 :key="item.code"
@@ -198,7 +198,7 @@ export default {
   created() {},
   mounted() {
     let self = this;
-    this.cityValue = "320101";
+    // this.cityValue = "320101";
     let url = this.GLOBAL.hostIp;
     let userid = this.common.getCookie("userId");
     // loading
@@ -291,6 +291,13 @@ export default {
     this.$http.get(url + "/getCity").then(({ data }) => {
       this.citys = data;
     });
+    let stroage = window.localStorage;
+    let cityCode = stroage.getItem("localCityCode");
+    if (cityCode) {
+      this.cityValue = cityCode;
+    }else{
+      this.cityValue = "320101";
+    }
     // 获取文章推荐律师
 
     // 获取置顶文章
@@ -443,6 +450,11 @@ export default {
       if (this.newsListClone.length <= length) {
         this.isBottom = true;
       }
+    },
+    setCityStorage(){
+      let stroage = window.localStorage;
+      let cityCode = this.cityValue;
+      stroage.setItem("localCityCode",cityCode)
     }
   }
 };
@@ -459,7 +471,7 @@ export default {
     font-size: 0.8rem;
   }
   .scrollable .vux-tab-item[data-v-fed36922] {
-    font-size: 0.64rem;
+    font-size: 0.8rem;
   }
   .scrollable .vux-tab-item[data-v-fed36922] {
     flex: 0 0 22%;
@@ -475,7 +487,7 @@ export default {
     background-color: #f0f0f0;
   }
   .search-box {
-    line-height: 2.5rem;
+    line-height: 2rem;
     background: #fff;
     text-align: left;
     color: #a1a2a2;

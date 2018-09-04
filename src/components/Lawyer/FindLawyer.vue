@@ -43,7 +43,10 @@
           </flexbox-item>
           <flexbox-item>
             <div class="list-item">
-              <span class="name" v-text="item.name"></span><span class="workage" v-text="item.workage+'年经验'"></span>
+              
+              <span class="name" v-text="item.name"></span>
+              <img src="../../assets/images/icons/experienceIcon.png" class="experienceIcon">
+              <span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
             <div class="list-item">
               <p class="local" v-text="item.lawoffice"></p>
@@ -91,8 +94,7 @@ export default {
   },
   mounted() {
     let self = this;
-    this.sortValue = "particleyear:desc";
-    this.cityValue = "320101";
+    this.sortValue = "particleyear:desc";;
     let url = this.GLOBAL.hostIp;
     let message = this.$route.params.msg;
     this.$http.get(url + "/getCity").then(({ data }) => {
@@ -123,7 +125,13 @@ export default {
       this.types = narray;
       this.getLawyer();
     });
-
+    let stroage = window.localStorage;
+    let cityCode = stroage.getItem("localCityCode");
+    if (cityCode) {
+      this.cityValue = cityCode;
+    }else{
+      this.cityValue = "320101";
+    }
      //律师加载
       window.onscroll = function() {
       //变量scrollTop是滚动条滚动时，距离顶部的距离
@@ -158,6 +166,9 @@ export default {
       let type = this.typeValue[1];
       let city = this.cityValue;
       let sort = this.sortValue;
+      let stroage = window.localStorage;
+      let cityCode = this.cityValue;
+      stroage.setItem("localCityCode",cityCode)
       if (!type) {
         type='';
       }
@@ -243,6 +254,11 @@ export default {
     border: none;
     text-align: center;
   }
+  .experienceIcon{
+    width: 0.8rem;
+    vertical-align: middle;
+    padding-left:1rem;
+  }
   .search-condition{
     border-bottom: 1px solid #e7e7e7;
     ul>li{
@@ -261,7 +277,6 @@ export default {
   .workage {
     color: #f9ab13;
     font-size: 0.6rem;
-    margin-left: 0.8rem;
   }
   .local {
     color: #7e7e7f;
