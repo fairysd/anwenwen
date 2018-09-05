@@ -179,7 +179,7 @@ export default {
       overflow: hidden;    
       display: -webkit-box;
       text-overflow: ellipsis;
-      -webkit-line-clamp: 20;
+      -webkit-line-clamp: 10;
       -webkit-box-orient: vertical;
     }
   }

@@ -276,6 +276,7 @@ export default {
       let stroage = window.localStorage;
       let cityCode = this.cityValue;
       stroage.setItem("localCityCode",cityCode)
+      this.getLawyer();
     }
   }
 };
