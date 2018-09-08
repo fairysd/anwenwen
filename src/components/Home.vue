@@ -456,7 +456,8 @@ export default {
     setCityStorage(){
       let stroage = window.localStorage;
       let cityCode = this.cityValue;
-      stroage.setItem("localCityCode",cityCode)
+      stroage.setItem("localCityCode",cityCode);
+      this.getArticleLawyer();
     }
   }
 };
