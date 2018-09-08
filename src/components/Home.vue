@@ -296,7 +296,7 @@ export default {
     if (cityCode) {
       this.cityValue = cityCode;
     }else{
-      this.cityValue = "320101";
+      this.cityValue = "3201";
     }
     // 获取文章推荐律师
 
@@ -409,6 +409,8 @@ export default {
         });
     },
     getNewsDetail(id) {
+      let stroage = window.localStorage;
+      stroage.setItem("articleId",id)
       this.$router.push({ name: "newsDetail", params: { id: id } });
     },
 
@@ -729,6 +731,6 @@ export default {
 // 文章类型样式
 .scrollable .vux-tab-item {
   flex: 0 0 26%;
-  font-size: 1rem;
+  font-size: 0.87rem;
 }
 </style>

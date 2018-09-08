@@ -104,6 +104,10 @@ export default {
   mounted() {
     let url = this.GLOBAL.hostIp;
     let id = this.$route.params.id;
+    if (!id) {
+      let storage = window.localStorage;
+      id = storage.getItem("articleId");
+    }
     this.$http
       .get(url + "/order/articeDetail", {
         params: {

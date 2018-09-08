@@ -251,6 +251,8 @@ export default {
   },
   methods: {
     getCaseDetail(key) {
+      let stroage = window.localStorage;
+      stroage.setItem("caseKey",key)
       this.$router.push({ name: "caseDetail", params: { key: key } });
     },
     gotoPayment(type,n){

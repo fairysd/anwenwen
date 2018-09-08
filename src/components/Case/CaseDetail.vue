@@ -97,6 +97,10 @@ export default {
   mounted() {
     let url = this.GLOBAL.hostIp;
     let key = this.$route.params.key;
+    if (!key) {
+      let storage = window.localStorage;
+      key = storage.getItem("caseKey");
+    }
     let hearCourtCount = [];
     let addressCount = [];
     let hearYearCount = [];

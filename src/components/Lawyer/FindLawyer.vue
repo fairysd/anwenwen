@@ -130,7 +130,7 @@ export default {
     if (cityCode) {
       this.cityValue = cityCode;
     }else{
-      this.cityValue = "320101";
+      this.cityValue = "3201";
     }
      //律师加载
       window.onscroll = function() {

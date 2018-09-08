@@ -126,7 +126,7 @@
       p.order-number{
         text-align: left;
         width: 65%;
-        font-size: 0.4rem;
+        font-size: 0.7rem;
       }
       p.order-state{
         width: 30%;
@@ -146,7 +146,7 @@
       }
       p.code{
         text-align: left;
-        font-size: 0.4rem;
+        font-size: 0.7rem;
       }
   }
  
