@@ -312,7 +312,7 @@ export default {
     //   }, 2000)
     // },
     getDetails(oid) {
-      this.$router.push({ name: "lawyerDetail", params: { id: oid } });
+       this.$router.push({ path: "lawyerDetails/lawyerDetail?id="+oid });
     },
     checkList(msg, code) {
       this.$router.push({

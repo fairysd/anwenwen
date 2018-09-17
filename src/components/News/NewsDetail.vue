@@ -136,7 +136,7 @@ export default {
       this.words = this.lesswords;
     },
     getDetails(oid) {
-      this.$router.push({ name: "lawyerDetail", params: { id: oid } });
+       this.$router.push({ path: "lawyerDetails/lawyerDetail?id="+oid });
     },
     gotoKefu(){
       let kefuUrl = "http://kefu.anwenwen.com/wechat/Agent";

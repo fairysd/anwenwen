@@ -53,6 +53,7 @@
 import contentHeader from "../Content/contentHeader";
 import { Search, Group, Cell, XButton, Panel } from "vux";
 import { defaultCipherList } from 'constants';
+import wx from 'weixin-js-sdk'
 export default {
   name: "lawyerDetail",
   components: { contentHeader, Search, Group, Cell, XButton, Panel },
@@ -70,15 +71,14 @@ export default {
   },
   mounted() {
     let storage = window.localStorage;
-
     let url = this.GLOBAL.hostIp;
-    let oid = this.$route.params.id;
+    let oid = this.$route.query.id;
+    console.log(oid)
     this.lawyerOid = this.$route.params.id;
     //this.common.setCookie("lawyerOid", this.lawyerOid);
     //storage.setItem("lawyerOid",this.lawyerOid);
     let localoid = storage.getItem("lawyerOid");
     //let oid = this.common.getCookie("lawyerOid");
-    
     // 页面返回从localstorage读取数据
     if(typeof oid == "undefined" || oid == null || oid == ""){
       let localdeCases=JSON.parse(storage.getItem("localdeCases"));

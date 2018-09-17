@@ -72,6 +72,7 @@ export default {
 .spanlineheight{
   line-height:2;
   font-size: 0.8rem;
+  color:#4d4e50;
 }
 
 </style>

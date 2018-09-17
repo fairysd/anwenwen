@@ -155,7 +155,7 @@ export default {
   },
   methods: {
     getDetails(oid) {
-      this.$router.push({ name: "lawyerDetail", params: { id: oid } });
+      this.$router.push({ path: "lawyerDetails/lawyerDetail?id="+oid });
     },
     setSearchValue(value) {
       this.searchValue = value;

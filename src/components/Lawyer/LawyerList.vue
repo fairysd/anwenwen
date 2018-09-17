@@ -168,8 +168,7 @@ export default {
     // 跳转到律师详情页
      getDetails(oid){
        this.common.setCookie("lawyerOid",oid)
-      this.$router.push({ name: "lawyerDetail", params: { id: oid } });
-
+      this.$router.push({ path: "lawyerDetails/lawyerDetail?id="+oid });
     },
     getAutoData() {        
       let url = this.GLOBAL.hostIp;
@@ -194,6 +193,7 @@ export default {
       let url =this.GLOBAL.hostIp;
       let message = this.searchValue;
       let cityCode = this.cityValue;
+      this.autoData = [];
       this.$http
         .get(url + "/findAttorneyBySpeciality", {
           params: {
@@ -217,7 +217,7 @@ export default {
           storage.setItem("localCases",localCases);
           storage.setItem("localCityCode",cityCode);
           storage.setItem("localMsg",message);
-
+          
         });
     },
     // 加载律师
