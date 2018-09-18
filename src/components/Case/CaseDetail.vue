@@ -5,12 +5,12 @@
             <div style="text-align:left;position:relative;">
                 <div v-text="caseModel.title" class="second-title lawyerDetailCaseIntroduce ">
                 </div>
-                <p style="font-size:0.7rem;color: #a9aaaa" class="ui-nowrap-multi ui-whitespace">
+                <p style="font-size:0.7rem;color: #a1a1a2" class="ui-nowrap-multi ui-whitespace">
                     <span v-text="caseModel.courtname+' | '" class="blaw"></span>
                     <span v-text="caseModel.issueDate+' | '" id="time" class=""></span>
                     <span v-text="caseModel.number" class=""></span>
                 </p>
-                <p v-text="'案由：'+caseModel.keyword" style="font-size:0.7rem;color: #a9aaaa" class="ui-nowrap-multi ui-whitespace "></p>
+                <p v-text="'案由：'+caseModel.keyword" style="font-size:0.7rem;color: #a1a1a2" class="ui-nowrap-multi ui-whitespace "></p>
             </div>
         </flexbox-item>
       </flexbox>
@@ -57,8 +57,8 @@
             </div>
           </flexbox-item>
           <flexbox-item>
-            <div class="list-item">
-              <span class="name" v-text="'赵子耀'"></span><span class="workage" v-text="'10年经验'"></span><img src="http://ytm.mynatapp.cc/mob/img/recommend.png" alt="" class="recommend">
+            <div class="list-item info">
+              <span class="name" v-text="'赵子耀'"></span><img src="../../assets/images/icons/experienceIcon.png" alt=""><span class="workage" v-text="'10年经验'"></span><img src="../../assets/images/icons/recommend.png" alt="" class="recommend">
             </div>
             <div class="list-item">
               <p class="local" v-text="'南京市 | 盈科律师事务所'"></p>
@@ -115,11 +115,25 @@ export default {
       .then(({ data }) => {
         this.caseModel = data[0];
         this.morewords = data[0].words;
-        hearCourtCount = data[1].hearCourtCount;
-        addressCount = data[1].addressCount;
-        hearYearCount = data[1].hearYearCount;
-        hearProgramCount = data[1].hearProgramCount;
-        paperTypeCount  = data[1].paperTypeCount;
+        // hearCourtCount = data[1].hearCourtCount;
+        // addressCount = data[1].addressCount;
+        // hearYearCount = data[1].hearYearCount;
+        // hearProgramCount = data[1].hearProgramCount;
+        // paperTypeCount  = data[1].paperTypeCount;
+      })
+      .then(()=>{
+        this.$http
+        .get(url + "/countCase", {
+        params: {
+          key: key
+        }
+      }).then(({data})=>{
+        var data = data.data;
+        hearCourtCount = data.hearCourtCount;
+        addressCount = data.addressCount;
+        hearYearCount = data.hearYearCount;
+        hearProgramCount = data.hearProgramCount;
+        paperTypeCount  = data.paperTypeCount;
       })
       .then(() => {
         var courtChart = this.$echarts.init(document.getElementById("lawyerPie"));
@@ -391,6 +405,7 @@ export default {
         };
         myChart_book.setOption(option_book);
       });
+      })
     //
   },
   methods: {
@@ -420,7 +435,8 @@ export default {
     font-size: 1rem;
     padding-left: 0.6rem;
     padding-top: 0.5rem;
-    color: #404143;
+    color: #000;
+    font-weight: 900;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;
@@ -436,11 +452,19 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 20;
   }
+  .info{
+    img {
+      width: 0.8rem;
+      vertical-align: middle;
+      margin-left: 0.6rem;
+    }
+  }
+ 
   .words {
     font-size: 0.7rem;
-    color: #838485;
+    color: #575757;
     padding: 0.8rem;
     margin-bottom: 0.5rem;
     padding-left: 0.6rem;
@@ -474,7 +498,6 @@ export default {
   .workage{
     color: #f9ab13;
     font-size: 0.6rem;
-    margin-left: 0.8rem;
   }
   .local{
     color: #878889;
@@ -492,7 +515,7 @@ export default {
     line-height: 0.7rem;
   }
   .recent{
-    color: #b7b8b8;
+    color: #a1a1a2;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;

@@ -162,11 +162,14 @@ export default {
       font-size: 1rem;
       line-height: 1.4rem;
       text-align: left;
+      color: #000;
+      font-weight: 900;
     }
     p {
       padding: 0 0 0.5rem 0;
       font-size:0.8rem;
       text-align: left;
+      color: #a1a1a2;
     }
     img {
       width: 100%;
@@ -178,7 +181,7 @@ export default {
       width:100%;
     }
     div{
-      color: #b7b8b8;
+      color: #575757;
       font-size:0.8rem;
       overflow: hidden;    
       display: -webkit-box;

@@ -12,8 +12,9 @@
                 <span>委托预约</span>
             </div>  
             <div class="pay-price">
-                <img src="../../../static/payTu/moneyLogo.png" alt="">
-                <span v-text="payInfo.price" class="span-price"></span>
+                <p><img src="../../../static/payTu/moneyLogo.png" alt="">
+                <span v-text="payInfo.price" class="span-price"></span><span class="real-price">299</span></p>
+                
                 <span>24小时内不限次数、不限时长</span>
             </div>
             <div class="pay-advantage">
@@ -126,13 +127,10 @@ export default {
             text-align: center;
             margin-top:-0.8rem;
             .pay-title{
-                text-align: left;
+                text-align: center;
                 padding-bottom:1rem;
                 img{
                     width:0.6rem;
-                }
-                span{
-                    padding-left:7rem;
                 }
             }
             .pay-price{
@@ -144,6 +142,9 @@ export default {
                 .span-price{
                     font-size:2rem;
                 }
+                .real-price{
+            text-decoration: line-through;            
+        }
             }  
             .pay-advantage{
                 padding-bottom:1.5rem;
@@ -171,6 +172,7 @@ export default {
             top: 11%;
             font-size: 1rem;
         }
+        
     }
     .guarantee{
         margin-bottom:1rem;

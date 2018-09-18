@@ -33,7 +33,7 @@
           </flexbox-item>
           <flexbox-item>
             <div class="list-item"> 
-              <span class="name" v-text="item.name"></span>
+              <span class="name" v-text="item.name+'  律师'"></span>
               <img src="../../assets/images/icons/experienceIcon.png" class="experienceIcon">
               <span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
@@ -372,8 +372,8 @@ export default {
     padding-left:1rem;
   }
   .name{
-    color: #4d4e50;
-    font-weight: 500;
+    color: #000;
+    font-weight: 900;
     font-size:0.8rem;
   }
   .workage{
@@ -381,7 +381,7 @@ export default {
     font-size: 0.6rem;
   }
   .local{
-    color:#7e7e7f;
+    color:#575757;
     font-size: 0.6rem;
   }
   .label{

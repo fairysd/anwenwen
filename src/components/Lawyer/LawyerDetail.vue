@@ -9,7 +9,7 @@
           </flexbox-item>
           <flexbox-item>
             <div class="list-item">
-              <span class="name" v-text="item.name"></span>
+              <span class="name" v-text="item.name+'  律师'"></span>
               <img src="../../assets/images/icons/experienceIcon.png" class="experienceIcon">
               <span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
@@ -17,7 +17,7 @@
               <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
             </div>
             <div class="list-item">
-              <p  v-for="(labels,index) in item.title" :key="index">
+              <p style="display:inline-block" class=""  v-for="(labels,index) in item.title" :key="index">
                 <span class="label" v-text="labels"></span>
               </p>
             </div>            
@@ -28,21 +28,21 @@
       </flexbox>
       <flexbox class="query">
           <flexbox-item>
-              <button @click.stop="gotoPayment('offline',offlineId)" :key="offlineId">线下咨询</button>
+              <img src="../../assets/images/icons/offline.png" @click.stop="gotoPayment('offline',offlineId)" :key="offlineId">
           </flexbox-item>
           <flexbox-item>
-              <button @click.stop="gotoPayment('delegation', delegateId)" :key="delegateId">委托预约</button>
+              <img src="../../assets/images/icons/online.png" @click.stop="gotoPayment('delegation', delegateId)" :key="delegateId">
           </flexbox-item>
       </flexbox>
       <flexbox>
           <flexbox-item>
-              <div id="lawyerPie" class="pie-echart" :style="'height:300px;width:100%;'"></div>
+              <div id="lawyerPie" class="pie-echart" :style="'height:180px;width:100%;'"></div>
           </flexbox-item>
       </flexbox>
       <flexbox class="case-list" v-for="item in list" :key="item.oid" @click.native="getCaseDetail(item.mapid)">
           <flexbox-item class="case-item">
               <h3 class="title" v-text="item.title"></h3>
-              <p class="content" v-html="item.courtname+' | '+item.issueDate+' | '+'</br>'+item.number"></p>
+              <p class="content" v-html="item.courtname+' | '+item.issueDate+'</br>'+item.number"></p>
           </flexbox-item>
       </flexbox>
       </div>
@@ -73,7 +73,6 @@ export default {
     let storage = window.localStorage;
     let url = this.GLOBAL.hostIp;
     let oid = this.$route.query.id;
-    console.log(oid)
     this.lawyerOid = this.$route.params.id;
     //this.common.setCookie("lawyerOid", this.lawyerOid);
     //storage.setItem("lawyerOid",this.lawyerOid);
@@ -123,7 +122,7 @@ export default {
             {
               name: "访问来源",
               type: "pie",
-              radius: ["30%", "50%"],
+              radius: ["0", "40%"],
               center: ["50%", "40%"],
               avoidLabelOverlap: false,
               label: {
@@ -212,17 +211,17 @@ export default {
             "rgb(250,128,4)"
           ],
           legend: {
-            orient: "horizontal",
-            x: "center",
-            y: "bottom",
+            orient: "vertical",
+            right:10,
+            y: "center",
             data: this.echartData[0]
           },
           series: [
             {
               name: "访问来源",
               type: "pie",
-              radius: ["30%", "50%"],
-              center: ["50%", "40%"],
+              radius: ["30%", "40%"],
+              center: ["30%", "50%"],
               avoidLabelOverlap: false,
               label: {
                 normal: {
@@ -272,20 +271,17 @@ export default {
     padding-bottom: 1rem;
     padding-top:1rem;  
   }
-  button{
-    background-color: #fff;
-    border: 1px solid #848484;
-    padding: 0.6rem 2.5rem;
-    border-radius: 0.5rem;
+  img{
+    width:80%;
   }
   .body {
     border-bottom: 1px dotted #d5d5d6;
     padding-bottom: 0.5rem;
   }
   .name {
-    color: #4d4e50;
+    color: #000;
     font-size:0.8rem;
-    font-weight: 500;
+    font-weight: 900;
   }
   .experienceIcon{
     width: 0.8rem;
@@ -293,7 +289,7 @@ export default {
     padding-left:1rem;
   }
   .workage {
-    color: #f9ab13;
+    color: #fa7e34;
     font-size: 0.6rem;
   }
   .local {
@@ -312,7 +308,7 @@ export default {
     line-height: 0.7rem;
   }
   .recent {
-    color: #a1a1a3;
+    color: #a1a1a2;
     font-size: 0.5rem;
   }
   .body {
@@ -328,7 +324,7 @@ export default {
     margin-top: -0.2rem;
   }
   .case-item {
-    border-bottom: 1px solid #d5d5d6;
+    border-bottom: 1px solid #e3e3e6;
     padding-bottom: 0.5rem;
   }
   .weui-media-box__title {
@@ -336,7 +332,7 @@ export default {
   }
   .weui-media-box__desc {
     font-size: 0.8rem;
-    color: #b7b8b8;
+    color: #a1a1a2;
   }
   .pie-echart {
     background-color: #eee;
@@ -348,7 +344,8 @@ export default {
     font-size: 0.86rem;
     padding-left: 0.6rem;
     padding-top: 0.5rem;
-    color: #404143;
+    color: #000;
+    font-weight: 900;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;
@@ -356,7 +353,7 @@ export default {
   }
   .content {
     font-size: 0.7rem;
-    color: #b7b8b8;
+    color: #a1a1a2;
     padding-left: 0.6rem;
   }
 }

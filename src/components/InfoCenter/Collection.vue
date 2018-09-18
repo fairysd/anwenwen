@@ -17,10 +17,10 @@
           </flexbox-item>
           <flexbox-item>
             <div class="list-item">
-              <span class="name" v-text="item.name"></span>
+              <span class="name" v-text="item.name+'  律师'"></span>
               <img src="../../assets/images/icons/experienceIcon.png" class="experienceIcon">
               <span class="workage" v-text="item.workage+'年经验'"></span>
-              <span @click.stop="cancleCollect(item.oid)" class="cancle">取消收藏</span>
+              <span @click.stop="cancleCollect(item.oid)" class="cancle">取消</span>
             </div>
             <div class="list-item">
               <p class="local" v-text="item.lawoffice"></p>
@@ -211,16 +211,16 @@ export default {
         }
   }
   .name{
-    color: #4d4e50;
-    font-weight: 500;
+    color: #000;
+    font-weight: 900;
   }
   .workage{
     color: #f9ab13;
     font-size: 0.6rem;
-    padding-right:1.5rem;
+    padding-right:1rem;
   }
   .local{
-    color: #7e7e7f;
+    color: #575757;
     font-size: 0.6rem;
   }
   .label{
@@ -235,7 +235,7 @@ export default {
     line-height: 0.7rem;
   }
   .recent{
-    color: #a1a1a3;;
+    color: #a1a1a2;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;

@@ -118,7 +118,7 @@
           </flexbox-item>
           <flexbox-item>
             <div class="list-item info">
-              <span class="name" v-text="item.name"></span>
+              <span class="name" v-text="item.name+'  律师'"></span>
               <img src="../assets/images/icons/experienceIcon.png" alt="">
               <span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
@@ -472,6 +472,7 @@ export default {
     padding: 0;
     width: 4.3rem;
     font-size: 0.8rem;
+    color: #a1a2a2;  
   }
   .scrollable .vux-tab-item[data-v-fed36922] {
     font-size: 0.8rem;
@@ -493,7 +494,7 @@ export default {
     line-height: 2rem;
     background: #fff;
     text-align: left;
-    color: #a1a2a2;
+    color: #a1a1a2;
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     li {
@@ -527,7 +528,7 @@ export default {
         display: inline-block;
       }
       input {
-        color: #a1a2a2;
+        color: #a1a1a2;
         border: none;
         text-align: left;
         width: 9.5rem;
@@ -582,20 +583,20 @@ export default {
     }
   }
   .name {
-    color: #4d4e50;
-    font-weight: 500;
+    color: #000;
+    font-weight: 900;
     font-size: 0.8rem;
     padding-bottom: 0.2rem;
     margin-right: 1rem;
   }
   .workage {
-    color: #f9ab13;
+    color: #fa7e34;
     font-size: 0.6rem;
     padding-bottom: 0.2rem;
     // margin-left: 0.8rem;
   }
   .local {
-    color: #878889;
+    color: #a1a1a2;
     font-size: 0.6rem;
   }
   .label {
@@ -610,7 +611,7 @@ export default {
     line-height: 0.7rem;
   }
   .recent {
-    color: #b7b8b8;
+    color: #a1a1a2;
     word-break: keep-all;
     white-space: nowrap;
     overflow: hidden;
@@ -625,7 +626,7 @@ export default {
       padding-right: 3%;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid #e7e7e7;
+      border-bottom: 1px solid #e3e3e6;
     }
     li > div {
       display: inline-block;
@@ -636,8 +637,8 @@ export default {
       vertical-align: middle;
     }
     .content-list h4 {
-      color: #4d4e50;
-      font-weight: 600;
+      color: #000;
+      font-weight: 900;
       font-size: 0.86rem;
       word-break: keep-all;
       white-space: nowrap;
@@ -645,7 +646,7 @@ export default {
       text-overflow: ellipsis;
     }
     .content-list p {
-      color: #b7b8b8;
+      color: #a1a1a2;
       font-size: 0.6rem;
       // word-break: keep-all;
       // white-space: nowrap;
@@ -694,12 +695,15 @@ export default {
 .menu {
   margin-top: 0.8em;
 }
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #a1a1a2;
+}
 // .menu.one {
 //   margin-top: 0;
 // }
 .news-class {
   margin-top: 0rem;
-  border-top: 1px solid #e7e7e7;
+  border-top: 1px solid #e3e3e6;
   height: 2.3rem;
   padding-top: 0;
 }
@@ -716,7 +720,7 @@ export default {
   height: 0;
   li {
     width: 16rem !important;
-    border: 1px solid #e7e7e7;
+    border: 1px solid #e3e3e6;
     background: #fff;
     height: 3rem;
     list-style: none;
@@ -733,5 +737,6 @@ export default {
 .scrollable .vux-tab-item {
   flex: 0 0 26%;
   font-size: 0.87rem;
+  color: #7e7e7e;
 }
 </style>

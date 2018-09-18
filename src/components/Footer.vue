@@ -63,7 +63,7 @@ export default {
 }
 .weui-tabbar{
   background-color: #fff;
-  height:3.5rem;
+  height:3.1rem;
 }
 .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon, 
 .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon > i, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label span{
@@ -71,7 +71,7 @@ export default {
 }
 .spanlineheight{
   line-height:2;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   color:#4d4e50;
 }
 
