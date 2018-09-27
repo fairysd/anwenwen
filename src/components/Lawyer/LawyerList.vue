@@ -2,7 +2,7 @@
   <div class="lawyer-list">
     <ul class="search-box"> 
           <li class="local"><img src="../../../static/icons/map_03.png" alt="">
-            <el-select class="city" v-model="cityValue"  placeholder="选择城市" @change="setCityStorage">
+            <el-select class="city" v-model="cityValue"  placeholder="选择城市" :disabled="selected" @change="setCityStorage">
               <el-option
                 v-for="item in citys"
                 :key="item.code"
@@ -76,6 +76,7 @@ export default {
       recases:[],
       newsLength:6,//初始载入数组长度
       isBottom:false,
+      selected:false
     };
   },
   mounted(){
@@ -86,6 +87,12 @@ export default {
     this.inputContent = message;
     this.cityValue = cityCode;
     let storage = window.localStorage;
+    let officeCode = storage.getItem("officeCode")
+    if (officeCode!='0000') {
+        this.selected = true;
+      }else{
+        this.selected = false;
+      }
     // loading
      this.timer = setInterval(() => {
     }, 1000)
@@ -102,7 +109,6 @@ export default {
       this.cityValue = cityCode;
       this.searchValue = localMsg;
       this.cases = localCases;
-
       return;
     }
 
@@ -112,6 +118,7 @@ export default {
           params: {
             message : message,
             cityCode : cityCode,
+            officeCode:officeCode,
             page:this.pages
           }
         })

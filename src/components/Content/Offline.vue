@@ -7,7 +7,7 @@
         <flexbox-item class="pay-introduce">
             <div class="pay-title">
                 <!-- <img src="../../../static/payTu/return.png" alt=""> -->
-                <span>线下咨询</span>
+                <span>电话咨询</span>
             </div>  
             <div class="pay-price">
                 <p> <img src="../../../static/payTu/moneyLogo.png" alt="">
@@ -16,7 +16,7 @@
                 <span>24小时内不限次数、不限时长</span>
             </div>
             <div class="pay-advantage">
-                <span>· 立即响应 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· 沟通高效 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· 高性价比</span>
+                <span>· 即刻响应 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· 高效沟通 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;· 高性价比</span>
             </div>       
         </flexbox-item>
      </flexbox>
@@ -33,16 +33,16 @@
         <flexbox-item class="guarantee">
             <div>
                 <img src="../../../static/payTu/payGuarantee.png" alt="">
-                <span>赔付保障 服务不满意立即退费</span>
+                <span>平台保障 服务不满意可申请退费</span>
             </div>
         </flexbox-item>
      </flexbox>
      <flexbox>
          <flexbox-item class="progress">
              <h4>服务流程</h4>
-             <p>1.选择您的所在地</p>
-             <p>2.选择您要咨询的法律业务</p>
-             <p>3.完成支付后立即与律师童话</p>
+             <p>1.选择您想咨询的律师</p>
+             <p>2.完成支付后即可与律师通话</p>
+             <p>3.请向律师声明是来自法律服务平台“案问问”</p>
         </flexbox-item>
      </flexbox>
   </div>

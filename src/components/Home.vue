@@ -3,7 +3,7 @@
     <ul class="search-box"> 
           <li class="local"><img src="../../static/icons/map_03.png" alt="">
             <!-- <p class="city">南京市</p> -->
-            <el-select class="city" v-model="cityValue"  placeholder="选择城市" @change="setCityStorage">
+            <el-select class="city" v-model="cityValue" :disabled="selected"  placeholder="选择城市" @change="setCityStorage">
               <el-option
                 v-for="item in citys"
                 :key="item.code"
@@ -27,7 +27,7 @@
       <flexbox class="">
           <flexbox-item>
                 <div class="case-class bgimg">
-                    <img src="../assets/images/pic/n-slider1.png" alt="">
+                    <img src="../assets/images/pic/n-slider1.jpg" alt="">
                 </div>                
             </flexbox-item>
       </flexbox>   
@@ -151,7 +151,7 @@
           <img v-for="(img,index) in item.imgPath"  :src="img" alt="" v-if="index<1">
         </div>
       </li>
-      <li v-show="isBottom" style="padding-bottom:1rem;text-align:center;color:#b7b8b8">没有更多了</li>
+      <li v-show="isBottom" style="padding-bottom:1rem;text-align:center;color:#b7b8b8">这是我们共同的底线</li>
     </ul>
   </div>
 </template>
@@ -185,11 +185,13 @@ export default {
       userState: 0,
       newsListClone: [],
       pages: 1,
+      selected: false,
       maxPage: 0,
       catagoryCode: "1",
       isLogin: true,
       newsLength: 3, //初始载入数组长度
       isBottom: false,
+      officeCode: "",
       getBarWidth: function() {
         return (3 + 1) * 22 + "px";
       }
@@ -197,13 +199,32 @@ export default {
   },
   created() {},
   mounted() {
+    let storage = window.localStorage;
     let self = this;
     // this.cityValue = "320101";
     let url = this.GLOBAL.hostIp;
     let userid = this.common.getCookie("userId");
     // loading
-    this.timer = setInterval(() => {}, 1000);
-
+    // this.timer = setInterval(() => {}, 1000);
+    let officeCode = this.$route.query.officeCode;
+    if (officeCode) {
+      storage.setItem("officeCode", officeCode);      
+      if (officeCode != "0000") {
+        this.selected = true;
+        let cityCode = officeCode.substring(0, 4);
+       storage.setItem("localCityCode", cityCode);
+      } else {
+        this.selected = false;
+      }
+    } else {
+      let officeCode = storage.getItem("officeCode");
+      if (officeCode != "0000") {
+        this.selected = true;
+      } else {
+        this.selected = false;
+      }
+      // storage.setItem("officeCode","");
+    }
     this.$http
       .post(
         url + "order/CheckLogin",
@@ -254,7 +275,8 @@ export default {
           this.$http
             .get(url + "/order/getArticleCategory", {
               params: {
-                key: 0
+                key: 0,
+                officeCode: officeCode
               }
             })
             .then(({ data }) => {
@@ -295,7 +317,7 @@ export default {
     let cityCode = stroage.getItem("localCityCode");
     if (cityCode) {
       this.cityValue = cityCode;
-    }else{
+    } else {
       this.cityValue = "3201";
     }
     // 获取文章推荐律师
@@ -312,7 +334,7 @@ export default {
     //   }, 2000)
     // },
     getDetails(oid) {
-       this.$router.push({ path: "lawyerDetails/lawyerDetail?id="+oid });
+      this.$router.push({ path: "lawyerDetails/lawyerDetail?id=" + oid });
     },
     checkList(msg, code) {
       this.$router.push({
@@ -367,12 +389,15 @@ export default {
     },
     // 获取文章推荐律师
     getArticleLawyer() {
+      let storage = window.localStorage;
       let url = this.GLOBAL.hostIp;
+      let officeCode = storage.getItem("officeCode");
       this.$http
         .get(url + "/order/getLawyerArticleCatalog", {
           params: {
             catalogKey: this.catagoryCode,
-            cityCode: this.cityValue
+            cityCode: this.cityValue,
+            officeCode: officeCode
           }
         })
         .then(({ data }) => {
@@ -380,7 +405,7 @@ export default {
             this.cases = data.data;
             for (let i = 0; i < this.cases.length; i++) {
               this.cases[i].title = data.data[i].title.split(",");
-              this.cases[i].title.pop();
+              // this.cases[i].title.pop();
               // data.data[i].title.split(",").pop();
             }
           }
@@ -410,7 +435,7 @@ export default {
     },
     getNewsDetail(id) {
       let stroage = window.localStorage;
-      stroage.setItem("articleId",id)
+      stroage.setItem("articleId", id);
       this.$router.push({ name: "newsDetail", params: { id: id } });
     },
 
@@ -453,10 +478,10 @@ export default {
         this.isBottom = true;
       }
     },
-    setCityStorage(){
+    setCityStorage() {
       let stroage = window.localStorage;
       let cityCode = this.cityValue;
-      stroage.setItem("localCityCode",cityCode);
+      stroage.setItem("localCityCode", cityCode);
       this.getArticleLawyer();
     }
   }
@@ -472,7 +497,7 @@ export default {
     padding: 0;
     width: 4.3rem;
     font-size: 0.8rem;
-    color: #a1a2a2;  
+    color: #a1a2a2;
   }
   .scrollable .vux-tab-item[data-v-fed36922] {
     font-size: 0.8rem;
@@ -561,6 +586,9 @@ export default {
     }
   }
   // 律师展示样式
+  .photo {
+    text-align: center;
+  }
   .lawyer-photo {
     width: 3.3rem;
     height: 3.3rem;
@@ -695,8 +723,9 @@ export default {
 .menu {
   margin-top: 0.8em;
 }
-::-webkit-input-placeholder { /* WebKit browsers */
-    color:    #a1a1a2;
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #a1a1a2;
 }
 // .menu.one {
 //   margin-top: 0;

@@ -212,7 +212,7 @@ export default {
           ],
           legend: {
             orient: "vertical",
-            right:10,
+            right:25,
             y: "center",
             data: this.echartData[0]
           },

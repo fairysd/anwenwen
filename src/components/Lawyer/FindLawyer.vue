@@ -3,7 +3,7 @@
     <div class="search-condition">
       <ul>
         <li>
-          <el-select class="city" v-model="cityValue" @change="getLawyer" placeholder="选择城市">
+          <el-select class="city" v-model="cityValue" @change="getLawyer" :disabled="selected" placeholder="选择城市">
             <el-option
               v-for="item in citys"
               :key="item.code"
@@ -88,6 +88,7 @@ export default {
       cityValue:'',
       typeValue:[],
       sortValue:'',
+      selected:false,
       typepop : "typepop",
       //cityName:"南京市"
     };
@@ -168,6 +169,12 @@ export default {
       let sort = this.sortValue;
       let stroage = window.localStorage;
       let cityCode = this.cityValue;
+      let officeCode = stroage.getItem("officeCode");
+      if (officeCode!='0000') {
+        this.selected = true;
+      }else{
+        this.selected = false;
+      }
       stroage.setItem("localCityCode",cityCode)
       if (!type) {
         type='';
@@ -177,6 +184,7 @@ export default {
           params: {
             message:type,
             cityCode: city,
+            officeCode:officeCode,
             sortBy:sort
           }
         })

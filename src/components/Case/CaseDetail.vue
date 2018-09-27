@@ -162,7 +162,7 @@ export default {
             {
               name: "访问来源",
               type: "pie",
-              radius: ["30%", "50%"],
+              radius: ["30%", "40%"],
               center: ["50%", "40%"],
               avoidLabelOverlap: false,
               label: {
@@ -294,9 +294,9 @@ export default {
           },
           color: hearProgramCount[3],
           legend: {
-            orient: "horizontal",
-            x: "center",
-            y: "bottom",
+            orient: "vertical",
+            right:10,
+            y: "center",
             data: hearProgramCount[0] /*['一审','二审']*/
           },
           series: [
@@ -304,7 +304,6 @@ export default {
               type: "pie",
               selectedMode: "single",
               radius: [0, "30%"],
-
               label: {
                 normal: {}
               },
@@ -355,9 +354,9 @@ export default {
           },
           color: paperTypeCount[3],
           legend: {
-            orient: "horizontal",
-            x: "center",
-            y: "bottom",
+            orient: "vertical",
+            right:10,
+            y: "center",
             data: paperTypeCount[0]
           },
           series: [
@@ -365,7 +364,7 @@ export default {
               type: "pie",
               selectedMode: "single",
               radius: [0, "30%"],
-
+              center:["30","50"],
               label: {
                 normal: {}
               },

@@ -54,28 +54,31 @@
        <!-- <flexbox class="consult-box" >
                     
       </flexbox> -->
+      <flexbox class="">
+      <flexbox-item class="divider">                            
+      </flexbox-item>
+    </flexbox>
         <div class="list-body">
         <flexbox class="body" v-for="item in cases" @click.native="getDetails(item.oid)" :key="item.oid">
-          <flexbox-item :span="4">
+          <flexbox-item :span="2">
             <div class="list-item photo">
                <img class="lawyer-photo" :src="item.imagepath">
             </div>
           </flexbox-item>
           <flexbox-item>
-            <div class="list-item">
-              <span class="name" v-text="item.name"></span><span class="workage" v-text="item.workage+'年经验'"></span>
+            <div class="list-item info">
+              <span class="name" v-text="item.name+'  律师'"></span>
+              <img src="../../assets/images/icons/experienceIcon.png" alt="">
+              <span class="workage" v-text="item.workage+'年经验'"></span>
             </div>
-            <div class="list-item">
+            <div class="list-item info">
               <p class="local" v-text="item.city+' | '+item.lawoffice"></p>
             </div>
-            <div class="list-item">
-              <p  v-for="(labels,index) in item.title" v-if="index<3" :key="index">
+            <div class="list-item info">
+              <span v-for="(labels,index) in item.title" v-if="index<3" :key="index">
                 <span class="label" v-text="labels"></span>
-              </p>
-            </div>            
-            <div class="list-item">
-              <p class="recent" v-text="item.introduce"></p>
-            </div>
+              </span>
+            </div>   
           </flexbox-item>
       </flexbox>
       </div>    
@@ -276,52 +279,76 @@ export default {
     margin-bottom: 0.5rem;
   }
   .list-body {
-    padding-top: 1rem;
-    .body {
-      border-bottom: 1px dotted #d5d5d6;
-      padding-bottom: 0.5rem;
-    }
-    .name {
-      color: #4d4e50;
-      font-weight: 500;
-      font-size:1.1rem;
-    }
-    .workage {
-      color: #f9ab13;
-      font-size: 1rem;
-      margin-left: 0.8rem;
-    }
-    .local {
-      color: #878889;
-      font-size: 0.6rem;
-    }
-    .label {
-      display: inline-block;
-      background-color: #2a7af3;
-      padding: 0.2rem 0.3rem;
-      font-size: 0.5rem;
-      border-radius: 0.3rem;
-      color: #fff;
-      margin-right: 0.2rem;
-      margin-bottom: 0.1rem;
-      line-height: 0.7rem;
-    }
-    .recent {
-      color: #b7b8b8;
-      font-size: 0.5rem;
-    }
-    .body {
-      margin: 0.3rem 0;
-    }
-    .photo {
-      text-align: center;
-    }
-    .lawyer-photo {
-      width: 5.5rem;
-      height: 5.5rem;
-      border-radius: 5.5rem;
-      margin-top: -0.2rem;
+    // padding-top: 1rem;      
+    .vux-flexbox-item{
+      text-align: left;
     }
   }
+    // 律师展示样式
+   .list-body .list-item.photo{
+     text-align: center;
+   }
+  .lawyer-photo {
+    width: 3.3rem;
+    height: 3.3rem;
+    border-radius: 5.5rem;
+    margin-top: -0.2rem;
+  }
+  .body {
+    border-bottom: 1px dotted #d5d5d6;
+    margin-top: 0.4rem;
+    margin-bottom: 0.2rem;
+    padding-left: 0.8rem;
+    padding-bottom: 0.2rem;
+  }
+  .info {
+    padding-left: 1rem;
+    line-height: 1rem;
+    img {
+      width: 0.8rem;
+      vertical-align: middle;
+    }
+  }
+  .name {
+    color: #000;
+    font-weight: 900;
+    font-size: 0.8rem;
+    padding-bottom: 0.2rem;
+    margin-right: 1rem;
+  }
+  .workage {
+    color: #fa7e34;
+    font-size: 0.6rem;
+    padding-bottom: 0.2rem;
+    // margin-left: 0.8rem;
+  }
+  .local {
+    color: #a1a1a2;
+    font-size: 0.6rem;
+  }
+  .label {
+    display: inline-block;
+    padding: 0.2rem 0.3rem;
+    border: 1px solid #4f88f7;
+    font-size: 0.45rem;
+    border-radius: 0.3rem;
+    color: #4f88f7;
+    margin-right: 0.1rem;
+    margin-bottom: 0.1rem;
+    line-height: 0.7rem;
+  }
+    .divider {
+    height: 0.5rem;
+    background-color: #f0f0f0;
+  }
+  .recent {
+    color: #a1a1a2;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.5rem;
+  }
+  // 结束
 }
 </style>

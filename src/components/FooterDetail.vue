@@ -12,13 +12,13 @@
         <span slot="label" class="spanlineheight">法律咨询</span>
       </tabbar-item>
        <tabbar-item @on-item-click="collect">        
-        <img slot="icon" src="../assets/images/icons/icon_07.png" >
-        <img slot="icon-active" src="../assets/images/icons/icon_14.png" >
+        <img slot="icon" src="../assets/images/icons/icon_23.png" >
+        <img slot="icon-active" src="../assets/images/icons/icon_24.png" >
         <span slot="label" class="spanlineheight">收藏</span>
       </tabbar-item>
       <tabbar-item @on-item-click="share">        
-        <img slot="icon" src="../assets/images/icons/icon_07.png" >
-        <img slot="icon-active" src="../assets/images/icons/icon_14.png" >
+        <img slot="icon" src="../assets/images/icons/icon_21.png" >
+        <img slot="icon-active" src="../assets/images/icons/icon_22.png" >
         <span slot="label" class="spanlineheight">分享</span>
       </tabbar-item>
       <tabbar-item link="/createCase">        
