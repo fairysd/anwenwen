@@ -207,9 +207,9 @@ export default {
     // loading
     // this.timer = setInterval(() => {}, 1000);
     let officeCode = this.$route.query.officeCode;
-    if (officeCode) {
+    if (officeCode == ''||officeCode) {
       storage.setItem("officeCode", officeCode);      
-      if (officeCode != "0000") {
+      if (officeCode != "") {
         this.selected = true;
         let cityCode = officeCode.substring(0, 4);
        storage.setItem("localCityCode", cityCode);
@@ -218,7 +218,7 @@ export default {
       }
     } else {
       let officeCode = storage.getItem("officeCode");
-      if (officeCode != "0000") {
+      if (officeCode != "") {
         this.selected = true;
       } else {
         this.selected = false;
@@ -271,7 +271,7 @@ export default {
         }
       })
       .then(data => {
-        if (this.isLogin) {
+        if (this.isLogin) {          
           this.$http
             .get(url + "/order/getArticleCategory", {
               params: {

@@ -170,7 +170,7 @@ export default {
       let stroage = window.localStorage;
       let cityCode = this.cityValue;
       let officeCode = stroage.getItem("officeCode");
-      if (officeCode!='0000') {
+      if (officeCode!='') {
         this.selected = true;
       }else{
         this.selected = false;

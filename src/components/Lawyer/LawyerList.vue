@@ -88,7 +88,7 @@ export default {
     this.cityValue = cityCode;
     let storage = window.localStorage;
     let officeCode = storage.getItem("officeCode")
-    if (officeCode!='0000') {
+    if (officeCode!='') {
         this.selected = true;
       }else{
         this.selected = false;
@@ -111,8 +111,6 @@ export default {
       this.cases = localCases;
       return;
     }
-
-
     this.$http
         .get(url + "/findAttorneyBySpeciality", {
           params: {
