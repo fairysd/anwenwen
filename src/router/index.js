@@ -32,39 +32,43 @@ export default new Router({
       path: '/',
       name: 'Content',
       components:{
-          default:Content,
-          footer1:Footer
+          default:resolve => require(['@/components/Content'], "content"),
+          footer1:resolve => require(['@/components/Footer'], "footer"),
       },
       children:
       [
         {
           path:'',
-          component:Home
+          component:resolve => require(['@/components/Home'], "home"),
+          hidden: true
         },
         {
           path:'home',
           name:"home",
-          component:Home
+          component:resolve => require(['@/components/Home'], "home"),
+          hidden: true
         },
-
-
         {
           path:'createCase',
-          component:CreateCase
+          component:resolve => require(['@/components/Case/CaseDetail'], "createcase"),
+          hidden: true
         },
         {
           path:'user',
-          component:User
+          component:resolve => require(['@/components/User'], "user"),
+          hidden: true
         },
         {
           path:'lawyerList',
           name:'lawyerList',
-          component:LawyerList
+          component:resolve => require(['@/components/Lawyer/LawyerList'], "lawyerlist"),
+          hidden: true
         },
         {
           path:'findLawyer',
           name:'findLawyer',
-          component:FindLawyer
+          component:resolve => require(['@/components/Lawyer/FindLawyer'], "findlawyer"),
+          hidden: true
         },
         // {
         //   path:'lawyerDetail',
@@ -75,17 +79,19 @@ export default new Router({
         {
           path:'caseDetail',
           name:'caseDetail',
-          component:CaseDetail
+          component:resolve => require(['@/components/Case/CaseDetail'], "casedetail"),
+          hidden: true
         },
         {
           path:'newsDetail',
           name:'newsDetail',
-          component:NewsDetail
+          component:resolve => require(['@/components/News/NewsDetail'], "newsdetail"),
+          hidden: true
         },
         {
           path:'delegation',
           name:'delegation',
-          component:Delegation,
+          component:resolve => require(['@/components/Content/Delegation'], "delegation"),
           meta: {
             title: '委托'
           },
@@ -93,61 +99,63 @@ export default new Router({
         {
           path:'offline',
           name:'offline',
-          component:Offline
+          component:resolve => require(['@/components/Content/Offline'], "offline"),
         },
         {
           path:'collection',
           name:'collection',
-          component:Collection
+          component:resolve => require(['@/components/InfoCenter/Collection'], "collection"),
         },
         {
           path:'relate',
           name:'relate',
-          component:Relate
+          component:resolve => require(['@/components/InfoCenter/Relate'], "relate"),
         },
         {
           path:'mycase',
           name:'mycase',
-          component:Mycase
+          component:resolve => require(['@/components/InfoCenter/Case'], "mycase"),
         },
         {
           path:'MyConsult',
           name:'MyConsult',
-          component:MyConsult
+          component:resolve => require(['@/components/MyService/MyConsult'], "myconsult"),
         },
         {
           path:'MyEntrust',
           name:'MyEntrust',
-          component:MyEntrust
+          component:resolve => require(['@/components/MyService/MyEntrust'], "myentrust"),
         },
         {
           path:'ServiceDetail',
           name:'ServiceDetail',
-          component:ServiceDetail
+          component:resolve => require(['@/components/MyService/ServiceDetail'], "servicedetail"),
         }
       ]
     },
     {
       path:"/login",
       name:"login",
-      component:Login
+      component:resolve => require(['@/components/Login'], resolve),
     },
     {
       path:"/state",
       name:"state",
-      component:State
+      component:resolve => require(['@/components/State'], resolve),
     },{
         path:'/lawyerDetails',
         name:'lawyerDetails',
         components:{
-          default:Content,
-          footer1:FooterDetail  
+          default:resolve => require(['@/components/Content'], resolve),
+          footer1:resolve => require(['@/components/FooterDetail'], resolve),  
         },
+        hidden: true,
         children:[
             {
               path:'lawyerDetail',
               name:'lawyerDetail',
-              component:LawyerDetail,
+              component:resolve => require(['@/components/Lawyer/LawyerDetail'], resolve),
+              hidden: true
              }
         ]
 
